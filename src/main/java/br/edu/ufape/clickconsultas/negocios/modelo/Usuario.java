@@ -2,12 +2,16 @@ package br.edu.ufape.clickconsultas.negocios.modelo;
 
 import java.util.Date;
 
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
+@MappedSuperclass
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,4 +103,19 @@ public class Usuario {
 		this.senha = senha;
 	}
 	
+	public void atualizarPerfil(String nome, String cpf, Date dataNascimento, String sexo, String telefone, String email, String senha) {
+		//Fazer verificação se oq está chegando do parâmetro é diferente do que já está registrado
+		//Se sim, receber o novo valor, se não, não vale a pena
+		//ex.:
+		if(nome != this.nome) {
+			this.nome = nome;			
+		}
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.sexo = sexo;
+		this.telefone = telefone;
+		this.email = email;
+		this.senha = senha;
+	}
+		
 }

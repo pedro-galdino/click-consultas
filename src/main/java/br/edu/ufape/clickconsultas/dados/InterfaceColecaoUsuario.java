@@ -8,5 +8,4 @@ import br.edu.ufape.clickconsultas.negocios.modelo.Usuario;
 @Repository
 public interface InterfaceColecaoUsuario 
 	extends JpaRepository<Usuario, Long>{
-
 }
