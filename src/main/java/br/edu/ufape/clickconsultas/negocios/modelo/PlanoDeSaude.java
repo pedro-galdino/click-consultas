@@ -6,21 +6,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class CRM {
+public class PlanoDeSaude {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String uf;
 	private int numero;
+	private String operadora;
 
-	public CRM() {
+	public PlanoDeSaude() {
 	}
 
-	public CRM(String uf, int numero) {
-		this.uf = uf;
+	public PlanoDeSaude(int numero, String operadora) {
 		this.numero = numero;
+		this.operadora = operadora;
 	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -29,20 +29,20 @@ public class CRM {
 		this.id = id;
 	}
 
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-
 	public int getNumero() {
 		return numero;
 	}
 
 	public void setNumero(int numero) {
 		this.numero = numero;
+	}
+
+	public String getOperadora() {
+		return operadora;
+	}
+
+	public void setOperadora(String operadora) {
+		this.operadora = operadora;
 	}
 
 }

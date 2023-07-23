@@ -3,9 +3,9 @@ package br.edu.ufape.clickconsultas.dados;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.Usuario;
+import br.edu.ufape.clickconsultas.negocios.modelo.Especialidade;
 
 @Repository
-public interface InterfaceColecaoUsuario 
-	extends JpaRepository<Usuario, Long>{
+public interface InterfaceColecaoEspecialidade extends JpaRepository<Especialidade, Long>{
+
 }

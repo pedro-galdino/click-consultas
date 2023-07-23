@@ -1,29 +1,42 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.MappedSuperclass;
 
-@MappedSuperclass
-public class Usuario {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nome;
 	private String cpf;
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 	private String sexo;
 	private String telefone;
 	private String email;
 	private String senha;
-		
+
+	public Usuario() {
+	}
+
+	public Usuario(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email, String senha) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.sexo = sexo;
+		this.telefone = telefone;
+		this.email = email;
+		this.senha = senha;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -48,11 +61,11 @@ public class Usuario {
 		this.cpf = cpf;
 	}
 
-	public Date getDataNascimento() {
+	public LocalDate getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(LocalDate dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -88,27 +101,13 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Usuario() {
-	}
-
-	public Usuario(long id, String nome, String cpf, Date dataNascimento, String sexo, String telefone, String email, String senha) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
-		this.telefone = telefone;
-		this.email = email;
-		this.senha = senha;
-	}
-	
-	public void atualizarPerfil(String nome, String cpf, Date dataNascimento, String sexo, String telefone, String email, String senha) {
-		//Fazer verificação se oq está chegando do parâmetro é diferente do que já está registrado
-		//Se sim, receber o novo valor, se não, não vale a pena
-		//ex.:
-		if(nome != this.nome) {
-			this.nome = nome;			
+	public void atualizarPerfil(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone,
+			String email, String senha) {
+		// Fazer verificação se oq está chegando do parâmetro é diferente do que já está registrado
+		// Se sim, receber o novo valor, se não, não vale a pena
+		// ex.:
+		if (nome != this.nome) {
+			this.nome = nome;
 		}
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
@@ -117,5 +116,5 @@ public class Usuario {
 		this.email = email;
 		this.senha = senha;
 	}
-		
+
 }

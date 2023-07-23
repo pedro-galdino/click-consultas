@@ -21,14 +21,14 @@ public class UsuarioController {
 		return "Hello world";
 	}
 
-	@PostMapping("/cadastrar")
+	/*@PostMapping("/cadastrar")
 	public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario novoUsuario) {
 		try {
-			Usuario usuarioCadastrado = usuarioFachada.cadastrarUsuario(novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getSenha());
+			Usuario usuarioCadastrado = usuarioFachada.cadastrarMedico(novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getSenha());
 			return new ResponseEntity<>(usuarioCadastrado, HttpStatus.CREATED);
 		} catch (Exception e) {
 			// Tratar exceção caso ocorra algum erro no cadastro
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
+	}*/
 }

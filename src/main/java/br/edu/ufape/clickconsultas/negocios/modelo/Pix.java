@@ -6,19 +6,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class CRM {
+public class Pix {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String uf;
-	private int numero;
-
-	public CRM() {
+	private String chave;
+	private String tipo;
+	
+	public Pix() {
 	}
-
-	public CRM(String uf, int numero) {
-		this.uf = uf;
-		this.numero = numero;
+	
+	public Pix(String chave, String tipo) {
+		this.chave = chave;
+		this.tipo = tipo;
 	}
 
 	public long getId() {
@@ -29,20 +29,20 @@ public class CRM {
 		this.id = id;
 	}
 
-	public String getUf() {
-		return uf;
+	public String getChave() {
+		return chave;
 	}
 
-	public void setUf(String uf) {
-		this.uf = uf;
+	public void setChave(String chave) {
+		this.chave = chave;
 	}
 
-	public int getNumero() {
-		return numero;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setNumero(int numero) {
-		this.numero = numero;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
-
+	
 }
