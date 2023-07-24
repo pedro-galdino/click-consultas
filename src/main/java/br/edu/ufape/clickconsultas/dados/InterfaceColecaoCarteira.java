@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.edu.ufape.clickconsultas.negocios.modelo.Carteira;
 
 @Repository
-public interface InterfaceColecaoCarteira extends JpaRepository<Carteira, Long>{
+public interface InterfaceColecaoCarteira extends JpaRepository<Carteira, Long> {
 
 }

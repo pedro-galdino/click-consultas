@@ -49,5 +49,5 @@ public class Medico extends Usuario {
 	public void setEspecialidades(List<Especialidade> especialidades) {
 		this.especialidades = especialidades;
 	}
-
+	
 }

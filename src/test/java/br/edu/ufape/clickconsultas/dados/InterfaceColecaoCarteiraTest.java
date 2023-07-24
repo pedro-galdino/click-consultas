@@ -60,5 +60,5 @@ class InterfaceColecaoCarteiraTest {
 		assertEquals(qtdCarteira + 1, novaQtdCarteira);
 		assertEquals(qtdPix + 1, novaQtdPix);
 	}
-
+	
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.edu.ufape.clickconsultas.negocios.modelo.Paciente;
 
 @Repository
-public interface InterfaceColecaoPaciente extends JpaRepository<Paciente, Long>{
+public interface InterfaceColecaoPaciente extends JpaRepository<Paciente, Long> {
 
 }
