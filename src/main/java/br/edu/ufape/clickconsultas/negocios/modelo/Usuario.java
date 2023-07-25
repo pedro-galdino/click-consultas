@@ -41,10 +41,6 @@ public abstract class Usuario {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getNome() {
 		return nome;
 	}
@@ -103,18 +99,27 @@ public abstract class Usuario {
 
 	public void atualizarPerfil(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone,
 			String email, String senha) {
-		// Fazer verificação se oq está chegando do parâmetro é diferente do que já está registrado
-		// Se sim, receber o novo valor, se não, não vale a pena
-		// ex.:
 		if (nome != this.nome) {
 			this.nome = nome;
 		}
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
-		this.telefone = telefone;
-		this.email = email;
-		this.senha = senha;
+		if (cpf != this.cpf) {
+			this.cpf = cpf;
+		}
+		if (dataNascimento != this.dataNascimento) {
+			this.dataNascimento = dataNascimento;
+		}
+		if (sexo != this.sexo) {
+			this.sexo = sexo;
+		}
+		if (telefone != this.telefone) {
+			this.telefone = telefone;
+		}
+		if (email != this.email) {
+			this.email = email;
+		}
+		if (senha != this.senha) {
+			this.senha = senha;
+		}
 	}
 
 }
