@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.UsuarioFachada;
-import br.edu.ufape.clickconsultas.negocios.modelo.Usuario;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 
 @RestController
 public class UsuarioController {

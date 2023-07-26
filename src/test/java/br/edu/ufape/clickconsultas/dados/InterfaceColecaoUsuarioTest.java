@@ -10,11 +10,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.CRM;
-import br.edu.ufape.clickconsultas.negocios.modelo.Especialidade;
-import br.edu.ufape.clickconsultas.negocios.modelo.Medico;
-import br.edu.ufape.clickconsultas.negocios.modelo.Paciente;
-import br.edu.ufape.clickconsultas.negocios.modelo.PlanoDeSaude;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoCRM;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoEspecialidade;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPlanoDeSaude;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 
 @SpringBootTest
 class InterfaceColecaoUsuarioTest {
@@ -33,7 +38,7 @@ class InterfaceColecaoUsuarioTest {
 	void cadastrarMedicoTest() {
 		long qtdMedico = colecaoMedico.count();
 		LocalDate dataNasc = LocalDate.of(1990, 12, 30);
-		Medico m = new Medico("João", "999.999.999-91", dataNasc, "Homem", "99999-9991", "email@email.com", "1234", null, null, null);
+		Medico m = new Medico("João", "999.999.999-91", dataNasc, "Homem", "99999-9991", "email@email.com", "1234", null, null, null, null);
 		
 		colecaoMedico.save(m);
 		long novaQtdMedico = colecaoMedico.count();
@@ -56,7 +61,7 @@ class InterfaceColecaoUsuarioTest {
 	void cadastrarMedicoComCRMTest() {
 		long qtdCRM = colecaoCRM.count();
 		long qtdMedico = colecaoMedico.count();
-		Medico m = new Medico("Thiago", "999.999.999-92", LocalDate.now(), "Homem", "99999-9922", "email@email.com", "1234", null, null, null);
+		Medico m = new Medico("Thiago", "999.999.999-92", LocalDate.now(), "Homem", "99999-9922", "email@email.com", "1234", null, null, null, null);
 		CRM c = new CRM("PE", 2222);
 		List<CRM> lc = new ArrayList<CRM>();
 		lc.add(c);
@@ -85,7 +90,7 @@ class InterfaceColecaoUsuarioTest {
 	void cadastrarMedicoComEspecialidadeTest() {
 		long qtdEspecialidade = colecaoEspecialidade.count();
 		long qtdMedico = colecaoMedico.count();
-		Medico m = new Medico("Edna", "999.999.999-92", LocalDate.now(), "Mulher", "99999-9921", "email@email.com", "1234", null, null, null);
+		Medico m = new Medico("Edna", "999.999.999-92", LocalDate.now(), "Mulher", "99999-9921", "email@email.com", "1234", null, null, null, null);
 		Especialidade e = new Especialidade("Pediatra", 11111);
 		List<Especialidade> le = new ArrayList<Especialidade>();
 		le.add(e);

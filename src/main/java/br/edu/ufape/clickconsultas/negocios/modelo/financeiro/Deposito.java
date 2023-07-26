@@ -1,8 +1,7 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.Date;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,16 +13,16 @@ public class Deposito implements Transacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private float valor;
+	private double valor;
 	private Date data;
 	private String chavePix;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Carteira carteira;
 
 	public Deposito() {
 	}
 
-	public Deposito(float valor, Date data, String chavePix, Carteira carteira) {
+	public Deposito(double valor, Date data, String chavePix, Carteira carteira) {
 		this.valor = valor;
 		this.data = data;
 		this.chavePix = chavePix;
@@ -34,15 +33,11 @@ public class Deposito implements Transacao {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public float getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(float valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 

@@ -1,7 +1,8 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.List;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,16 +16,16 @@ public class Carteira {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private float saldo;
+	private double saldo;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Pix> chavesPix;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private Usuario usuario;
 	
 	public Carteira() {
 	}
 
-	public Carteira(float saldo, List<Pix> chavesPix, Usuario usuario) {
+	public Carteira(double saldo, List<Pix> chavesPix, Usuario usuario) {
 		super();
 		this.saldo = saldo;
 		this.chavesPix = chavesPix;
@@ -35,11 +36,11 @@ public class Carteira {
 		return id;
 	}
 
-	public float getSaldo() {
+	public double getSaldo() {
 		return saldo;
 	}
 
-	public void setSaldo(float saldo) {
+	public void setSaldo(double saldo) {
 		this.saldo = saldo;
 	}
 

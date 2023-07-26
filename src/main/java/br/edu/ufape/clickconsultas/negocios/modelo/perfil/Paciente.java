@@ -1,4 +1,4 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,6 @@ public class Paciente extends Usuario {
 	private PlanoDeSaude plano;
 
 	public Paciente() {
-		super();
 	}
 
 	public Paciente(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email,

@@ -1,4 +1,4 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 public interface Transacao {
 

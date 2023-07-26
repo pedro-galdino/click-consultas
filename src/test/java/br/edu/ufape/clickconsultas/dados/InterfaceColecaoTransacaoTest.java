@@ -8,13 +8,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.Carteira;
-import br.edu.ufape.clickconsultas.negocios.modelo.Deposito;
-import br.edu.ufape.clickconsultas.negocios.modelo.Pix;
-import br.edu.ufape.clickconsultas.negocios.modelo.Saque;
+import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
+import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoDeposito;
+import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoSaque;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
 
 @SpringBootTest
 class InterfaceColecaoTransacaoTest {
+	@Autowired
+	private InterfaceColecaoCarteira colecaoCarteira;
 	@Autowired
 	private InterfaceColecaoSaque colecaoSaque;
 	@Autowired
@@ -23,9 +28,11 @@ class InterfaceColecaoTransacaoTest {
 	@Test
 	void cadastrarSaqueTest() {
 		long qtdSaque = colecaoSaque.count();
+		Carteira c = new Carteira();
 		Pix p = new Pix("E-mail", "email@yahoo.com");
-		Saque s = new Saque(25, new Date(), "Caixa", new Carteira(), p);
+		Saque s = new Saque(25, new Date(), "Caixa", c, p);
 
+		colecaoCarteira.save(c);
 		colecaoSaque.save(s);
 		long novaQtdSaque = colecaoSaque.count();
 
@@ -36,10 +43,9 @@ class InterfaceColecaoTransacaoTest {
 	void processarSaqueTest() throws Exception {
 		Carteira c = new Carteira(500, null, null);
 		Saque s = new Saque(100, new Date(), "Bradesco", c, null);
-		float saldoCarteira = c.getSaldo();
+		double saldoCarteira = c.getSaldo();
 
 		s.processarTransacao();
-		colecaoSaque.save(s);
 
 		assertEquals(saldoCarteira - s.getValor(), c.getSaldo());
 	}
@@ -48,12 +54,11 @@ class InterfaceColecaoTransacaoTest {
 	void processarSaqueInvalidoTest() {
 		Carteira c = new Carteira(100, null, null);
 		Saque s = new Saque(-100, new Date(), "Itaú", c, null);
-		float saldoCarteira = c.getSaldo();
+		double saldoCarteira = c.getSaldo();
 		String msgErro = null;
 
 		try {
 			s.processarTransacao();
-			colecaoSaque.save(s);
 		} catch (Exception e) {
 			msgErro = e.getMessage();
 		}
@@ -66,12 +71,11 @@ class InterfaceColecaoTransacaoTest {
 	void processarSaqueMaiorQueSaldoTest() {
 		Carteira c = new Carteira(200, null, null);
 		Saque s = new Saque(300, new Date(), "Bradesco", c, null);
-		float saldoCarteira = c.getSaldo();
+		double saldoCarteira = c.getSaldo();
 		String msgErro = null;
 
 		try {
 			s.processarTransacao();
-			colecaoSaque.save(s);
 		} catch (Exception e) {
 			msgErro = e.getMessage();
 		}
@@ -83,8 +87,10 @@ class InterfaceColecaoTransacaoTest {
 	@Test
 	void cadastrarDepositoTest() {
 		long qtdDeposito = colecaoDeposito.count();
-		Deposito d = new Deposito(50, new Date(), "pix gerado", new Carteira());
+		Carteira c = new Carteira();
+		Deposito d = new Deposito(50, new Date(), "pix gerado", c);
 
+		colecaoCarteira.save(c);
 		colecaoDeposito.save(d);
 		long novaQtdDeposito = colecaoDeposito.count();
 
@@ -95,10 +101,9 @@ class InterfaceColecaoTransacaoTest {
 	void processarDepositoTest() throws Exception {
 		Carteira c = new Carteira(200, null, null);
 		Deposito d = new Deposito(80, new Date(), "pix gerado", c);
-		float saldoCarteira = c.getSaldo();
+		double saldoCarteira = c.getSaldo();
 
 		d.processarTransacao();
-		colecaoDeposito.save(d);
 
 		assertEquals(saldoCarteira + d.getValor(), c.getSaldo());
 	}
@@ -107,12 +112,11 @@ class InterfaceColecaoTransacaoTest {
 	void processarDepositoInvalidoTest() {
 		Carteira c = new Carteira(100, null, null);
 		Deposito d = new Deposito(-200, new Date(), "pix gerado", c);
-		float saldoCarteira = c.getSaldo();
+		double saldoCarteira = c.getSaldo();
 		String msgErro = null;
 
 		try {
 			d.processarTransacao();
-			colecaoDeposito.save(d);
 		} catch (Exception e) {
 			msgErro = e.getMessage();
 		}

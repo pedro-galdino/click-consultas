@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.Carteira;
-import br.edu.ufape.clickconsultas.negocios.modelo.Medico;
-import br.edu.ufape.clickconsultas.negocios.modelo.Paciente;
-import br.edu.ufape.clickconsultas.negocios.modelo.Pix;
+import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
+import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoPix;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 @SpringBootTest
 class InterfaceColecaoCarteiraTest {
@@ -20,12 +22,16 @@ class InterfaceColecaoCarteiraTest {
 	private InterfaceColecaoCarteira colecaoCarteira;
 	@Autowired
 	private InterfaceColecaoPix colecaoPix;
+	@Autowired
+	private InterfaceColecaoPaciente colecaoPaciente;
 	
 	@Test
 	void cadastrarCarteiraTest() {
 		long qtdCarteira = colecaoCarteira.count();
-		Carteira c = new Carteira(0, null, new Paciente());
+		Paciente p = new Paciente();
+		Carteira c = new Carteira(0, null, p);
 		
+		colecaoPaciente.save(p);
 		colecaoCarteira.save(c);
 		long novaQtdCarteira = colecaoCarteira.count();
 		
@@ -47,12 +53,14 @@ class InterfaceColecaoCarteiraTest {
 	void cadastrarCarteiracomPixTest() {
 		long qtdCarteira = colecaoCarteira.count();
 		long qtdPix = colecaoPix.count();
-		Carteira c = new Carteira(0, null, new Medico());
-		Pix p = new Pix("Telefone", "(99)98999-9999");
-		List<Pix> lp = new ArrayList<Pix>();
-		lp.add(p);
-		c.setChavesPix(lp);
-		
+		Paciente p = new Paciente();
+		Carteira c = new Carteira(0, null, p);
+		Pix pix = new Pix("Telefone", "(99)98999-9999");
+		List<Pix> lpix = new ArrayList<Pix>();
+		lpix.add(pix);
+		c.setChavesPix(lpix);
+				
+		colecaoPaciente.save(p);
 		colecaoCarteira.save(c);
 		long novaQtdCarteira = colecaoCarteira.count();
 		long novaQtdPix = colecaoCarteira.count();

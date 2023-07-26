@@ -1,4 +1,4 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.Date;
 
@@ -15,10 +15,10 @@ public class Saque implements Transacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private float valor;
+	private double valor;
 	private Date data;
 	private String banco;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Carteira carteira;
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Pix chavePix;
@@ -26,7 +26,7 @@ public class Saque implements Transacao {
 	public Saque() {
 	}
 
-	public Saque(float valor, Date data, String banco, Carteira carteira, Pix chavePix) {
+	public Saque(double valor, Date data, String banco, Carteira carteira, Pix chavePix) {
 		this.valor = valor;
 		this.data = data;
 		this.banco = banco;
@@ -42,11 +42,11 @@ public class Saque implements Transacao {
 		this.id = id;
 	}
 
-	public float getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(float valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 

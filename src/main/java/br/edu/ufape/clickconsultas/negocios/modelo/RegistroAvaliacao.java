@@ -11,14 +11,18 @@ public class RegistroAvaliacao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private int numeroAvaliacoes;
-	private int totalAvaliacoes;
+	private double totalAvaliacoes;
 	
-	public RegistroAvaliacao() {}
+	public RegistroAvaliacao() {
+	}
 	
-	public RegistroAvaliacao(int numeroAvaliacoes, int totalAvaliacoes) {
-		super();
+	public RegistroAvaliacao(int numeroAvaliacoes, double totalAvaliacoes) {
 		this.numeroAvaliacoes = numeroAvaliacoes;
 		this.totalAvaliacoes = totalAvaliacoes;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public int getNumeroAvaliacoes() {
@@ -29,12 +33,16 @@ public class RegistroAvaliacao {
 		this.numeroAvaliacoes = numeroAvaliacoes;
 	}
 
-	public int getTotalAvaliacoes() {
+	public double getTotalAvaliacoes() {
 		return totalAvaliacoes;
 	}
 
-	public void setTotalAvaliacoes(int totalAvaliacoes) {
+	public void setTotalAvaliacoes(double totalAvaliacoes) {
 		this.totalAvaliacoes = totalAvaliacoes;
+	}
+	
+	public double mediaAvaliacoes() {
+		return totalAvaliacoes/numeroAvaliacoes;
 	}
 
 }

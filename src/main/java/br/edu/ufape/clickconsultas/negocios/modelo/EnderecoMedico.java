@@ -16,18 +16,21 @@ public class EnderecoMedico {
 	private String logradouro;
 	private int numero;
 	private String detalhamento;
-	
-	public EnderecoMedico(){}
 
-	public EnderecoMedico(String cidade, String estado, String cep, String logradouro, int numero,
-			String detalhamento) {
-		super();
+	public EnderecoMedico() {
+	}
+
+	public EnderecoMedico(String cidade, String estado, String cep, String logradouro, int numero, String detalhamento) {
 		this.cidade = cidade;
 		this.estado = estado;
 		this.cep = cep;
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.detalhamento = detalhamento;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public String getCidade() {
@@ -77,6 +80,5 @@ public class EnderecoMedico {
 	public void setDetalhamento(String detalhamento) {
 		this.detalhamento = detalhamento;
 	}
-	
-	
+
 }

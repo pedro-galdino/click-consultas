@@ -1,38 +1,48 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Agendamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
+	@ManyToOne
 	private EnderecoMedico localConsulta;
+	private String tipoConsulta;
 	private String planoAtendido;
-	private float valorFinalConsulta;
+	private double valorFinalConsulta;
 	private String detalhamento;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private HorarioAgendado horarioAgendado;
+	@ManyToOne
+	private Paciente paciente;
+	@ManyToOne
+	private Agenda agenda;
 	
-	public Agendamento(){}
-	
-	public Agendamento(int id, EnderecoMedico localConsulta, String planoAtendido, float valorFinalConsulta,
-			String detalhamento) {
-		super();
-		this.id = id;
+	public Agendamento() {
+	}
+
+	public Agendamento(EnderecoMedico localConsulta, String tipoConsulta, String planoAtendido, double valorFinalConsulta, 
+			String detalhamento, HorarioAgendado horarioAgendado, Paciente paciente, Agenda agenda) {
 		this.localConsulta = localConsulta;
+		this.tipoConsulta = tipoConsulta;
 		this.planoAtendido = planoAtendido;
 		this.valorFinalConsulta = valorFinalConsulta;
 		this.detalhamento = detalhamento;
+		this.horarioAgendado = horarioAgendado;
+		this.paciente = paciente;
+		this.agenda = agenda;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public EnderecoMedico getLocalConsulta() {
@@ -43,6 +53,14 @@ public class Agendamento {
 		this.localConsulta = localConsulta;
 	}
 
+	public String getTipoConsulta() {
+		return tipoConsulta;
+	}
+
+	public void setTipoConsulta(String tipoConsulta) {
+		this.tipoConsulta = tipoConsulta;
+	}
+
 	public String getPlanoAtendido() {
 		return planoAtendido;
 	}
@@ -51,11 +69,11 @@ public class Agendamento {
 		this.planoAtendido = planoAtendido;
 	}
 
-	public float getValorFinalConsulta() {
+	public double getValorFinalConsulta() {
 		return valorFinalConsulta;
 	}
 
-	public void setValorFinalConsulta(float valorFinalConsulta) {
+	public void setValorFinalConsulta(double valorFinalConsulta) {
 		this.valorFinalConsulta = valorFinalConsulta;
 	}
 
@@ -65,6 +83,30 @@ public class Agendamento {
 
 	public void setDetalhamento(String detalhamento) {
 		this.detalhamento = detalhamento;
+	}
+
+	public HorarioAgendado getHorarioAgendado() {
+		return horarioAgendado;
+	}
+
+	public void setHorarioAgendado(HorarioAgendado horarioAgendado) {
+		this.horarioAgendado = horarioAgendado;
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
+	public Agenda getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(Agenda agenda) {
+		this.agenda = agenda;
 	}
 	
 }
