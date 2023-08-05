@@ -11,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoPix;
+import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 @SpringBootTest
@@ -24,6 +26,8 @@ class InterfaceColecaoCarteiraTest {
 	private InterfaceColecaoPix colecaoPix;
 	@Autowired
 	private InterfaceColecaoPaciente colecaoPaciente;
+	@Autowired
+	private InterfaceColecaoMedico colecaoMedico;
 	
 	@Test
 	void cadastrarCarteiraTest() {
@@ -55,7 +59,7 @@ class InterfaceColecaoCarteiraTest {
 		long qtdPix = colecaoPix.count();
 		Paciente p = new Paciente();
 		Carteira c = new Carteira(0, null, p);
-		Pix pix = new Pix("Telefone", "(99)98999-9999");
+		Pix pix = new Pix("Telefone", "(99)98999-9991");
 		List<Pix> lpix = new ArrayList<Pix>();
 		lpix.add(pix);
 		c.setChavesPix(lpix);
@@ -63,10 +67,31 @@ class InterfaceColecaoCarteiraTest {
 		colecaoPaciente.save(p);
 		colecaoCarteira.save(c);
 		long novaQtdCarteira = colecaoCarteira.count();
-		long novaQtdPix = colecaoCarteira.count();
+		long novaQtdPix = colecaoPix.count();
 		
 		assertEquals(qtdCarteira + 1, novaQtdCarteira);
 		assertEquals(qtdPix + 1, novaQtdPix);
+	}
+	
+	@Test
+	void removerPixDeCarteiraTest() {
+		Medico m = new Medico();
+		Carteira c = new Carteira(250, null, m);
+		Pix p = new Pix("Telefone", "(99)98199-1234");
+		List<Pix> lp = new ArrayList<Pix>();
+		lp.add(p);
+		c.setChavesPix(lp);	
+		colecaoMedico.save(m);
+		colecaoCarteira.save(c);
+		long qtdPix = colecaoPix.count();
+		
+		c.removerPix(p);
+		colecaoCarteira.save(c);
+		colecaoPix.deleteById(p.getId());
+		long novaQtdPix = colecaoPix.count();
+		
+		assertEquals(qtdPix - 1, novaQtdPix);
+		
 	}
 	
 }

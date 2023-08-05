@@ -59,5 +59,9 @@ public class Carteira {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
+	public void removerPix(Pix pix) {
+        chavesPix.remove(pix);
+    }
 		
 }

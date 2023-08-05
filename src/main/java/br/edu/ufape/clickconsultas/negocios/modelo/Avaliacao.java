@@ -1,7 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +16,7 @@ public class Avaliacao {
 	private String comentario;
 	@ManyToOne
 	private Paciente paciente;
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private RegistroAvaliacao registro;
 
 	public Avaliacao() {
@@ -29,6 +28,8 @@ public class Avaliacao {
 		this.comentario = comentario;
 		this.paciente = paciente;
 		this.registro = registro;
+		registro.setNumeroAvaliacoes(registro.getNumeroAvaliacoes() + 1);
+		registro.setTotalAvaliacoes(registro.getTotalAvaliacoes() + nota);
 	}
 
 	public long getId() {
@@ -67,4 +68,9 @@ public class Avaliacao {
 		this.registro = registro;
 	}
 
+	public void removerAvaliacao() {
+		registro.setNumeroAvaliacoes(registro.getNumeroAvaliacoes() - 1);
+		registro.setTotalAvaliacoes(registro.getTotalAvaliacoes() - nota);
+	}
+	
 }

@@ -2,6 +2,9 @@ package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.Date;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +23,8 @@ public class Saque implements Transacao {
 	private String banco;
 	@ManyToOne
 	private Carteira carteira;
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = CascadeType.ALL)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Pix chavePix;
 
 	public Saque() {

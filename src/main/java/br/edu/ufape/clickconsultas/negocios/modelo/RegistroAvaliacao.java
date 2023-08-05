@@ -41,7 +41,7 @@ public class RegistroAvaliacao {
 		this.totalAvaliacoes = totalAvaliacoes;
 	}
 	
-	public double mediaAvaliacoes() {
+	public double calcularMediaAvaliacoes() {
 		return totalAvaliacoes/numeroAvaliacoes;
 	}
 

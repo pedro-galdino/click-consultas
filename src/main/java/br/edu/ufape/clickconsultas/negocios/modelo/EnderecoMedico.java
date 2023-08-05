@@ -1,9 +1,11 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class EnderecoMedico {
@@ -13,20 +15,27 @@ public class EnderecoMedico {
 	private String cidade;
 	private String estado;
 	private String cep;
+	private String bairro;
 	private String logradouro;
 	private int numero;
 	private String detalhamento;
+	@ManyToOne
+	private Medico medico;
 
 	public EnderecoMedico() {
 	}
 
-	public EnderecoMedico(String cidade, String estado, String cep, String logradouro, int numero, String detalhamento) {
+	public EnderecoMedico(String cidade, String estado, String cep, String bairro, String logradouro, int numero,
+			String detalhamento, Medico medico) {
+		super();
 		this.cidade = cidade;
 		this.estado = estado;
 		this.cep = cep;
+		this.bairro = bairro;
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.detalhamento = detalhamento;
+		this.medico = medico;
 	}
 
 	public long getId() {
@@ -57,6 +66,14 @@ public class EnderecoMedico {
 		this.cep = cep;
 	}
 
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
 	public String getLogradouro() {
 		return logradouro;
 	}
@@ -79,6 +96,14 @@ public class EnderecoMedico {
 
 	public void setDetalhamento(String detalhamento) {
 		this.detalhamento = detalhamento;
+	}
+
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
 	}
 
 }

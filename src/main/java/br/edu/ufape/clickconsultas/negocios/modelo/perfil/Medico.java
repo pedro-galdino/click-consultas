@@ -55,12 +55,20 @@ public class Medico extends Usuario {
 		this.especialidades = especialidades;
 	}
 
-	public RegistroAvaliacao getAvaliacao() {
+	public RegistroAvaliacao getRegistroAvaliacao() {
 		return registroAvaliacao;
 	}
 
-	public void setAvaliacao(RegistroAvaliacao registroAvaliacao) {
+	public void setRegistroAvaliacao(RegistroAvaliacao registroAvaliacao) {
 		this.registroAvaliacao = registroAvaliacao;
 	}
+	
+	public void removerCrm(CRM crm) {
+		this.crm.remove(crm);
+    }
+	
+	public void removerEspecialidade(Especialidade especialidade) {
+        especialidades.remove(especialidade);
+    }
 	
 }

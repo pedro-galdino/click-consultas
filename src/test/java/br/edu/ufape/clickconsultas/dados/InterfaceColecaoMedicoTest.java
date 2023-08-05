@@ -1,6 +1,6 @@
 package br.edu.ufape.clickconsultas.dados;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,26 +13,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoCRM;
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoEspecialidade;
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
-import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
-import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 
 @SpringBootTest
-class InterfaceColecaoUsuarioTest {
+class InterfaceColecaoMedicoTest {
 	@Autowired
 	private InterfaceColecaoMedico colecaoMedico;
 	@Autowired
 	private InterfaceColecaoCRM colecaoCRM;
 	@Autowired
 	private InterfaceColecaoEspecialidade colecaoEspecialidade;
-	@Autowired
-	private InterfaceColecaoPaciente colecaoPaciente;
-	@Autowired
-	private InterfaceColecaoPlanoDeSaude colecaoPlano;
 	
 	@Test
 	void cadastrarMedicoTest() {
@@ -103,44 +95,41 @@ class InterfaceColecaoUsuarioTest {
 		assertEquals(qtdMedico + 1, novaQtdMedico);
 		assertEquals(qtdEspecialidade + 1, novaQtdEspecialidade);
 	}
-		
+	
 	@Test
-	void cadastrarPacienteTest() {
-		long qtdPaciente = colecaoPaciente.count();
-		LocalDate dataNasc = LocalDate.parse("2000-12-30");
-		Paciente p = new Paciente("Maria", "999.999.999-92", dataNasc, "Mulher", "99999-9992", "email@email.com", "1234", "Garanhuns", "PE", null);
+	void removerCrmDeMedicoTest() {
+		Medico m = new Medico();
+		CRM c = new CRM("PE", 6450);
+		List<CRM> lc = new ArrayList<CRM>();
+		lc.add(c);
+		m.setCrm(lc);
+		colecaoMedico.save(m);
+		long qtdCrm = colecaoCRM.count();
 		
-		colecaoPaciente.save(p);
-		long novaQtdPaciente = colecaoPaciente.count();
+		m.removerCrm(c);
+		colecaoMedico.save(m);
+		colecaoCRM.deleteById(c.getId());
+		long novaQtdCrm = colecaoCRM.count();
 		
-		assertEquals(qtdPaciente + 1, novaQtdPaciente);
+		assertEquals(qtdCrm - 1, novaQtdCrm);
 	}
 	
 	@Test
-	void cadastrarPlanoDeSaudeTest() {
-		long qtdPlano = colecaoPlano.count();
-		PlanoDeSaude p = new PlanoDeSaude(99999999, "Unimed");
+	void removerEspecialidadeDeMedicoTest() {
+		Medico m = new Medico();
+		Especialidade e = new Especialidade("Pediatra", 12354);
+		List<Especialidade> le = new ArrayList<Especialidade>();
+		le.add(e);
+		m.setEspecialidades(le);
+		colecaoMedico.save(m);
+		long qtdEspecialidade = colecaoEspecialidade.count();
 		
-		colecaoPlano.save(p);
-		long novaQtdPlano = colecaoPlano.count();
+		m.removerEspecialidade(e);
+		colecaoMedico.save(m);
+		colecaoEspecialidade.deleteById(e.getId());
+		long novaQtdEspecialidade = colecaoEspecialidade.count();
 		
-		assertEquals(qtdPlano + 1, novaQtdPlano);
+		assertEquals(qtdEspecialidade - 1, novaQtdEspecialidade);
 	}
-	
-	@Test
-	void cadastrarPacienteComPlanoTest() {
-		long qtdPlano = colecaoPlano.count();
-		long qtdPaciente = colecaoPaciente.count();
-		Paciente p = new Paciente("José", "999.999.999-93", LocalDate.now(), "Homem", "99999-9993", "email@email.com", "1234", "Garanhuns", "PE", null);
-		PlanoDeSaude plano = new PlanoDeSaude(99887766, "Bradesco Saúde");
-		p.setPlano(plano);
 		
-		colecaoPaciente.save(p);
-		long novaQtdPlano = colecaoPlano.count();
-		long novaQtdPaciente = colecaoPaciente.count();
-		
-		assertEquals(qtdPaciente + 1, novaQtdPaciente);
-		assertEquals(qtdPlano + 1, novaQtdPlano);
-	}
-			
 }
