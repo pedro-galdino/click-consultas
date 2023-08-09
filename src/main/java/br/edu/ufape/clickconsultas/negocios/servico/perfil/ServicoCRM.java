@@ -22,8 +22,8 @@ public class ServicoCRM {
 		return colecaoCRM.findById(id).orElse(null);
 	}
 	
-	public CRM buscarPorNumeroUF(int numero, String UF) {
-		return colecaoCRM.findByNumeroAndUF(numero, UF);
+	public CRM buscarPorNumeroUF(int numero, String Uf) {
+		return colecaoCRM.findByNumeroAndUf(numero, Uf);
 	}
 	
 	public CRM salvar(CRM crm) {
