@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.UsuarioFachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 
 @RestController
@@ -21,14 +22,14 @@ public class UsuarioController {
 		return "Hello world";
 	}
 
-	/*@PostMapping("/cadastrar")
-	public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario novoUsuario) {
+	@PostMapping("cadastrar")
+	public ResponseEntity<?> cadastrarUsuario(@RequestBody Medico novoUsuario) {
 		try {
-			Usuario usuarioCadastrado = usuarioFachada.cadastrarMedico(novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getSenha());
+			Medico usuarioCadastrado = usuarioFachada.cadastrarMedico(novoUsuario.getNome(), novoUsuario.getEmail(), novoUsuario.getSenha());
 			return new ResponseEntity<>(usuarioCadastrado, HttpStatus.CREATED);
 		} catch (Exception e) {
 			// Tratar exceção caso ocorra algum erro no cadastro
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}*/
+	}
 }
