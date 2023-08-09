@@ -7,5 +7,5 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 
 @Repository
 public interface InterfaceColecaoCRM extends JpaRepository<CRM, Long> {
-
+	public CRM findByNumeroAndUF(int numero, String UF);
 }
