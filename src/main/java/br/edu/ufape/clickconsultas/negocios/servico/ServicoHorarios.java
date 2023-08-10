@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.servico;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class ServicoHorarios {
 	
 	public List<Horarios> buscarTodos() {
 		return colecaoHorarios.findAll();
+	}
+	
+	public List<Horarios> buscarPorData(LocalDate data) {
+		return colecaoHorarios.findByData(data);
 	}
 	
 	public Horarios buscarPorId(long id) {

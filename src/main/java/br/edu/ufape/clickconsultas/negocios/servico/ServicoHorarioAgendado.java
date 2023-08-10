@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.servico;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ public class ServicoHorarioAgendado {
 	
 	public List<HorarioAgendado> buscarTodos() {
 		return colecaoHorarioAgendado.findAll();
+	}
+	
+	public List<HorarioAgendado> BuscarPorData(Date data) {
+		return colecaoHorarioAgendado.findByData(data);
 	}
 	
 	public HorarioAgendado buscarPorId(long id) {

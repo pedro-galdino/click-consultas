@@ -18,6 +18,10 @@ public class ServicoPix {
 		return colecaoPix.findAll();
 	}
 	
+	public List<Pix> buscarPorTipo(String tipo) {
+		return colecaoPix.findByTipo(tipo);
+	}
+	
 	public Pix buscarPorId(long id) {
 		return colecaoPix.findById(id).orElse(null);
 	}

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 
 
 @Service
@@ -17,6 +18,14 @@ public class ServicoAgenda {
 	
 	public List<Agenda> buscarTodos() {
 		return colecaoAgenda.findAll();
+	}
+	
+	public List<Agenda> buscarPorMedico(Medico medico) {
+		return colecaoAgenda.findByMedico(medico);
+	}
+	
+	public List<Agenda> buscarPorEspecialidade(String especialidadeMedica){
+		return colecaoAgenda.findByEspecialidadeMedica(especialidadeMedica);
 	}
 	
 	public Agenda buscarPorId(long id) {

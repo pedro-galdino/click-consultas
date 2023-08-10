@@ -1,11 +1,13 @@
 package br.edu.ufape.clickconsultas.negocios.servico.financeiro;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoDeposito;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
 
 @Service
@@ -15,6 +17,14 @@ public class ServicoDeposito {
 	
 	public List<Deposito> buscarTodos() {
 		return colecaoDeposito.findAll();
+	}
+	
+	public List<Deposito> buscarPorCarteira(Carteira carteira) {
+		return colecaoDeposito.findByCarteira(carteira);
+	}
+		
+	public List<Deposito> buscarPorData(Date data) {
+		return colecaoDeposito.findByData(data);
 	}
 	
 	public Deposito buscarPorId(long id) {
