@@ -1,6 +1,6 @@
 package br.edu.ufape.clickconsultas.dados.financeiro;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ public interface InterfaceColecaoSaque extends JpaRepository<Saque, Long> {
 
 	public List<Saque> findByCarteira(Carteira carteira);
 
-	public List<Saque> findByDate(Date data);
+	public List<Saque> findByData(Date data);
 
 	public List<Saque> findByBanco(String banco);
 
