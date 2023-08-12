@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoSaque;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
 
 
@@ -19,17 +18,9 @@ public class ServicoSaque {
 	public List<Saque> buscarTodos() {
 		return colecaoSaque.findAll();
 	}
-	
-	public List<Saque> buscarPorCarteira(Carteira carteira) {
-		return colecaoSaque.findByCarteira(carteira);
-	}
 		
 	public List<Saque> buscarPorData(Date data) {
 		return colecaoSaque.findByData(data);
-	}
-		
-	public List<Saque> buscarPorBanco(String banco) {
-		return colecaoSaque.findByBanco(banco);
 	}
 	
 	public Saque buscarPorId(long id) {

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 
 
 @Service
@@ -17,10 +16,6 @@ public class ServicoCarteira {
 	
 	public List<Carteira> buscarTodos() {
 		return colecaoCarteira.findAll();
-	}
-	
-	public Carteira buscarPorUsuario(Usuario usuario) {
-		return colecaoCarteira.findByUsuario(usuario);
 	}
 	
 	public Carteira buscarPorId(long id) {

@@ -12,6 +12,4 @@ public interface InterfaceColecaoRegistroAvaliacao extends JpaRepository<Registr
 
 	public List<RegistroAvaliacao> findByNumeroAvaliacoes(int numeroAvaliacoes);
 
-	public List<RegistroAvaliacao> findByTotalAvaliacoes(double totalAvaliacoes);
-
 }

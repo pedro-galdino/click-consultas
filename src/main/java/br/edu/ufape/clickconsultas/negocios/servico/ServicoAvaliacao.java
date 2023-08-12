@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 
 
@@ -22,10 +21,6 @@ public class ServicoAvaliacao {
 	
 	public List<Avaliacao> buscarPorNota(double nota){
 		return colecaoAvaliacao.findByNota(nota);
-	}
-		
-	public List<Avaliacao> buscarPorPaciente(Paciente paciente) {
-		return colecaoAvaliacao.findByPaciente(paciente);
 	}
 	
 	public Avaliacao buscarPorId(long id) {

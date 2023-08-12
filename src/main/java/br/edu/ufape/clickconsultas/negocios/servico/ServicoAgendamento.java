@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgendamento;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
-import br.edu.ufape.clickconsultas.negocios.modelo.HorarioAgendado;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 
 
@@ -24,14 +22,6 @@ public class ServicoAgendamento {
 	
 	public List<Agendamento> buscarPorAgenda( Agenda agenda) {
 		return colecaoAgendamento.findByAgenda(agenda);
-	}
-	
-	public List<Agendamento> buscarPorPaciente( Paciente paciente) {
-		return colecaoAgendamento.findByPaciente(paciente);
-	}
-		
-	public List<Agendamento> buscarPorHorarioAgendado( HorarioAgendado horarioAgendado) {
-		return colecaoAgendamento.findByHorarioAgendado(horarioAgendado);
 	}
 		
 	public List<Agendamento> buscarPorTipoConsulta( String tipoConsulta) {

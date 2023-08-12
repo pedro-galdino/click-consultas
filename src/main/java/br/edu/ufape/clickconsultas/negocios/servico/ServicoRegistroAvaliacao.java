@@ -21,10 +21,6 @@ public class ServicoRegistroAvaliacao {
 	public List<RegistroAvaliacao> buscarPorNumeroAvaliacoes(int numeroAvaliacoes) {
 		return colecaoRegistroAvaliacao.findByNumeroAvaliacoes(numeroAvaliacoes);
 	}
-		
-	public List<RegistroAvaliacao> buscarPorTotalAvaliacoes(double totalAvaliacoes) {
-		return colecaoRegistroAvaliacao.findByTotalAvaliacoes(totalAvaliacoes);
-	}
 	
 	public RegistroAvaliacao buscarPorId(long id) {
 		return colecaoRegistroAvaliacao.findById(id).orElse(null);
