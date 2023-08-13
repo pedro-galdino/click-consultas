@@ -12,6 +12,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
 public interface InterfaceColecaoAgendamento extends JpaRepository<Agendamento, Long> {
 
 	public List<Agendamento> findByAgenda(Agenda agenda);
+	
 	public List<Agendamento> findByTipoConsulta(String tipoConsulta);
 
 }

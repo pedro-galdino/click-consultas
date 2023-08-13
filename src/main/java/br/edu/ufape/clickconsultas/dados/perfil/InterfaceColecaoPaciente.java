@@ -9,6 +9,9 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 @Repository
 public interface InterfaceColecaoPaciente extends JpaRepository<Paciente, Long> {
+	
 	public List<Paciente> findByNome(String nome);
+	
 	public Paciente findByEmail(String email);
+	
 }
