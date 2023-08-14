@@ -14,6 +14,10 @@ public interface InterfaceServicoMedico {
 	List<Medico> buscarPorNome(String nome);
 
 	Medico buscarPorEmail(String email) throws UsuarioInexistenteException;
+	
+	List<Medico> buscarPorEspecialidade(String nomeEspecialidade);
+	
+	Medico buscarPorCrm(int crm);
 
 	Medico salvar(Medico medico);
 

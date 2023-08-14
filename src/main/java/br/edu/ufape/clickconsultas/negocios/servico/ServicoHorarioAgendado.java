@@ -1,6 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.servico;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import br.edu.ufape.clickconsultas.dados.InterfaceColecaoHorarioAgendado;
 import br.edu.ufape.clickconsultas.negocios.modelo.HorarioAgendado;
 
 @Service
-public class ServicoHorarioAgendado {
+public class ServicoHorarioAgendado implements InterfaceServicoHorarioAgendado {
 	@Autowired
 	private InterfaceColecaoHorarioAgendado colecaoHorarioAgendado;
 	
@@ -18,7 +18,7 @@ public class ServicoHorarioAgendado {
 		return colecaoHorarioAgendado.findAll();
 	}
 	
-	public List<HorarioAgendado> BuscarPorData(Date data) {
+	public List<HorarioAgendado> BuscarPorData(LocalDate data) {
 		return colecaoHorarioAgendado.findByData(data);
 	}
 	

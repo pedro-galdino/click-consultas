@@ -10,16 +10,12 @@ import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 
 
 @Service
-public class ServicoRegistroAvaliacao {
+public class ServicoRegistroAvaliacao implements InterfaceServicoRegistroAvaliacao {
 	@Autowired
 	private InterfaceColecaoRegistroAvaliacao colecaoRegistroAvaliacao;
 	
 	public List<RegistroAvaliacao> buscarTodos() {
 		return colecaoRegistroAvaliacao.findAll();
-	}
-	
-	public List<RegistroAvaliacao> buscarPorNumeroAvaliacoes(int numeroAvaliacoes) {
-		return colecaoRegistroAvaliacao.findByNumeroAvaliacoes(numeroAvaliacoes);
 	}
 	
 	public RegistroAvaliacao buscarPorId(long id) {

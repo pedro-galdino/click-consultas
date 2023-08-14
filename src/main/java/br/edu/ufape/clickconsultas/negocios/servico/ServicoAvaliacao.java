@@ -11,18 +11,14 @@ import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
 
 
 @Service
-public class ServicoAvaliacao {
+public class ServicoAvaliacao implements InterfaceServicoAvaliacao {
 	@Autowired
 	private InterfaceColecaoAvaliacao colecaoAvaliacao;
 	
 	public List<Avaliacao> buscarTodos() {
 		return colecaoAvaliacao.findAll();
 	}
-	
-	public List<Avaliacao> buscarPorNota(double nota){
-		return colecaoAvaliacao.findByNota(nota);
-	}
-	
+
 	public Avaliacao buscarPorId(long id) {
 		return colecaoAvaliacao.findById(id).orElse(null);
 	}

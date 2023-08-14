@@ -13,6 +13,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
+
 @SpringBootTest
 class InterfaceColecaoAvaliacaoTest {
 	@Autowired

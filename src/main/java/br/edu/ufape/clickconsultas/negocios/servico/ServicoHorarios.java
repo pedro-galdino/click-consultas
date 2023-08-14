@@ -11,7 +11,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
 
 
 @Service
-public class ServicoHorarios {
+public class ServicoHorarios implements InterfaceServicoHorarios {
 	@Autowired
 	private InterfaceColecaoHorarios colecaoHorarios;
 	

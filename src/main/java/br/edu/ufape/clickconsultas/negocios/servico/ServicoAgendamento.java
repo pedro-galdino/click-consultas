@@ -6,24 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgendamento;
-import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
 
 @Service
-public class ServicoAgendamento {
+public class ServicoAgendamento implements InterfaceServicoAgendamento {
 	@Autowired
 	private InterfaceColecaoAgendamento colecaoAgendamento;
 
 	public List<Agendamento> buscarTodos() {
 		return colecaoAgendamento.findAll();
-	}
-
-	public List<Agendamento> buscarPorAgenda(Agenda agenda) {
-		return colecaoAgendamento.findByAgenda(agenda);
-	}
-
-	public List<Agendamento> buscarPorTipoConsulta(String tipoConsulta) {
-		return colecaoAgendamento.findByTipoConsulta(tipoConsulta);
 	}
 
 	public Agendamento buscarPorId(long id) {

@@ -33,6 +33,14 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		
 		return m;
 	}
+	
+	public List<Medico> buscarPorEspecialidade(String nomeEspecialidade){
+		return colecaoMedico.findByEspecialidadesNome(nomeEspecialidade);
+	}
+	
+	public Medico buscarPorCrm(int numeroCrm) {
+		return colecaoMedico.findByCrmNumero(numeroCrm);
+	}
 
 	public Medico salvar(Medico medico) {
 		return colecaoMedico.save(medico);

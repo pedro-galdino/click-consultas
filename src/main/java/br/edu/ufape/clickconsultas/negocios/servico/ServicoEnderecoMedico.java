@@ -10,7 +10,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.EnderecoMedico;
 
 
 @Service
-public class ServicoEnderecoMedico {
+public class ServicoEnderecoMedico implements InterfaceServicoEnderecoMedico {
 	@Autowired
 	private InterfaceColecaoEnderecoMedico colecaoEnderecoMedico;
 	
@@ -18,10 +18,6 @@ public class ServicoEnderecoMedico {
 		return colecaoEnderecoMedico.findAll();
 	}
 		
-	public List<EnderecoMedico> buscarPorEstado(String estado) {
-		return colecaoEnderecoMedico.findByEstado(estado);
-	}
-	
 	public EnderecoMedico buscarPorId(long id) {
 		return colecaoEnderecoMedico.findById(id).orElse(null);
 	}

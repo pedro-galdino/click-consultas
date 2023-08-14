@@ -9,16 +9,12 @@ import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
 
 @Service
-public class ServicoAgenda {
+public class ServicoAgenda implements InterfaceServicoAgenda {
 	@Autowired
 	private InterfaceColecaoAgenda colecaoAgenda;
 
 	public List<Agenda> buscarTodos() {
 		return colecaoAgenda.findAll();
-	}
-
-	public List<Agenda> buscarPorEspecialidade(String especialidadeMedica) {
-		return colecaoAgenda.findByEspecialidadeMedica(especialidadeMedica);
 	}
 
 	public Agenda buscarPorId(long id) {
