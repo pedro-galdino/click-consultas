@@ -17,5 +17,7 @@ public interface InterfaceColecaoMedico extends JpaRepository<Medico, Long> {
 	public Medico findByCrmNumero(int numeroCrm);
 	
 	public Medico findByEmail(String email);
+
+	public Medico findByCpf(String cpf);
 	
 }

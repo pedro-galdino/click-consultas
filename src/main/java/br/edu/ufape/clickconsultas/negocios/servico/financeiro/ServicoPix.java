@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoPix;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ChavePixInexistenteException;
 
 @Service
 public class ServicoPix implements InterfaceServicoPix {
@@ -25,7 +26,11 @@ public class ServicoPix implements InterfaceServicoPix {
 		return colecaoPix.save(pix);
 	}
 
-	public void remover(long id) {
+	public void remover(long id) throws ChavePixInexistenteException {
+		Pix p = colecaoPix.findById(id).orElse(null);
+		if(p == null) {
+			throw new ChavePixInexistenteException(id);
+		}
 		colecaoPix.deleteById(id);
 	}
 	

@@ -13,5 +13,7 @@ public interface InterfaceColecaoPaciente extends JpaRepository<Paciente, Long> 
 	public List<Paciente> findByNome(String nome);
 	
 	public Paciente findByEmail(String email);
+
+	public Paciente findByCpf(String cpf);
 	
 }

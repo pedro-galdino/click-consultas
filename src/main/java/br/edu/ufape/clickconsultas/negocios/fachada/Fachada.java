@@ -30,6 +30,12 @@ import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoEnderecoMedi
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarios;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ChavePixInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmExistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadeInexistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoCarteira;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
@@ -89,7 +95,7 @@ public class Fachada {
 		return servicoPaciente.buscarPorId(id);
 	}
 
-	public Paciente salvarPaciente(Paciente paciente) {
+	public Paciente salvarPaciente(Paciente paciente) throws EmailExistenteException, CpfExistenteException {
 		return servicoPaciente.salvar(paciente);
 	}
 
@@ -115,15 +121,15 @@ public class Fachada {
 		return servicoMedico.buscarPorEmail(email);
 	}
 	
-	public List<Medico> buscarMedicosPorEspecialiade(String nomeEspecialidade){
+	public List<Medico> buscarMedicosPorEspecialiade(String nomeEspecialidade) throws EspecialidadeInexistenteException{
 		return servicoMedico.buscarPorEspecialidade(nomeEspecialidade);
 	}
 	
-	public Medico buscarMedicoPorCrm(int numeroCrm) {
+	public Medico buscarMedicoPorCrm(int numeroCrm) throws CrmInexistenteException {
 		return servicoMedico.buscarPorCrm(numeroCrm);
 	}
  
-	public Medico salvarMedico(Medico medico) {
+	public Medico salvarMedico(Medico medico) throws EmailExistenteException, CrmExistenteException, CpfExistenteException {
 		return servicoMedico.salvar(medico);
 	}
 
@@ -185,7 +191,7 @@ public class Fachada {
 		return servicoPix.salvar(pix);
 	}
 
-	public void removerPix(long id) {
+	public void removerPix(long id) throws ChavePixInexistenteException {
 		servicoPix.remover(id);
 	}
 

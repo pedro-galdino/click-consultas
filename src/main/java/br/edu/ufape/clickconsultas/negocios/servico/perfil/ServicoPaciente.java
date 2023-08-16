@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
 
 @Service
@@ -23,7 +25,7 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	}
 
 	public Paciente buscarPorEmail(String email) throws UsuarioInexistenteException {
-		Paciente p = colecaoPaciente.findByEmail(email);;
+		Paciente p = colecaoPaciente.findByEmail(email);
 		if (p == null) 
 			throw new UsuarioInexistenteException(email);
 		
@@ -33,8 +35,20 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	public Paciente buscarPorId(long id) {
 		return colecaoPaciente.findById(id).orElse(null);
 	}
+	
+	public Paciente buscarPorCpf(String cpf) {
+		return colecaoPaciente.findByCpf(cpf);
+	}
 
-	public Paciente salvar(Paciente paciente) {
+	public Paciente salvar(Paciente paciente) throws EmailExistenteException, CpfExistenteException {
+		Paciente pacienteExistenteByEmail = colecaoPaciente.findByEmail(paciente.getEmail());
+		if(pacienteExistenteByEmail != null) 
+			throw new EmailExistenteException(paciente.getEmail());
+		
+		Paciente pacienteExistenteByCpf = colecaoPaciente.findByCpf(paciente.getCpf());
+	    if (pacienteExistenteByCpf != null) 
+	        throw new CpfExistenteException(paciente.getCpf());
+	    
 		return colecaoPaciente.save(paciente);
 	}
 

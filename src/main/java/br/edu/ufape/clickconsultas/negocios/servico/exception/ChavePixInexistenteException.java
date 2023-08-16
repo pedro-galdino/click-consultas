@@ -2,15 +2,15 @@ package br.edu.ufape.clickconsultas.negocios.servico.exception;
 
 public class ChavePixInexistenteException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private String chavePix;
+	private long id;
 	
-	public ChavePixInexistenteException(String chavePix) {
+	public ChavePixInexistenteException(long id) {
 		super("A chave pix não foi encontrada");
-		this.chavePix = chavePix;
+		this.id = id;
 	}
 	
-	public String getPix() {
-		return this.chavePix;
+	public long getPix() {
+		return this.id;
 	}
 	
 }

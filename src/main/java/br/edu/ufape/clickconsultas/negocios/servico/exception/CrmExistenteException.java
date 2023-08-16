@@ -2,15 +2,15 @@ package br.edu.ufape.clickconsultas.negocios.servico.exception;
 
 public class CrmExistenteException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private String crm;
+	private int numeroCrm;
 	
-	public CrmExistenteException(String crm) {
+	public CrmExistenteException(int numeroCrm) {
 		super("O CRM inserido já está em uso");
-		this.crm = crm;
+		this.numeroCrm = numeroCrm;
 	}
 	
-	public String getCrm() {
-		return this.crm;
+	public int getCrm() {
+		return this.numeroCrm;
 	}
 	
 }
