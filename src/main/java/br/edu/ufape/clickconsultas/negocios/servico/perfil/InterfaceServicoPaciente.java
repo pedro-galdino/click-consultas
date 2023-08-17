@@ -15,7 +15,7 @@ public interface InterfaceServicoPaciente {
 
 	Paciente buscarPorEmail(String email) throws UsuarioInexistenteException;
 
-	Paciente buscarPorId(long id);
+	Paciente buscarPorId(long id)  throws UsuarioInexistenteException;
 
 	Paciente salvar(Paciente paciente) throws EmailExistenteException, CpfExistenteException;
 

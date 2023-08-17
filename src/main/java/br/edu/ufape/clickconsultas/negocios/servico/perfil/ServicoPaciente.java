@@ -27,13 +27,17 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	public Paciente buscarPorEmail(String email) throws UsuarioInexistenteException {
 		Paciente p = colecaoPaciente.findByEmail(email);
 		if (p == null) 
-			throw new UsuarioInexistenteException(email);
+			throw new UsuarioInexistenteException();
 		
 		return p;
 	}
 
-	public Paciente buscarPorId(long id) {
-		return colecaoPaciente.findById(id).orElse(null);
+	public Paciente buscarPorId(long id) throws UsuarioInexistenteException{
+		Paciente p = colecaoPaciente.findById(id).orElse(null);
+		if (p == null) 
+			throw new UsuarioInexistenteException();
+		
+		return p;
 	}
 	
 	public Paciente buscarPorCpf(String cpf) {

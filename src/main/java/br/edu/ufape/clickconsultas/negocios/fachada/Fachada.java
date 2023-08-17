@@ -30,10 +30,13 @@ import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoEnderecoMedi
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarios;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.AgendaInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.AgendamentoInexistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ChavePixInexistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmExistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.DadosInsuficientesException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadeInexistenteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
@@ -91,7 +94,7 @@ public class Fachada {
 		return servicoPaciente.buscarPorEmail(email);
 	}
 
-	public Paciente buscarPacientePorId(long id) {
+	public Paciente buscarPacientePorId(long id) throws UsuarioInexistenteException {
 		return servicoPaciente.buscarPorId(id);
 	}
 
@@ -109,7 +112,7 @@ public class Fachada {
 		return servicoMedico.buscarTodos();
 	}
 
-	public Medico buscarMedicoPorId(long id) {
+	public Medico buscarMedicoPorId(long id) throws UsuarioInexistenteException{
 		return servicoMedico.buscarPorId(id);
 	}
 
@@ -246,15 +249,15 @@ public class Fachada {
 		return servicoAgenda.buscarTodos();
 	}
 
-	public Agenda buscarAgendaPorId(long id) {
+	public Agenda buscarAgendaPorId(long id) throws AgendaInexistenteException {
 		return servicoAgenda.buscarPorId(id);
 	}
 
-	public Agenda salvarAgenda(Agenda agenda) {
+	public Agenda salvarAgenda(Agenda agenda) throws DadosInsuficientesException {
 		return servicoAgenda.salvar(agenda);
 	}
 
-	public void removerAgenda(long id) {
+	public void removerAgenda(long id) throws AgendaInexistenteException {
 		servicoAgenda.remover(id);
 	}
 
@@ -265,15 +268,15 @@ public class Fachada {
 		return servicoAgendamento.buscarTodos();
 	}
 
-	public Agendamento buscarAgendamentoPorId(long id) {
+	public Agendamento buscarAgendamentoPorId(long id) throws AgendamentoInexistenteException {
 		return servicoAgendamento.buscarPorId(id);
 	}
 
-	public Agendamento salvarAgendamento(Agendamento agendamento) {
+	public Agendamento salvarAgendamento(Agendamento agendamento) throws DadosInsuficientesException {
 		return servicoAgendamento.salvar(agendamento);
 	}
 
-	public void removerAgendamento(long id) {
+	public void removerAgendamento(long id) throws AgendamentoInexistenteException {
 		servicoAgendamento.remover(id);
 	}
 
@@ -396,14 +399,4 @@ public class Fachada {
 	public void removerRegistroAvaliacao(long id) {
 		servicoRegistroAvaliacao.remover(id);
 	}
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
 }

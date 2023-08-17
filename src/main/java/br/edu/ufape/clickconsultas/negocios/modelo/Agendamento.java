@@ -1,5 +1,7 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
+import java.lang.reflect.Field;
+
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -107,6 +109,22 @@ public class Agendamento {
 
 	public void setAgenda(Agenda agenda) {
 		this.agenda = agenda;
+	}
+	
+	public boolean verificarAtributos() {
+		Field[]atributos = this.getClass().getDeclaredFields();
+		for(Field atributo : atributos) {
+			atributo.setAccessible(true);
+			try {
+				if(atributo.get(this) == null) {
+					return true;
+				}
+			}
+			catch (IllegalAccessException e) {
+				
+			}
+		}
+		return false;
 	}
 	
 }

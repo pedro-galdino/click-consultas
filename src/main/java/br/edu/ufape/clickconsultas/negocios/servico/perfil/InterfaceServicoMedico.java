@@ -14,7 +14,7 @@ public interface InterfaceServicoMedico {
 
 	List<Medico> buscarTodos();
 
-	Medico buscarPorId(long id);
+	Medico buscarPorId(long id) throws UsuarioInexistenteException ;
 
 	List<Medico> buscarPorNome(String nome);
 

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgendamento;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.AgendamentoInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.DadosInsuficientesException;
 
 @Service
 public class ServicoAgendamento implements InterfaceServicoAgendamento {
@@ -17,15 +19,28 @@ public class ServicoAgendamento implements InterfaceServicoAgendamento {
 		return colecaoAgendamento.findAll();
 	}
 
-	public Agendamento buscarPorId(long id) {
-		return colecaoAgendamento.findById(id).orElse(null);
+	public Agendamento buscarPorId(long id) throws AgendamentoInexistenteException{
+		Agendamento agendamento = colecaoAgendamento.findById(id).orElse(null);
+		
+		if(agendamento == null)
+			throw new AgendamentoInexistenteException();
+			
+		return agendamento;
 	}
 
-	public Agendamento salvar(Agendamento agendamento) {
+	public Agendamento salvar(Agendamento agendamento) throws DadosInsuficientesException {
+		if(agendamento.verificarAtributos() == true) {
+			throw new DadosInsuficientesException();
+		}
 		return colecaoAgendamento.save(agendamento);
 	}
 
-	public void remover(long id) {
+	public void remover(long id) throws AgendamentoInexistenteException {
+		Agendamento agendamento = colecaoAgendamento.findById(id).orElse(null);
+		
+		if(agendamento == null)
+			throw new AgendamentoInexistenteException();
+			
 		colecaoAgendamento.deleteById(id);
 	}
 }

@@ -24,8 +24,11 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		return colecaoMedico.findAll();
 	}
 
-	public Medico buscarPorId(long id) {
-		return colecaoMedico.findById(id).orElse(null);
+	public Medico buscarPorId(long id) throws UsuarioInexistenteException {
+		Medico m = colecaoMedico.findById(id).orElse(null);
+			if(m == null)
+				throw new UsuarioInexistenteException();
+		return m;
 	}
 
 	public List<Medico> buscarPorNome(String nome) {
@@ -35,7 +38,7 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	public Medico buscarPorEmail(String email) throws UsuarioInexistenteException {
 		Medico m = colecaoMedico.findByEmail(email);
 		if (m == null) 
-			throw new UsuarioInexistenteException(email);
+			throw new UsuarioInexistenteException();
 		return m;
 	}
 	
@@ -60,13 +63,13 @@ public class ServicoMedico implements InterfaceServicoMedico {
 
 	public Medico salvar(Medico medico) throws EmailExistenteException, CrmExistenteException, CpfExistenteException {
 		//Verifica se o crm já está em uso
-		List<CRM> crms = medico.getCrm();
+		/*List<CRM> crms = medico.getCrm();
 		for (CRM crm : crms) {
 		    Medico medicoExistenteByCrm = colecaoMedico.findByCrmNumero(crm.getNumero());
 		    if (medicoExistenteByCrm != null) 
 		        throw new CrmExistenteException(crm.getNumero());
 		}
-		
+		*/
 		//Verifica se o email já está em uso
 	    Medico medicoExistenteByEmail = colecaoMedico.findByEmail(medico.getEmail());
 	    if (medicoExistenteByEmail != null) 
