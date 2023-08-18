@@ -10,22 +10,10 @@ import org.springframework.stereotype.Service;
 import br.edu.ufape.clickconsultas.negocios.modelo.*;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.*;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.*;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgenda;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgendamento;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAvaliacao;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoConsulta;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoEnderecoMedico;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarios;
-import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.*;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.*;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoCarteira;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoPix;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoSaque;
-import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoMedico;
-import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoPaciente;
-import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoPlanoDeSaude;
+import br.edu.ufape.clickconsultas.negocios.servico.financeiro.*;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.*;
 
 @Service
 public class Fachada {
@@ -66,23 +54,23 @@ public class Fachada {
 		return servicoPaciente.buscarTodos();
 	}
 
-	public Paciente buscarPacientePorCpf(String cpf) throws UsuarioInexistenteException {
+	public Paciente buscarPacientePorCpf(String cpf) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPorCpf(cpf);
 	}
-	
-	public Paciente buscarPacientesPorEmail(String email) throws UsuarioInexistenteException {
+
+	public Paciente buscarPacientesPorEmail(String email) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPorEmail(email);
 	}
 
-	public Paciente buscarPacientePorId(long id) throws UsuarioNaoEncontradoException {
+	public Paciente buscarPacientePorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPorId(id);
 	}
 
-	public Paciente salvarPaciente(Paciente paciente) throws EmailExistenteException, CpfExistenteException {
+	public Paciente salvarPaciente(Paciente paciente) throws ObjetoEmUsoException {
 		return servicoPaciente.salvar(paciente);
 	}
 
-	public void removerPaciente(long id) throws UsuarioNaoEncontradoException {
+	public void removerPaciente(long id) throws ObjetoNaoEncontradoException {
 		servicoPaciente.remover(id);
 	}
 
@@ -92,7 +80,7 @@ public class Fachada {
 		return servicoMedico.buscarTodos();
 	}
 
-	public Medico buscarMedicoPorId(long id) throws UsuarioNaoEncontradoException {
+	public Medico buscarMedicoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorId(id);
 	}
 
@@ -100,28 +88,27 @@ public class Fachada {
 		return servicoMedico.buscarPorNome(nome);
 	}
 
-	public Medico buscarMedicoPorCpf(String cpf) throws UsuarioInexistenteException {
+	public Medico buscarMedicoPorCpf(String cpf) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorCpf(cpf);
 	}
 
-	public Medico buscarMedicoPorEmail(String email) throws UsuarioInexistenteException {
+	public Medico buscarMedicoPorEmail(String email) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorEmail(email);
 	}
-	
-	public Medico buscarMedicoPorCrm(int crm) throws CrmInexistenteException {
+
+	public Medico buscarMedicoPorCrm(int crm) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorCrm(crm);
 	}
 
-	public List<Medico> buscarMedicosPorEspecialidade(String nomeEspecialidade)
-			throws EspecialidadeInexistenteException {
+	public List<Medico> buscarMedicosPorEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorEspecialidade(nomeEspecialidade);
 	}
-	
-	public Medico salvarMedico(Medico medico) throws EmailExistenteException, CpfExistenteException {
+
+	public Medico salvarMedico(Medico medico) throws ObjetoEmUsoException {
 		return servicoMedico.salvar(medico);
 	}
 
-	public void removerMedico(long id) throws UsuarioNaoEncontradoException {
+	public void removerMedico(long id) throws ObjetoNaoEncontradoException {
 		servicoMedico.remover(id);
 	}
 
@@ -171,7 +158,7 @@ public class Fachada {
 		return servicoPix.buscarTodos();
 	}
 
-	public Pix buscarPixPorId(long id) {
+	public Pix buscarPixPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoPix.buscarPorId(id);
 	}
 
@@ -179,7 +166,7 @@ public class Fachada {
 		return servicoPix.salvar(pix);
 	}
 
-	public void removerPix(long id) throws ChavePixInexistenteException {
+	public void removerPix(long id) throws ObjetoNaoEncontradoException {
 		servicoPix.remover(id);
 	}
 
@@ -233,15 +220,15 @@ public class Fachada {
 		return servicoAgenda.buscarTodos();
 	}
 
-	public Agenda buscarAgendaPorId(long id) {
+	public Agenda buscarAgendaPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoAgenda.buscarPorId(id);
 	}
 
-	public Agenda salvarAgenda(Agenda agenda) {
+	public Agenda salvarAgenda(Agenda agenda) throws DadosInsuficientesException {
 		return servicoAgenda.salvar(agenda);
 	}
 
-	public void removerAgenda(long id) {
+	public void removerAgenda(long id) throws ObjetoNaoEncontradoException {
 		servicoAgenda.remover(id);
 	}
 
@@ -251,15 +238,15 @@ public class Fachada {
 		return servicoAgendamento.buscarTodos();
 	}
 
-	public Agendamento buscarAgendamentoPorId(long id) {
+	public Agendamento buscarAgendamentoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoAgendamento.buscarPorId(id);
 	}
 
-	public Agendamento salvarAgendamento(Agendamento agendamento) {
+	public Agendamento salvarAgendamento(Agendamento agendamento) throws DadosInsuficientesException {
 		return servicoAgendamento.salvar(agendamento);
 	}
 
-	public void removerAgendamento(long id) {
+	public void removerAgendamento(long id) throws ObjetoNaoEncontradoException {
 		servicoAgendamento.remover(id);
 	}
 
@@ -378,5 +365,5 @@ public class Fachada {
 	public void removerRegistroAvaliacao(long id) {
 		servicoRegistroAvaliacao.remover(id);
 	}
-
+	
 }

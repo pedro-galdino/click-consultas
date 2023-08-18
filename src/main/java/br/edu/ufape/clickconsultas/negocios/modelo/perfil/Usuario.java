@@ -2,12 +2,15 @@ package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 
 import java.time.LocalDate;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,6 +25,8 @@ public abstract class Usuario {
 	private String telefone;
 	private String email;
 	private String senha;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Carteira carteira;
 
 	public Usuario() {
 	}
@@ -36,11 +41,15 @@ public abstract class Usuario {
 		this.email = email;
 		this.senha = senha;
 	}
-
+	
 	public long getId() {
 		return id;
 	}
-
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -97,29 +106,12 @@ public abstract class Usuario {
 		this.senha = senha;
 	}
 
-	public void atualizarPerfil(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone,
-			String email, String senha) {
-		if (nome != this.nome) {
-			this.nome = nome;
-		}
-		if (cpf != this.cpf) {
-			this.cpf = cpf;
-		}
-		if (dataNascimento != this.dataNascimento) {
-			this.dataNascimento = dataNascimento;
-		}
-		if (sexo != this.sexo) {
-			this.sexo = sexo;
-		}
-		if (telefone != this.telefone) {
-			this.telefone = telefone;
-		}
-		if (email != this.email) {
-			this.email = email;
-		}
-		if (senha != this.senha) {
-			this.senha = senha;
-		}
+	public Carteira getCarteira() {
+		return carteira;
 	}
 
+	public void setCarteira(Carteira carteira) {
+		this.carteira = carteira;
+	}
+	
 }

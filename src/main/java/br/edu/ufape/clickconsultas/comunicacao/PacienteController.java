@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @RestController
 @RequestMapping("/api/paciente")
@@ -33,7 +33,7 @@ public class PacienteController {
 	public ResponseEntity<?> buscarPacientePorId(@PathVariable Long pacienteId) {
 		try {
 			return new ResponseEntity<Paciente>(fachada.buscarPacientePorId(pacienteId), HttpStatus.OK);
-		} catch (UsuarioNaoEncontradoException e) {
+		} catch (ObjetoNaoEncontradoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

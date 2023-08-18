@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -122,6 +123,22 @@ public class Agenda {
 
 	public void setMedico(Medico medico) {
 		this.medico = medico;
+	}
+	
+	public boolean verificarAtributos() {
+		Field[]atributos = this.getClass().getDeclaredFields();
+		for(Field atributo : atributos) {
+			atributo.setAccessible(true);
+			try {
+				if(atributo.get(this) == null) {
+					return true;
+				}
+			}
+			catch (IllegalAccessException e) {
+				
+			}
+		}
+		return false;
 	}
 	
 }

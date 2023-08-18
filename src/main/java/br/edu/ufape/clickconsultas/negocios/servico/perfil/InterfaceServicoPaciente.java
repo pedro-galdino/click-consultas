@@ -3,10 +3,8 @@ package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 public interface InterfaceServicoPaciente {
 
@@ -14,14 +12,14 @@ public interface InterfaceServicoPaciente {
 
 	List<Paciente> buscarPorNome(String nome);
 	
-	Paciente buscarPorCpf(String cpf) throws UsuarioInexistenteException;
+	Paciente buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException;
 
-	Paciente buscarPorEmail(String email) throws UsuarioInexistenteException;
+	Paciente buscarPorEmail(String email) throws ObjetoNaoEncontradoException;
 
-	Paciente buscarPorId(long id) throws UsuarioNaoEncontradoException;
+	Paciente buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
-	Paciente salvar(Paciente paciente) throws EmailExistenteException, CpfExistenteException;
+	Paciente salvar(Paciente paciente) throws ObjetoEmUsoException;
 
-	void remover(long id) throws UsuarioNaoEncontradoException;
+	void remover(long id) throws ObjetoNaoEncontradoException;
 
 }

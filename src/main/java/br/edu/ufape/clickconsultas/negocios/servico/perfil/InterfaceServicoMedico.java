@@ -3,31 +3,27 @@ package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadeInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 public interface InterfaceServicoMedico {
 
 	List<Medico> buscarTodos();
 
-	Medico buscarPorId(long id) throws UsuarioNaoEncontradoException;
+	Medico buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
 	List<Medico> buscarPorNome(String nome);
 	
-	Medico buscarPorCpf(String cpf) throws UsuarioInexistenteException;
+	Medico buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException;
 
-	Medico buscarPorEmail(String email) throws UsuarioInexistenteException;
+	Medico buscarPorEmail(String email) throws ObjetoNaoEncontradoException;
 	
-	List<Medico> buscarPorEspecialidade(String nomeEspecialidade) throws EspecialidadeInexistenteException;
+	List<Medico> buscarPorEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException;
 	
-	Medico buscarPorCrm(int crm) throws CrmInexistenteException;
+	Medico buscarPorCrm(int crm) throws ObjetoNaoEncontradoException;
 
-	Medico salvar(Medico medico) throws EmailExistenteException, CpfExistenteException;
+	Medico salvar(Medico medico) throws ObjetoEmUsoException;
 
-	void remover(long id) throws UsuarioNaoEncontradoException;
+	void remover(long id) throws ObjetoNaoEncontradoException;
 
 }
