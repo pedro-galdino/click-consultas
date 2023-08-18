@@ -5,7 +5,7 @@ public class CrmExistenteException extends Exception {
 	private int numeroCrm;
 	
 	public CrmExistenteException(int numeroCrm) {
-		super("O CRM inserido já está em uso");
+		super("O CRM inserido já está em uso.");
 		this.numeroCrm = numeroCrm;
 	}
 	

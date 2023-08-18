@@ -5,7 +5,7 @@ public class EspecialidadeInexistenteException extends Exception {
 	private String nomeEspecialidade;
 	
 	public EspecialidadeInexistenteException(String nomeEspecialidade) {
-		super("A especialidade não foi encontrada");
+		super("A especialidade não foi encontrada.");
 		this.nomeEspecialidade = nomeEspecialidade;
 	}
 	

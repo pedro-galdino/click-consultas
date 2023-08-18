@@ -7,21 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
-import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
-import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
-import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
-import br.edu.ufape.clickconsultas.negocios.modelo.EnderecoMedico;
-import br.edu.ufape.clickconsultas.negocios.modelo.HorarioAgendado;
-import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
-import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
+import br.edu.ufape.clickconsultas.negocios.modelo.*;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.*;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.*;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgenda;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgendamento;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAvaliacao;
@@ -30,13 +18,7 @@ import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoEnderecoMedi
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarios;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.ChavePixInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CpfExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.CrmInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.EmailExistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadeInexistenteException;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.UsuarioInexistenteException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.*;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoCarteira;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoPix;
@@ -78,20 +60,21 @@ public class Fachada {
 	@Autowired
 	private InterfaceServicoRegistroAvaliacao servicoRegistroAvaliacao;
 
-
-	
-
 	// --- Paciente ---
 
 	public List<Paciente> buscarPacientes() {
 		return servicoPaciente.buscarTodos();
 	}
 
+	public Paciente buscarPacientePorCpf(String cpf) throws UsuarioInexistenteException {
+		return servicoPaciente.buscarPorCpf(cpf);
+	}
+	
 	public Paciente buscarPacientesPorEmail(String email) throws UsuarioInexistenteException {
 		return servicoPaciente.buscarPorEmail(email);
 	}
 
-	public Paciente buscarPacientePorId(long id) {
+	public Paciente buscarPacientePorId(long id) throws UsuarioNaoEncontradoException {
 		return servicoPaciente.buscarPorId(id);
 	}
 
@@ -99,7 +82,7 @@ public class Fachada {
 		return servicoPaciente.salvar(paciente);
 	}
 
-	public void removerPaciente(long id) {
+	public void removerPaciente(long id) throws UsuarioNaoEncontradoException {
 		servicoPaciente.remover(id);
 	}
 
@@ -109,7 +92,7 @@ public class Fachada {
 		return servicoMedico.buscarTodos();
 	}
 
-	public Medico buscarMedicoPorId(long id) {
+	public Medico buscarMedicoPorId(long id) throws UsuarioNaoEncontradoException {
 		return servicoMedico.buscarPorId(id);
 	}
 
@@ -117,23 +100,28 @@ public class Fachada {
 		return servicoMedico.buscarPorNome(nome);
 	}
 
+	public Medico buscarMedicoPorCpf(String cpf) throws UsuarioInexistenteException {
+		return servicoMedico.buscarPorCpf(cpf);
+	}
+
 	public Medico buscarMedicoPorEmail(String email) throws UsuarioInexistenteException {
 		return servicoMedico.buscarPorEmail(email);
 	}
 	
-	public List<Medico> buscarMedicosPorEspecialiade(String nomeEspecialidade) throws EspecialidadeInexistenteException{
+	public Medico buscarMedicoPorCrm(int crm) throws CrmInexistenteException {
+		return servicoMedico.buscarPorCrm(crm);
+	}
+
+	public List<Medico> buscarMedicosPorEspecialidade(String nomeEspecialidade)
+			throws EspecialidadeInexistenteException {
 		return servicoMedico.buscarPorEspecialidade(nomeEspecialidade);
 	}
 	
-	public Medico buscarMedicoPorCrm(int numeroCrm) throws CrmInexistenteException {
-		return servicoMedico.buscarPorCrm(numeroCrm);
-	}
- 
-	public Medico salvarMedico(Medico medico) throws EmailExistenteException, CrmExistenteException, CpfExistenteException {
+	public Medico salvarMedico(Medico medico) throws EmailExistenteException, CpfExistenteException {
 		return servicoMedico.salvar(medico);
 	}
 
-	public void removerMedico(long id) {
+	public void removerMedico(long id) throws UsuarioNaoEncontradoException {
 		servicoMedico.remover(id);
 	}
 
@@ -240,7 +228,6 @@ public class Fachada {
 	}
 
 	// --- Agenda ---
-	
 
 	public List<Agenda> buscarAgendas() {
 		return servicoAgenda.buscarTodos();
@@ -259,7 +246,6 @@ public class Fachada {
 	}
 
 	// --- Agendamento ---
-	
 
 	public List<Agendamento> buscarAgendamentos() {
 		return servicoAgendamento.buscarTodos();
@@ -278,7 +264,6 @@ public class Fachada {
 	}
 
 	// --- Avaliacao ---
-	
 
 	public List<Avaliacao> buscarAvaliacoes() {
 		return servicoAvaliacao.buscarTodos();
@@ -297,7 +282,7 @@ public class Fachada {
 	}
 
 	// --- Consulta ---
-	
+
 	public List<Consulta> buscarConsultas() {
 		return servicoConsulta.buscarTodos();
 	}
@@ -314,9 +299,8 @@ public class Fachada {
 		servicoConsulta.remover(id);
 	}
 
-	
 	// --- EnderecoMedico ---
-	
+
 	public List<EnderecoMedico> buscarEnderecosMedicos() {
 		return servicoEnderecoMedico.buscarTodos();
 	}
@@ -333,8 +317,8 @@ public class Fachada {
 		servicoEnderecoMedico.remover(id);
 	}
 
-	// --- HorarioAgendado
-	
+	// --- HorarioAgendado ---
+
 	public List<HorarioAgendado> buscarHorariosAgendados() {
 		return servicoHorarioAgendado.buscarTodos();
 	}
@@ -355,9 +339,8 @@ public class Fachada {
 		servicoHorarioAgendado.remover(id);
 	}
 
-	
 	// --- Horario ---
-	
+
 	public List<Horarios> buscarHorarios() {
 		return servicoHorarios.buscarTodos();
 	}
@@ -378,9 +361,8 @@ public class Fachada {
 		servicoHorarios.remover(id);
 	}
 
-	
-	// ---RegistroAvaliacao
-	
+	// --- RegistroAvaliacao ---
+
 	public List<RegistroAvaliacao> buscarRegistroAvaliacao() {
 		return servicoRegistroAvaliacao.buscarTodos();
 	}
@@ -396,14 +378,5 @@ public class Fachada {
 	public void removerRegistroAvaliacao(long id) {
 		servicoRegistroAvaliacao.remover(id);
 	}
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
 }

@@ -5,7 +5,7 @@ public class CpfExistenteException extends Exception {
 	private String cpf;
 	
 	public CpfExistenteException(String cpf) {
-		super("O cpf inserido já está em uso");
+		super("O CPF inserido já está em uso.");
 		this.cpf = cpf;
 	}
 	

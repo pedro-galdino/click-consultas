@@ -5,7 +5,7 @@ public class UsuarioInexistenteException extends Exception {
 	private String email;
 	
 	public UsuarioInexistenteException(String email) {
-		super("O e-mail inserido não foi encontrado");
+		super("O e-mail inserido não foi encontrado.");
 		this.email = email;
 	}
 	

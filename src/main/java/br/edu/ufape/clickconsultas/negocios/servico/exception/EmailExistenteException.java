@@ -5,7 +5,7 @@ public class EmailExistenteException extends Exception {
 	private String email;
 	
 	public EmailExistenteException(String email) {
-		super("O e-mail inserido já está em uso");
+		super("O e-mail inserido já está em uso.");
 		this.email = email;
 	}
 	

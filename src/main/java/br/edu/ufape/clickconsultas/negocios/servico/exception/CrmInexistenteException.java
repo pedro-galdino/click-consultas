@@ -5,7 +5,7 @@ public class CrmInexistenteException extends Exception {
 	private int crm;
 	
 	public CrmInexistenteException(int crm) {
-		super("O CRM inserido não foi encontrado");
+		super("O CRM inserido não foi encontrado.");
 		this.crm = crm;
 	}
 	

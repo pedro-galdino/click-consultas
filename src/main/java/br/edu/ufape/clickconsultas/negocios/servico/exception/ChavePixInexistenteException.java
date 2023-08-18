@@ -5,7 +5,7 @@ public class ChavePixInexistenteException extends Exception {
 	private long id;
 	
 	public ChavePixInexistenteException(long id) {
-		super("A chave pix não foi encontrada");
+		super("A chave pix não foi encontrada.");
 		this.id = id;
 	}
 	
