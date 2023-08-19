@@ -71,4 +71,5 @@ public class Medico extends Usuario {
         especialidades.remove(especialidade);
     }
 	
+	
 }

@@ -33,12 +33,12 @@ public abstract class Usuario {
 
 	public Usuario(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email, String senha) {
 		super();
-		this.nome = nome;
+		this.nome = formatar(capitalizarNome(nome));
 		this.cpf = cpf;
 		this.dataNascimento = dataNascimento;
 		this.sexo = sexo;
 		this.telefone = telefone;
-		this.email = email;
+		this.email = formatar(email).toLowerCase();
 		this.senha = senha;
 	}
 	
@@ -55,7 +55,7 @@ public abstract class Usuario {
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nome = formatar(capitalizarNome(nome));
 	}
 
 	public String getCpf() {
@@ -95,7 +95,7 @@ public abstract class Usuario {
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = formatar(email).toLowerCase();
 	}
 
 	public String getSenha() {
@@ -112,6 +112,36 @@ public abstract class Usuario {
 
 	public void setCarteira(Carteira carteira) {
 		this.carteira = carteira;
+	}
+	
+	public static String capitalizarNome(String input) {
+		if (input == null || input.isEmpty()) {
+            return input;
+        }
+        
+        input = formatar(input); // Remover espaços extras e formatar
+        
+        String[] palavras = input.split(" ");
+        StringBuilder resultado = new StringBuilder();
+        
+        for (String palavra : palavras) {
+            if (!palavra.isEmpty()) {
+                resultado.append(palavra.substring(0, 1).toUpperCase());
+                resultado.append(palavra.substring(1).toLowerCase());
+                resultado.append(" ");
+            }
+        }
+        
+        return resultado.toString().trim();
+    }
+	
+	public static String formatar(String input) {
+		if(input == null || input.isEmpty()) {
+			return input;
+		}
+        input = input.trim();
+        input = input.replaceAll("\\s+", " ");
+        return input;
 	}
 	
 }

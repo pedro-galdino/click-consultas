@@ -2,11 +2,15 @@ package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
 import java.util.List;
 
+import org.h2.expression.function.ToCharFunction.Capitalization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
@@ -27,7 +31,7 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public List<Medico> buscarPorNome(String nome) {
-		return colecaoMedico.findByNome(nome);
+		return colecaoMedico.findByNome(Usuario.formatar(Usuario.capitalizarNome(nome)));
 	}
 
 	public Medico buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException {
@@ -38,13 +42,14 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public Medico buscarPorEmail(String email) throws ObjetoNaoEncontradoException {
-		Medico m = colecaoMedico.findByEmail(email);
+		Medico m = colecaoMedico.findByEmail(Medico.formatar(email).toLowerCase());
 		if (m == null)
 			throw new ObjetoNaoEncontradoException("o", "medico");
 		return m;
 	}
 
 	public List<Medico> buscarPorEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
+		nomeEspecialidade = Especialidade.formatar(Especialidade.capitalizarNome(nomeEspecialidade));
 		List<Medico> m = colecaoMedico.findByEspecialidadesNome(nomeEspecialidade);
 		if (m.isEmpty()) {
 			throw new ObjetoNaoEncontradoException("a", "especialidade");
@@ -60,23 +65,26 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public Medico salvar(Medico medico) throws ObjetoEmUsoException {
-		/*
-		 * Verifica se o crm já está em uso
-		 * 
-		 * List<CRM> crms = medico.getCrm(); for (CRM crm : crms) { Medico
-		 * medicoExistenteByCrm = colecaoMedico.findByCrmNumero(crm.getNumero()); if
-		 * (medicoExistenteByCrm != null) throw new
-		 * CrmExistenteException(crm.getNumero()); }
-		 */
+		
+		//Verifica se o CRM já está em uso
+		List<CRM> listaCRM = medico.getCrm();
+		if(listaCRM != null && !listaCRM.isEmpty()) {
+			for(CRM crm : listaCRM) {
+				Medico medicoExistenteByCRM = colecaoMedico.findByCrmNumero(crm.getNumero());
+				if(medicoExistenteByCRM != null)
+					throw new ObjetoEmUsoException("o", "CRM");
 
+			}
+		}
+		
 		// Verifica se o email já está em uso
 		Medico medicoExistenteByEmail = colecaoMedico.findByEmail(medico.getEmail());
-		if (medicoExistenteByEmail != null && medico.getEmail() != medicoExistenteByEmail.getEmail())
+		if (medicoExistenteByEmail != null)
 			throw new ObjetoEmUsoException("o", "e-mail");
 
 		// Verifica se o cpf já está em uso
 		Medico medicoExistenteByCpf = colecaoMedico.findByCpf(medico.getCpf());
-		if (medicoExistenteByCpf != null && medico.getCpf() != medicoExistenteByCpf.getCpf())
+		if (medicoExistenteByCpf != null)
 			throw new ObjetoEmUsoException("o", "CPF");
 
 		return colecaoMedico.save(medico);
