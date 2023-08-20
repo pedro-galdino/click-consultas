@@ -8,8 +8,6 @@ public interface InterfaceServicoPlanoDeSaude {
 
 	List<PlanoDeSaude> buscarTodos();
 
-	PlanoDeSaude buscarPorNumero(int numero);
-
 	PlanoDeSaude buscarPorId(long id);
 
 	PlanoDeSaude salvar(PlanoDeSaude planoDeSaude);

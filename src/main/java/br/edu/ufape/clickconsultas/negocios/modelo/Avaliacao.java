@@ -1,7 +1,5 @@
 package br.edu.ufape.clickconsultas.negocios.modelo;
 
-import java.lang.reflect.Field;
-
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -74,7 +72,5 @@ public class Avaliacao {
 		registro.setNumeroAvaliacoes(registro.getNumeroAvaliacoes() - 1);
 		registro.setTotalAvaliacoes(registro.getTotalAvaliacoes() - nota);
 	}
-	
-	
-	
+
 }

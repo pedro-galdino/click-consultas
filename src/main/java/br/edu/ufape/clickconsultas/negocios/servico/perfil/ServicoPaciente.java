@@ -27,11 +27,11 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	}
 
 	public List<Paciente> buscarPorNome(String nome) {
-		return colecaoPaciente.findByNome(nome);
+		return colecaoPaciente.findByNomeContainingIgnoreCase(nome);
 	}
 
 	public Paciente buscarPorEmail(String email) throws ObjetoNaoEncontradoException {
-		Paciente p = colecaoPaciente.findByEmail(email);
+		Paciente p = colecaoPaciente.findByEmailContainingIgnoreCase(email);
 		if (p == null) 
 			throw new ObjetoNaoEncontradoException("o", "paciente");
 		return p;
@@ -45,12 +45,12 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	}
 
 	public Paciente salvar(Paciente paciente) throws ObjetoEmUsoException {
-		Paciente pacienteExistenteByEmail = colecaoPaciente.findByEmail(paciente.getEmail());
-		if (pacienteExistenteByEmail != null && paciente.getEmail() != pacienteExistenteByEmail.getEmail())
+		Paciente pacienteExistenteByEmail = colecaoPaciente.findByEmailContainingIgnoreCase(paciente.getEmail());
+		if (pacienteExistenteByEmail != null && paciente.getId() != pacienteExistenteByEmail.getId())
 			throw new ObjetoEmUsoException("o", "e-mail");
 
 		Paciente pacienteExistenteByCpf = colecaoPaciente.findByCpf(paciente.getCpf());
-		if (pacienteExistenteByCpf != null && paciente.getCpf() != pacienteExistenteByCpf.getCpf())
+		if (pacienteExistenteByCpf != null && paciente.getId() != pacienteExistenteByCpf.getId())
 			throw new ObjetoEmUsoException("o", "CPF");
 
 		return colecaoPaciente.save(paciente);

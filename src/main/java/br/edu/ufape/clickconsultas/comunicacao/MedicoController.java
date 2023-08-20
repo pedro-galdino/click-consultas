@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
@@ -46,7 +48,7 @@ public class MedicoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PatchMapping("/{medicoId}")
 	public ResponseEntity<?> atualizarMedico(@RequestBody Medico medico, @PathVariable Long medicoId) {
 		try {
@@ -77,6 +79,80 @@ public class MedicoController {
 		try {
 			fachada.removerMedico(medicoId);
 			return new ResponseEntity<String>("Removido com sucesso.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/crm/{medicoId}")
+	public ResponseEntity<?> buscarCrms(@PathVariable Long medicoId) {
+		try {
+			return new ResponseEntity<List<CRM>>(fachada.buscarCrms(medicoId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/crm/{medicoId}/{crmId}")
+	public ResponseEntity<?> buscarCrmPorId(@PathVariable Long medicoId, @PathVariable Long crmId) {
+		try {
+			return new ResponseEntity<CRM>(fachada.buscarCrmPorId(medicoId, crmId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/crm/{medicoId}")
+	public ResponseEntity<?> cadastrarCrm(@PathVariable Long medicoId, @RequestBody CRM crm) {
+		try {
+			return new ResponseEntity<List<CRM>>(fachada.salvarCrm(medicoId, crm), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/crm/{medicoId}/{crmId}")
+	public ResponseEntity<?> removerCrm(@PathVariable Long medicoId, @PathVariable Long crmId) {
+		try {
+			fachada.removerCrm(medicoId, crmId);
+			return new ResponseEntity<String>("CRM removido com sucesso.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/especialidade/{medicoId}")
+	public ResponseEntity<?> buscarEspecialidades(@PathVariable Long medicoId) {
+		try {
+			return new ResponseEntity<List<Especialidade>>(fachada.buscarEspecialidades(medicoId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/especialidade/{medicoId}/{especialidadeId}")
+	public ResponseEntity<?> buscarEspecialidadePorId(@PathVariable Long medicoId, @PathVariable Long especialidadeId) {
+		try {
+			return new ResponseEntity<Especialidade>(fachada.buscarEspecialidadePorId(medicoId, especialidadeId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/especialidade/{medicoId}")
+	public ResponseEntity<?> cadastrarEspecialidade(@PathVariable Long medicoId, @RequestBody Especialidade e) {
+		try {
+			return new ResponseEntity<List<Especialidade>>(fachada.salvarEspecialidade(medicoId, e), HttpStatus.OK);
+		} catch (Exception ex) {
+			return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/especialidade/{medicoId}/{especialidadeId}")
+	public ResponseEntity<?> removerEspecialidade(@PathVariable Long medicoId, @PathVariable Long especialidadeId) {
+		try {
+			fachada.removerEspecialidade(medicoId, especialidadeId);
+			return new ResponseEntity<String>("Especialidade removida com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -16,11 +16,7 @@ public class ServicoPlanoDeSaude implements InterfaceServicoPlanoDeSaude {
 	public List<PlanoDeSaude> buscarTodos() {
 		return colecaoPlanoDeSaude.findAll();
 	}
-
-	public PlanoDeSaude buscarPorNumero(int numero) {
-		return colecaoPlanoDeSaude.findByNumero(numero);
-	}
-
+	
 	public PlanoDeSaude buscarPorId(long id) {
 		return colecaoPlanoDeSaude.findById(id).orElse(null);
 	}

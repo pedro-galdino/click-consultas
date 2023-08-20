@@ -22,12 +22,10 @@ import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoMedic
 
 @SpringBootTest
 class ServicoMedicoTest {
-	
 	@Autowired
 	private InterfaceServicoMedico servicoMedico;
 	@Autowired
 	private InterfaceColecaoMedico colecaoMedico;
-	
 
 	@Test
 	@Transactional
@@ -37,13 +35,13 @@ class ServicoMedicoTest {
 		medico1.setEmail(email);
 		Medico medico2 = new Medico();
 		medico2.setEmail(email);
-		
-		ObjetoEmUsoException exception = assertThrows(ObjetoEmUsoException.class, () -> {
+
+		assertThrows(ObjetoEmUsoException.class, () -> {
 			servicoMedico.salvar(medico1);
 			servicoMedico.salvar(medico2);
 		});
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarMedicoCpfExistente() {
@@ -52,13 +50,13 @@ class ServicoMedicoTest {
 		medico1.setCpf(cpf);
 		Medico medico2 = new Medico();
 		medico2.setCpf(cpf);
-		
-		ObjetoEmUsoException exception = assertThrows(ObjetoEmUsoException.class, () -> {
+
+		assertThrows(ObjetoEmUsoException.class, () -> {
 			servicoMedico.salvar(medico1);
 			servicoMedico.salvar(medico2);
 		});
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarMedicoCrmExistente() {
@@ -69,14 +67,13 @@ class ServicoMedicoTest {
 		List<CRM> crms = List.of(crm1, crm2);
 		medico1.setCrm(crms);
 		medico2.setCrm(crms);
-		
-		ObjetoEmUsoException exception = assertThrows(ObjetoEmUsoException.class, () -> {
+
+		assertThrows(ObjetoEmUsoException.class, () -> {
 			servicoMedico.salvar(medico1);
 			servicoMedico.salvar(medico2);
 		});
-		
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarMedicoCrmExistenteEmUmaListaNaoUnitaria() {
@@ -86,16 +83,16 @@ class ServicoMedicoTest {
 		CRM crm2 = new CRM("BA", 4684651);
 		CRM crm3 = new CRM("PA", 6844885);
 		List<CRM> crms1 = List.of(crm1, crm2);
-		List<CRM> crms2 = List.of(crm1,crm3);
+		List<CRM> crms2 = List.of(crm1, crm3);
 		medico1.setCrm(crms1);
 		medico2.setCrm(crms2);
-		
-		ObjetoEmUsoException exception = assertThrows(ObjetoEmUsoException.class, () -> {
+
+		assertThrows(ObjetoEmUsoException.class, () -> {
 			servicoMedico.salvar(medico1);
 			servicoMedico.salvar(medico2);
 		});
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarMedicoCrmInexistente() throws ObjetoEmUsoException {
@@ -106,13 +103,13 @@ class ServicoMedicoTest {
 		medico1.setCrm(crms1);
 
 		servicoMedico.salvar(medico1);
-		
-		assertEquals(medico1, colecaoMedico.findByCrmNumero(185158));
+
+		assertEquals(medico1, colecaoMedico.findByCrmUfAndCrmNumero(crm1.getUf(), crm1.getNumero()));
 	}
-	
-	@Test 
+
+	@Test
 	@Transactional
-	void testarSalvarMedico() throws ObjetoEmUsoException{
+	void testarSalvarMedico() throws ObjetoEmUsoException {
 		Medico medico = new Medico();
 		try {
 			servicoMedico.salvar(medico);
@@ -121,29 +118,29 @@ class ServicoMedicoTest {
 			fail();
 		}
 	}
-	
+
 	@Test
 	@Transactional
-	void testarBuscarPorIdInexistente() throws ObjetoNaoEncontradoException{
+	void testarBuscarPorIdInexistente() throws ObjetoNaoEncontradoException {
 		long inexistente = 234L;
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorId(inexistente));
 	}
-	
+
 	@Test
 	@Transactional
-	void testarBuscarPorIdExistente() throws ObjetoNaoEncontradoException{
+	void testarBuscarPorIdExistente() throws ObjetoNaoEncontradoException {
 		Medico medico = new Medico();
 		colecaoMedico.save(medico);
 		assertEquals(medico, servicoMedico.buscarPorId(medico.getId()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCpfInexistente() {
 		String cpf = "11796314760";
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorCpf(cpf));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCpfExistente() throws ObjetoNaoEncontradoException {
@@ -153,14 +150,14 @@ class ServicoMedicoTest {
 		colecaoMedico.save(medico);
 		assertEquals(medico, servicoMedico.buscarPorCpf(cpf));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmailInexistente() {
 		String email = "clickconsulTas@gmail.com ";
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorEmail(email));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmailExistente() throws ObjetoNaoEncontradoException {
@@ -170,7 +167,7 @@ class ServicoMedicoTest {
 		colecaoMedico.save(medico);
 		assertEquals(medico, servicoMedico.buscarPorEmail(email));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmailExistenteComMaiusculasMinusculas() throws ObjetoNaoEncontradoException {
@@ -180,17 +177,17 @@ class ServicoMedicoTest {
 		colecaoMedico.save(medico);
 		assertEquals(medico, servicoMedico.buscarPorEmail(email));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmailExistenteComEspacoEmBranco() throws ObjetoNaoEncontradoException {
-		String email = "  clickconsultas@gmail.com  ";
+		String email = " clickconsultas@gmail.com   ";
 		Medico medico = new Medico();
-		medico.setEmail("clickconsulTas@gmail.com  ");
+		medico.setEmail("clickconsultas@gmail.com");
 		colecaoMedico.save(medico);
 		assertEquals(medico, servicoMedico.buscarPorEmail(email));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorNomeInexistente() {
@@ -198,37 +195,34 @@ class ServicoMedicoTest {
 		List<Medico> lista = servicoMedico.buscarPorNome(nome);
 		assertTrue(lista.isEmpty());
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorNomeExistente() {
-		String nome = "click     ConsuLtas  ";
-		String teste = "naoEncontra";
-		Medico m1 = new Medico(); 
+		String nome = "João da Silva ";
+		String teste = "nao encontra";
+		Medico m1 = new Medico();
 		Medico m2 = new Medico();
 		Medico m3 = new Medico();
-		m1.setNome("click Consultas ");
+		m1.setNome("João da Silva");
 		m2.setNome(teste);
-		m3.setNome("cLick Consultas   ");
+		m3.setNome(" João da Silva  ");
 		colecaoMedico.save(m1);
 		colecaoMedico.save(m2);
 		colecaoMedico.save(m3);
-		
 
 		List<Medico> lista = servicoMedico.buscarPorNome(nome);
-		
-		System.out.println(m1.getNome());
+
 		assertEquals(lista.size(), 2);
 	}
-	
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCrmInexistente() {
-		int crm = 1234;
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoMedico.buscarPorCrm(crm));
+		CRM crm = new CRM ("RN", 1234);
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorCrm(crm.getUf(), crm.getNumero()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCrmExistente() throws ObjetoNaoEncontradoException {
@@ -237,11 +231,10 @@ class ServicoMedicoTest {
 		Medico medico = new Medico();
 		medico.setCrm(crms);
 		colecaoMedico.save(medico);
-		
-		assertEquals(medico, servicoMedico.buscarPorCrm(152936));
-		
+
+		assertEquals(medico, servicoMedico.buscarPorCrm(crm.getUf(), crm.getNumero()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCrmEmListas() throws ObjetoNaoEncontradoException {
@@ -251,10 +244,10 @@ class ServicoMedicoTest {
 		Medico medico = new Medico();
 		medico.setCrm(crms);
 		colecaoMedico.save(medico);
-		
-		assertEquals(medico, servicoMedico.buscarPorCrm(152936));
+
+		assertEquals(medico, servicoMedico.buscarPorCrm(crm1.getUf(), crm1.getNumero()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCrmEmListasComMultiplosMedicos() throws ObjetoNaoEncontradoException {
@@ -270,17 +263,17 @@ class ServicoMedicoTest {
 		medico2.setCrm(crms2);
 		colecaoMedico.save(medico1);
 		colecaoMedico.save(medico2);
-		
-		assertEquals(medico2, servicoMedico.buscarPorCrm(981556));
+
+		assertEquals(medico2, servicoMedico.buscarPorCrm(crm4.getUf(), crm4.getNumero()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEspecialidadeInexistente() throws ObjetoNaoEncontradoException {
 		String especialidade = "cardiologia";
-		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorEspecialidade(especialidade));
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorNomeEspecialidade(especialidade));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEspecialidadeInexistenteComOutrasExistente() {
@@ -289,11 +282,11 @@ class ServicoMedicoTest {
 		List<Especialidade> especialidades = List.of(especialidade);
 		medico.setEspecialidades(especialidades);
 		colecaoMedico.save(medico);
-		
-		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorEspecialidade("neurologia"));
-		
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorNomeEspecialidade("neurologia"));
+
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEspecialidadeExistente() throws ObjetoNaoEncontradoException {
@@ -303,12 +296,12 @@ class ServicoMedicoTest {
 		List<Especialidade> especialidades = List.of(especialidade);
 		medico.setEspecialidades(especialidades);
 		colecaoMedico.save(medico);
-		
-		List<Medico> lista = servicoMedico.buscarPorEspecialidade(especialidadeNome);
-		
+
+		List<Medico> lista = servicoMedico.buscarPorNomeEspecialidade(especialidadeNome);
+
 		assertTrue(lista.contains(medico));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEspecialidadeExistenteComVariacaoDeMaiusculasMinusculas() throws ObjetoNaoEncontradoException {
@@ -318,34 +311,34 @@ class ServicoMedicoTest {
 		List<Especialidade> especialidades = List.of(especialidade);
 		medico.setEspecialidades(especialidades);
 		colecaoMedico.save(medico);
-		
-		List<Medico> lista = servicoMedico.buscarPorEspecialidade(especialidadeNome);
-		
+
+		List<Medico> lista = servicoMedico.buscarPorNomeEspecialidade(especialidadeNome);
+
 		assertTrue(lista.contains(medico));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEspecialidadeExistenteComEspacoEmBranco() throws ObjetoNaoEncontradoException {
-		String especialidadeNome = "cArDiologia   ";
+		String especialidadeNome = "cardiologia   ";
 		Medico medico = new Medico();
 		Especialidade especialidade = new Especialidade("cardiologia", 158596);
 		List<Especialidade> especialidades = List.of(especialidade);
 		medico.setEspecialidades(especialidades);
 		colecaoMedico.save(medico);
-		
-		List<Medico> lista = servicoMedico.buscarPorEspecialidade(especialidadeNome);
-		
+
+		List<Medico> lista = servicoMedico.buscarPorNomeEspecialidade(especialidadeNome);
+
 		assertTrue(lista.contains(medico));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarRemoverPorIdInexistente() {
 		long inexistente = 234235L;
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.remover(inexistente));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarRemoverPorIdExistente() throws ObjetoNaoEncontradoException {
@@ -353,13 +346,13 @@ class ServicoMedicoTest {
 		colecaoMedico.save(medico);
 		List<Medico> lista = colecaoMedico.findAll();
 		int tamanhoInicial = lista.size();
-		
+
 		servicoMedico.remover(medico.getId());
-		
+
 		lista = colecaoMedico.findAll();
 		int tamanhoFinal = lista.size();
-		
-		assertEquals(tamanhoInicial-1, tamanhoFinal);
+
+		assertEquals(tamanhoInicial - 1, tamanhoFinal);
 	}
-		
+
 }

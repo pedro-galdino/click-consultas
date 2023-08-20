@@ -10,13 +10,15 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 @Repository
 public interface InterfaceColecaoMedico extends JpaRepository<Medico, Long> {
 	
-	public List<Medico> findByNome(String nome);
+	public List<Medico> findByNomeContainingIgnoreCase(String nome);
 	
-	public List<Medico> findByEspecialidadesNome(String nomeEspecialidade);
+	public List<Medico> findByEspecialidadesNomeContainingIgnoreCase(String nomeEspecialidade);
 	
-	public Medico findByCrmNumero(int numeroCrm);
+	public Medico findByEspecialidadesNomeAndEspecialidadesNumeroRQE(String nome, int numeroRQE);
 	
-	public Medico findByEmail(String email);
+	public Medico findByCrmUfAndCrmNumero(String ufCrm, int numeroCrm);
+	
+	public Medico findByEmailContainingIgnoreCase(String email);
 
 	public Medico findByCpf(String cpf);
 	

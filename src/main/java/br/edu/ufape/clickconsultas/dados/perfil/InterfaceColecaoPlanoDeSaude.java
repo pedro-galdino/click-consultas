@@ -8,6 +8,4 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 @Repository
 public interface InterfaceColecaoPlanoDeSaude extends JpaRepository<PlanoDeSaude, Long> {
 	
-	public PlanoDeSaude findByNumero(int numero);
-	
 }

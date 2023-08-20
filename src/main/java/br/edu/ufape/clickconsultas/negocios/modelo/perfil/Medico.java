@@ -23,7 +23,8 @@ public class Medico extends Usuario {
 	}
 
 	public Medico(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email,
-			String senha, String foto, List<CRM> crm, List<Especialidade> especialidades, RegistroAvaliacao registroAvaliacao) {
+			String senha, String foto, List<CRM> crm, List<Especialidade> especialidades,
+			RegistroAvaliacao registroAvaliacao) {
 		super(nome, cpf, dataNascimento, sexo, telefone, email, senha);
 		this.foto = foto;
 		this.crm = crm;
@@ -62,14 +63,13 @@ public class Medico extends Usuario {
 	public void setRegistroAvaliacao(RegistroAvaliacao registroAvaliacao) {
 		this.registroAvaliacao = registroAvaliacao;
 	}
-	
+
 	public void removerCrm(CRM crm) {
 		this.crm.remove(crm);
-    }
-	
+	}
+
 	public void removerEspecialidade(Especialidade especialidade) {
-        especialidades.remove(especialidade);
-    }
-	
-	
+		especialidades.remove(especialidade);
+	}
+
 }

@@ -96,12 +96,16 @@ public class Fachada {
 		return servicoMedico.buscarPorEmail(email);
 	}
 
-	public Medico buscarMedicoPorCrm(int crm) throws ObjetoNaoEncontradoException {
-		return servicoMedico.buscarPorCrm(crm);
+	public Medico buscarMedicoPorCrm(String uf, int numero) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarPorCrm(uf, numero);
 	}
 
-	public List<Medico> buscarMedicosPorEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
-		return servicoMedico.buscarPorEspecialidade(nomeEspecialidade);
+	public List<Medico> buscarMedicosPorNomeDaEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarPorNomeEspecialidade(nomeEspecialidade);
+	}
+	
+	public Medico buscarMedicoPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarPorEspecialidade(nome, numeroRQE);
 	}
 
 	public Medico salvarMedico(Medico medico) throws ObjetoEmUsoException {
@@ -111,15 +115,45 @@ public class Fachada {
 	public void removerMedico(long id) throws ObjetoNaoEncontradoException {
 		servicoMedico.remover(id);
 	}
+	
+	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarCrms(medicoId);
+	}
+	
+	public CRM buscarCrmPorId(long medicoId, Long crmId) throws ObjetoNaoEncontradoException  {
+		return servicoMedico.buscarCrmPorId(medicoId, crmId);
+	}
+
+	public List<CRM> salvarCrm(long medicoId, CRM crm) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+		return servicoMedico.salvarCrm(medicoId, crm);
+	}
+
+	public void removerCrm(long medicoId, long crmId) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+		servicoMedico.removerCrm(medicoId, crmId);
+	}
+	
+	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarEspecialidades(medicoId);
+	}
+	
+	public Especialidade buscarEspecialidadePorId(long medicoId, Long especialidadeId) throws ObjetoNaoEncontradoException  {
+		return servicoMedico.buscarEspecialidadePorId(medicoId, especialidadeId);
+	}
+
+	public List<Especialidade> salvarEspecialidade(long medicoId, Especialidade especialidade)
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, EspecialidadesExcedidasException {
+		return servicoMedico.salvarEspecialidade(medicoId, especialidade);
+	}
+
+	public void removerEspecialidade(long medicoId, Long especialidadeId)
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+		servicoMedico.removerEspecialidade(medicoId, especialidadeId);
+	}
 
 	// --- Plano de Saude ---
 
 	public List<PlanoDeSaude> buscarPlanosDeSaude() {
 		return servicoPlanoDeSaude.buscarTodos();
-	}
-
-	public PlanoDeSaude buscarPlanoDeSaudePorNumero(int numero) {
-		return servicoPlanoDeSaude.buscarPorNumero(numero);
 	}
 
 	public PlanoDeSaude buscarPlanoDeSaudePorId(long id) {
@@ -365,5 +399,5 @@ public class Fachada {
 	public void removerRegistroAvaliacao(long id) {
 		servicoRegistroAvaliacao.remover(id);
 	}
-	
+
 }

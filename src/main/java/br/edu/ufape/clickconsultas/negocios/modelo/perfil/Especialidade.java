@@ -17,7 +17,6 @@ public class Especialidade {
 	}
 
 	public Especialidade(String nome, int numeroRQE) {
-		nome = formatar(capitalizarNome(nome));
 		this.nome = nome;
 		this.numeroRQE = numeroRQE;
 	}
@@ -31,7 +30,6 @@ public class Especialidade {
 	}
 
 	public void setNome(String nome) {
-		nome = formatar(capitalizarNome(nome));
 		this.nome = nome;
 	}
 
@@ -41,22 +39,6 @@ public class Especialidade {
 
 	public void setNumeroRQE(int numeroRQE) {
 		this.numeroRQE = numeroRQE;
-	}
-	
-	public static String capitalizarNome(String input) {
-        if (input == null || input.isEmpty()) {
-            return input;
-        }
-        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
-    }
-	
-	public static String formatar(String input) {
-		if(input == null || input.isEmpty()) {
-			return input;
-		}
-        input = input.trim();
-        input = input.replaceAll("\\s+", " ");
-        return input;
 	}
 
 }
