@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoSaque;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @Service
 public class ServicoSaque implements InterfaceServicoSaque {
@@ -18,20 +20,31 @@ public class ServicoSaque implements InterfaceServicoSaque {
 		return colecaoSaque.findAll();
 	}
 
-	public List<Saque> buscarPorData(Date data) {
-		return colecaoSaque.findByData(data);
+	public List<Saque> buscarPorData(Date data) throws ObjetoNaoEncontradoException{
+		List<Saque> lista = colecaoSaque.findByData(data);
+		if(lista.isEmpty())
+			throw new ObjetoNaoEncontradoException("o", "saque");
+		
+		return lista;
 	}
 
-	public Saque buscarPorId(long id) {
-		return colecaoSaque.findById(id).orElse(null);
+	public Saque buscarPorId(long id) throws ObjetoNaoEncontradoException {
+		Saque saque = colecaoSaque.findById(id).orElse(null);
+		
+		if(saque == null)
+			throw new ObjetoNaoEncontradoException("o", "saque");
+		
+		return saque;
 	}
 
 	public Saque salvar(Saque saque) {
 		return colecaoSaque.save(saque);
 	}
 
-	public void remover(long id) {
-		colecaoSaque.deleteById(id);
+	public void remover(long id) throws ObjetoNaoEncontradoException {
+		Saque saque = buscarPorId(id);
+		if(saque != null)
+			colecaoSaque.deleteById(id);
 	}
 
 }

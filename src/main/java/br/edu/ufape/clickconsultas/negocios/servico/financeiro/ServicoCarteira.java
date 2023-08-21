@@ -33,6 +33,7 @@ public class ServicoCarteira implements InterfaceServicoCarteira {
 
 	public void remover(long id) throws ObjetoNaoEncontradoException {
 		Carteira c = buscarPorId(id);
+		if(c != null)
 			colecaoCarteira.deleteById(id);
 	}
 

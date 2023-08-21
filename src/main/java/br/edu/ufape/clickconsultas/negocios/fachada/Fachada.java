@@ -166,7 +166,7 @@ public class Fachada {
 		return servicoCarteira.buscarTodos();
 	}
 
-	public Carteira buscarCarteiraPorId(long id) {
+	public Carteira buscarCarteiraPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoCarteira.buscarPorId(id);
 	}
 
@@ -174,7 +174,7 @@ public class Fachada {
 		return servicoCarteira.salvar(carteira);
 	}
 
-	public void removerCarteira(long id) {
+	public void removerCarteira(long id) throws ObjetoNaoEncontradoException {
 		servicoCarteira.remover(id);
 	}
 
@@ -202,19 +202,19 @@ public class Fachada {
 		return servicoDeposito.buscarTodos();
 	}
 
-	public List<Deposito> buscarDepositoPorData(Date data) {
+	public List<Deposito> buscarDepositoPorData(Date data) throws ObjetoNaoEncontradoException {
 		return servicoDeposito.buscarPorData(data);
 	}
 
-	public Deposito buscarDepositoPorId(long id) {
+	public Deposito buscarDepositoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoDeposito.buscarPorId(id);
 	}
 
-	public Deposito salvarDeposito(Deposito deposito) {
+	public Deposito salvarDeposito(Deposito deposito){
 		return servicoDeposito.salvar(deposito);
 	}
 
-	public void removerDeposito(long id) {
+	public void removerDeposito(long id) throws ObjetoNaoEncontradoException {
 		servicoDeposito.remover(id);
 	}
 
@@ -224,11 +224,11 @@ public class Fachada {
 		return servicoSaque.buscarTodos();
 	}
 
-	public List<Saque> buscarSaquePorData(Date data) {
+	public List<Saque> buscarSaquePorData(Date data) throws ObjetoNaoEncontradoException {
 		return servicoSaque.buscarPorData(data);
 	}
 
-	public Saque buscarSaquePorId(long id) {
+	public Saque buscarSaquePorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoSaque.buscarPorId(id);
 	}
 
@@ -236,7 +236,7 @@ public class Fachada {
 		return servicoSaque.salvar(saque);
 	}
 
-	public void removerSaque(long id) {
+	public void removerSaque(long id) throws ObjetoNaoEncontradoException {
 		servicoSaque.remover(id);
 	}
 
