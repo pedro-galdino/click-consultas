@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
@@ -32,14 +33,14 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 
 	public Paciente buscarPorEmail(String email) throws ObjetoNaoEncontradoException {
 		Paciente p = colecaoPaciente.findByEmailContainingIgnoreCase(email);
-		if (p == null) 
+		if (p == null)
 			throw new ObjetoNaoEncontradoException("o", "paciente");
 		return p;
 	}
 
 	public Paciente buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException {
 		Paciente p = colecaoPaciente.findByCpf(cpf);
-		if (p == null) 
+		if (p == null)
 			throw new ObjetoNaoEncontradoException("o", "paciente");
 		return p;
 	}
@@ -61,6 +62,29 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 		if (p == null)
 			throw new ObjetoNaoEncontradoException("o", "paciente");
 		colecaoPaciente.deleteById(p.getId());
+	}
+	
+	// --- Plano de Saúde ---
+
+	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
+		Paciente p = buscarPorId(pacienteId);
+		if (p.getPlano() == null)
+			throw new ObjetoNaoEncontradoException("o", "plano de saúde");
+		return p.getPlano();
+	}
+
+	public PlanoDeSaude salvarPlanoDeSaude(long pacienteId, PlanoDeSaude plano) throws ObjetoNaoEncontradoException {
+		Paciente p = buscarPorId(pacienteId);
+		p.setPlano(plano);
+		return colecaoPaciente.save(p).getPlano();
+	}
+
+	public void removerPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
+		Paciente p = buscarPorId(pacienteId);
+		if (p.getPlano() == null)
+			throw new ObjetoNaoEncontradoException("o", "plano de saúde");
+		p.setPlano(null);
+		colecaoPaciente.save(p);
 	}
 
 }

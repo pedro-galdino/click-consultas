@@ -22,8 +22,6 @@ public class Fachada {
 	@Autowired
 	private InterfaceServicoMedico servicoMedico;
 	@Autowired
-	private InterfaceServicoPlanoDeSaude servicoPlanoDeSaude;
-	@Autowired
 	private InterfaceServicoCarteira servicoCarteira;
 	@Autowired
 	private InterfaceServicoPix servicoPix;
@@ -72,6 +70,18 @@ public class Fachada {
 
 	public void removerPaciente(long id) throws ObjetoNaoEncontradoException {
 		servicoPaciente.remover(id);
+	}
+	
+	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
+		return servicoPaciente.buscarPlanoDeSaude(pacienteId);
+	}
+
+	public PlanoDeSaude salvarPlanoDeSaude(long pacienteId, PlanoDeSaude plano) throws ObjetoNaoEncontradoException {
+		return servicoPaciente.salvarPlanoDeSaude(pacienteId, plano);
+	}
+
+	public void removerPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
+		servicoPaciente.removerPlanoDeSaude(pacienteId);
 	}
 
 	// --- Medico ---
@@ -148,24 +158,6 @@ public class Fachada {
 	public void removerEspecialidade(long medicoId, Long especialidadeId)
 			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
 		servicoMedico.removerEspecialidade(medicoId, especialidadeId);
-	}
-
-	// --- Plano de Saude ---
-
-	public List<PlanoDeSaude> buscarPlanosDeSaude() {
-		return servicoPlanoDeSaude.buscarTodos();
-	}
-
-	public PlanoDeSaude buscarPlanoDeSaudePorId(long id) {
-		return servicoPlanoDeSaude.buscarPorId(id);
-	}
-
-	public PlanoDeSaude salvarPlanoDeSaude(PlanoDeSaude planoDeSaude) {
-		return servicoPlanoDeSaude.salvar(planoDeSaude);
-	}
-
-	public void removerPlanosDeSaude(long id) {
-		servicoPlanoDeSaude.remover(id);
 	}
 
 	// --- Carteira ---

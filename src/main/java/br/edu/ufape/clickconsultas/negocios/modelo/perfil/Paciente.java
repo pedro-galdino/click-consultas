@@ -2,9 +2,6 @@ package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -14,7 +11,6 @@ public class Paciente extends Usuario {
 	private String cidade;
 	private String estado;
 	@OneToOne(cascade = CascadeType.ALL)
-	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private PlanoDeSaude plano;
 
 	public Paciente() {

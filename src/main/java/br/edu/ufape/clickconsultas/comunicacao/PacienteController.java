@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @RestController
@@ -79,6 +80,34 @@ public class PacienteController {
 		try {
 			fachada.removerPaciente(pacienteId);
 			return new ResponseEntity<String>("Removido com sucesso.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/plano/{pacienteId}")
+	public ResponseEntity<?> buscarPlanoDeSaude(@PathVariable Long pacienteId) {
+		try {
+			return new ResponseEntity<PlanoDeSaude>(fachada.buscarPlanoDeSaude(pacienteId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/plano/{pacienteId}")
+	public ResponseEntity<?> cadastrarPlanoDeSaude(@PathVariable Long pacienteId, @RequestBody PlanoDeSaude plano) {
+		try {
+			return new ResponseEntity<PlanoDeSaude>(fachada.salvarPlanoDeSaude(pacienteId, plano), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/plano/{pacienteId}")
+	public ResponseEntity<?> removerPlanoDeSaude(@PathVariable Long pacienteId) {
+		try {
+			fachada.removerPlanoDeSaude(pacienteId);
+			return new ResponseEntity<String>("Plano removido com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
