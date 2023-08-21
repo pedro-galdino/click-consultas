@@ -84,8 +84,6 @@ public class ServicoMedico implements InterfaceServicoMedico {
 
 	public void remover(long id) throws ObjetoNaoEncontradoException {
 		Medico m = buscarPorId(id);
-		if (m == null)
-			throw new ObjetoNaoEncontradoException("o", "medico");
 		colecaoMedico.deleteById(m.getId());
 	}
 	

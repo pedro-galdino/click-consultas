@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @Service
 public class ServicoCarteira implements InterfaceServicoCarteira {
@@ -17,16 +18,22 @@ public class ServicoCarteira implements InterfaceServicoCarteira {
 		return colecaoCarteira.findAll();
 	}
 
-	public Carteira buscarPorId(long id) {
-		return colecaoCarteira.findById(id).orElse(null);
+	public Carteira buscarPorId(long id) throws ObjetoNaoEncontradoException {
+		Carteira carteira = colecaoCarteira.findById(id).orElse(null);
+		
+		if(carteira == null)
+			throw new ObjetoNaoEncontradoException("a", "carteira");
+		
+		return carteira;
 	}
 
 	public Carteira salvar(Carteira carteira) {
 		return colecaoCarteira.save(carteira);
 	}
 
-	public void remover(long id) {
-		colecaoCarteira.deleteById(id);
+	public void remover(long id) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(id);
+			colecaoCarteira.deleteById(id);
 	}
 
 }
