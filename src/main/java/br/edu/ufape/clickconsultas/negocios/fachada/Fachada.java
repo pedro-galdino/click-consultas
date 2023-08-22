@@ -370,11 +370,11 @@ public class Fachada {
 		return servicoHorarios.buscarTodos();
 	}
 
-	public List<Horarios> buscarHorariosPorData(LocalDate data) {
+	public List<Horarios> buscarHorariosPorData(LocalDate data) throws ObjetoNaoEncontradoException {
 		return servicoHorarios.buscarPorData(data);
 	}
 
-	public Horarios buscarHorarioPorId(long id) {
+	public Horarios buscarHorarioPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoHorarios.buscarPorId(id);
 	}
 
@@ -382,7 +382,7 @@ public class Fachada {
 		return servicoHorarios.salvar(horario);
 	}
 
-	public void removerHorario(long id) {
+	public void removerHorario(long id) throws ObjetoNaoEncontradoException {
 		servicoHorarios.remover(id);
 	}
 
