@@ -43,7 +43,7 @@ public class MedicoController {
 	@PostMapping()
 	public ResponseEntity<?> cadastrarMedico(@RequestBody Medico medico) {
 		try {
-			return new ResponseEntity<Medico>(fachada.salvarMedico(medico), HttpStatus.CREATED);
+			return new ResponseEntity<Medico>(fachada.cadastrarMedico(medico), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

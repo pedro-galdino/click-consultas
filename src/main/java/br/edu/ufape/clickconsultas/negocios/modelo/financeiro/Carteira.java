@@ -2,14 +2,12 @@ package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.List;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Carteira {
@@ -19,17 +17,14 @@ public class Carteira {
 	private double saldo;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Pix> chavesPix;
-	@OneToOne
-	private Usuario usuario;
 	
 	public Carteira() {
 	}
 
-	public Carteira(double saldo, List<Pix> chavesPix, Usuario usuario) {
+	public Carteira(double saldo, List<Pix> chavesPix) {
 		super();
 		this.saldo = saldo;
 		this.chavesPix = chavesPix;
-		this.usuario = usuario;
 	}
 
 	public long getId() {
@@ -50,14 +45,6 @@ public class Carteira {
 
 	public void setChavesPix(List<Pix> chavesPix) {
 		this.chavesPix = chavesPix;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 	
 	public void removerPix(Pix pix) {

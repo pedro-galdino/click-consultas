@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoSaque;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 

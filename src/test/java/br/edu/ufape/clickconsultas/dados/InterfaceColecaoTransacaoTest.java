@@ -41,7 +41,7 @@ class InterfaceColecaoTransacaoTest {
 
 	@Test
 	void processarSaqueTest() throws Exception {
-		Carteira c = new Carteira(500, null, null);
+		Carteira c = new Carteira(500, null);
 		Saque s = new Saque(100, new Date(), "Bradesco", c, null);
 		double saldoCarteira = c.getSaldo();
 
@@ -52,7 +52,7 @@ class InterfaceColecaoTransacaoTest {
 
 	@Test
 	void processarSaqueInvalidoTest() {
-		Carteira c = new Carteira(100, null, null);
+		Carteira c = new Carteira(100, null);
 		Saque s = new Saque(-100, new Date(), "Itaú", c, null);
 		double saldoCarteira = c.getSaldo();
 		String msgErro = null;
@@ -69,7 +69,7 @@ class InterfaceColecaoTransacaoTest {
 
 	@Test
 	void processarSaqueMaiorQueSaldoTest() {
-		Carteira c = new Carteira(200, null, null);
+		Carteira c = new Carteira(200, null);
 		Saque s = new Saque(300, new Date(), "Bradesco", c, null);
 		double saldoCarteira = c.getSaldo();
 		String msgErro = null;
@@ -99,7 +99,7 @@ class InterfaceColecaoTransacaoTest {
 
 	@Test
 	void processarDepositoTest() throws Exception {
-		Carteira c = new Carteira(200, null, null);
+		Carteira c = new Carteira(200, null);
 		Deposito d = new Deposito(80, new Date(), "pix gerado", c);
 		double saldoCarteira = c.getSaldo();
 
@@ -110,7 +110,7 @@ class InterfaceColecaoTransacaoTest {
 
 	@Test
 	void processarDepositoInvalidoTest() {
-		Carteira c = new Carteira(100, null, null);
+		Carteira c = new Carteira(100, null);
 		Deposito d = new Deposito(-200, new Date(), "pix gerado", c);
 		double saldoCarteira = c.getSaldo();
 		String msgErro = null;

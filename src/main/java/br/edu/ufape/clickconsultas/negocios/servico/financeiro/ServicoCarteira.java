@@ -19,22 +19,21 @@ public class ServicoCarteira implements InterfaceServicoCarteira {
 	}
 
 	public Carteira buscarPorId(long id) throws ObjetoNaoEncontradoException {
-		Carteira carteira = colecaoCarteira.findById(id).orElse(null);
-		
-		if(carteira == null)
+		Carteira c = colecaoCarteira.findById(id).orElse(null);
+		if(c == null)
 			throw new ObjetoNaoEncontradoException("a", "carteira");
-		
-		return carteira;
+		return c;
 	}
 
 	public Carteira salvar(Carteira carteira) {
 		return colecaoCarteira.save(carteira);
 	}
 
-	public void remover(long id) throws ObjetoNaoEncontradoException {
-		Carteira c = buscarPorId(id);
-		if(c != null)
-			colecaoCarteira.deleteById(id);
+	public void remover(long carteiraId) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(carteiraId);
+		if(c == null)
+			throw new ObjetoNaoEncontradoException("a", "carteira");
+		colecaoCarteira.deleteById(carteiraId);
 	}
 
 }

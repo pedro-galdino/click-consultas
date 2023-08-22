@@ -7,5 +7,5 @@ import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 
 @Repository
 public interface InterfaceColecaoCarteira extends JpaRepository<Carteira, Long> {
-
+	
 }

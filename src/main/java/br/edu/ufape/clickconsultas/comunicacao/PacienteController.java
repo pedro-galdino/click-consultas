@@ -42,7 +42,7 @@ public class PacienteController {
 	@PostMapping()
 	public ResponseEntity<?> cadastrarPaciente(@RequestBody Paciente paciente) {
 		try {
-			return new ResponseEntity<Paciente>(fachada.salvarPaciente(paciente), HttpStatus.CREATED);
+			return new ResponseEntity<Paciente>(fachada.cadastrarPaciente(paciente), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

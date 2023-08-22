@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 public interface InterfaceServicoDeposito {

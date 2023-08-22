@@ -11,12 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoCarteira;
 import br.edu.ufape.clickconsultas.dados.financeiro.InterfaceColecaoPix;
-import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
-import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
 @SpringBootTest
 class InterfaceColecaoCarteiraTest {
@@ -24,18 +20,12 @@ class InterfaceColecaoCarteiraTest {
 	private InterfaceColecaoCarteira colecaoCarteira;
 	@Autowired
 	private InterfaceColecaoPix colecaoPix;
-	@Autowired
-	private InterfaceColecaoPaciente colecaoPaciente;
-	@Autowired
-	private InterfaceColecaoMedico colecaoMedico;
 	
 	@Test
 	void cadastrarCarteiraTest() {
 		long qtdCarteira = colecaoCarteira.count();
-		Paciente p = new Paciente();
-		Carteira c = new Carteira(0, null, p);
+		Carteira c = new Carteira(0, null);
 		
-		colecaoPaciente.save(p);
 		colecaoCarteira.save(c);
 		long novaQtdCarteira = colecaoCarteira.count();
 		
@@ -57,14 +47,12 @@ class InterfaceColecaoCarteiraTest {
 	void cadastrarCarteiracomPixTest() {
 		long qtdCarteira = colecaoCarteira.count();
 		long qtdPix = colecaoPix.count();
-		Paciente p = new Paciente();
-		Carteira c = new Carteira(0, null, p);
+		Carteira c = new Carteira(0, null);
 		Pix pix = new Pix("Telefone", "(99)98999-9991");
 		List<Pix> lpix = new ArrayList<Pix>();
 		lpix.add(pix);
 		c.setChavesPix(lpix);
 				
-		colecaoPaciente.save(p);
 		colecaoCarteira.save(c);
 		long novaQtdCarteira = colecaoCarteira.count();
 		long novaQtdPix = colecaoPix.count();
@@ -75,13 +63,11 @@ class InterfaceColecaoCarteiraTest {
 	
 	@Test
 	void removerPixDeCarteiraTest() {
-		Medico m = new Medico();
-		Carteira c = new Carteira(250, null, m);
+		Carteira c = new Carteira(250, null);
 		Pix p = new Pix("Telefone", "(99)98199-1234");
 		List<Pix> lp = new ArrayList<Pix>();
 		lp.add(p);
 		c.setChavesPix(lp);	
-		colecaoMedico.save(m);
 		colecaoCarteira.save(c);
 		long qtdPix = colecaoPix.count();
 		
