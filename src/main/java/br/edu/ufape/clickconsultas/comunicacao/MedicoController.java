@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -43,7 +44,7 @@ public class MedicoController {
 	@PostMapping()
 	public ResponseEntity<?> cadastrarMedico(@RequestBody Medico medico) {
 		try {
-			return new ResponseEntity<Medico>(fachada.cadastrarMedico(medico), HttpStatus.CREATED);
+			return new ResponseEntity<Medico>(fachada.salvarMedico(medico), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -157,5 +158,27 @@ public class MedicoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("/carteira/{medicoId}")
+	public ResponseEntity<?> buscarCarteiraPorId(@PathVariable Long medicoId) {
+		try {
+			return new ResponseEntity<Carteira>(fachada.buscarCarteiraMedicoPorId(medicoId), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PatchMapping("/carteira/{medicoId}")
+	public ResponseEntity<?> atualizarCarteira(@PathVariable Long medicoId, @RequestBody Carteira carteira) {
+		try {
+			Carteira carteiraAtualizada = fachada.buscarCarteiraMedicoPorId(medicoId);
+			carteiraAtualizada.setSaldo(carteira.getSaldo());
+			carteiraAtualizada.setChavesPix(carteira.getChavesPix());
+			return new ResponseEntity<Carteira>(fachada.salvarCarteiraMedico(medicoId, carteiraAtualizada), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 
 }

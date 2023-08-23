@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
@@ -47,13 +48,13 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 
 	public Paciente salvar(Paciente paciente) throws ObjetoEmUsoException {
 		Paciente pacienteExistenteByEmail = colecaoPaciente.findByEmailContainingIgnoreCase(paciente.getEmail());
-		if (pacienteExistenteByEmail != null && paciente.getId() != pacienteExistenteByEmail.getId())
+		if (pacienteExistenteByEmail != null)
 			throw new ObjetoEmUsoException("o", "e-mail");
 
 		Paciente pacienteExistenteByCpf = colecaoPaciente.findByCpf(paciente.getCpf());
-		if (pacienteExistenteByCpf != null && paciente.getId() != pacienteExistenteByCpf.getId())
+		if (pacienteExistenteByCpf != null)
 			throw new ObjetoEmUsoException("o", "CPF");
-
+		paciente.setCarteira(new Carteira());
 		return colecaoPaciente.save(paciente);
 	}
 
@@ -86,5 +87,17 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 		p.setPlano(null);
 		colecaoPaciente.save(p);
 	}
+	
+	public Carteira buscarCarteiraPorId(long pacienteId) throws ObjetoNaoEncontradoException{
+		return buscarPorId(pacienteId).getCarteira();
+		
+	}
+	
+	public Carteira salvarCarteira(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException {
+		Paciente paciente = buscarPorId(pacienteId);
+		paciente.setCarteira(carteira);
+		return colecaoPaciente.save(paciente).getCarteira();
+	}
+
 
 }

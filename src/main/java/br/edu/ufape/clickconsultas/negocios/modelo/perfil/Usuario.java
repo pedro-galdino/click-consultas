@@ -3,6 +3,7 @@ package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 import java.time.LocalDate;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,7 @@ public abstract class Usuario {
 	private String telefone;
 	private String email;
 	private String senha;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Carteira carteira;
 
 	public Usuario() {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
@@ -42,7 +43,7 @@ public class PacienteController {
 	@PostMapping()
 	public ResponseEntity<?> cadastrarPaciente(@RequestBody Paciente paciente) {
 		try {
-			return new ResponseEntity<Paciente>(fachada.cadastrarPaciente(paciente), HttpStatus.CREATED);
+			return new ResponseEntity<Paciente>(fachada.salvarPaciente(paciente), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -109,6 +110,27 @@ public class PacienteController {
 			fachada.removerPlanoDeSaude(pacienteId);
 			return new ResponseEntity<String>("Plano removido com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/carteira/{pacienteId}")
+	public ResponseEntity<?> buscarCarteiraPorId(@PathVariable Long pacienteId) {
+		try {
+			return new ResponseEntity<Carteira>(fachada.buscarCarteiraPacientePorId(pacienteId), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PatchMapping("/carteira/{pacienteId}")
+	public ResponseEntity<?> atualizarCarteira(@PathVariable Long pacienteId, @RequestBody Carteira carteira) {
+		try {
+			Carteira carteiraAtualizada = fachada.buscarCarteiraPacientePorId(pacienteId);
+			carteiraAtualizada.setSaldo(carteira.getSaldo());
+			carteiraAtualizada.setChavesPix(carteira.getChavesPix());
+			return new ResponseEntity<Carteira>(fachada.salvarCarteiraPaciente(pacienteId, carteiraAtualizada), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

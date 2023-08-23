@@ -2,6 +2,7 @@ package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
 import java.util.List;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -48,5 +49,10 @@ public interface InterfaceServicoMedico {
 
 	void removerEspecialidade(long medicoId, Long especialidadeId)
 			throws ObjetoNaoEncontradoException, ObjetoEmUsoException;
+	
+	public Carteira buscarCarteiraPorId(long medicoId) throws ObjetoNaoEncontradoException;
+	
+	public Carteira salvarCarteira(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException ;
+
 
 }

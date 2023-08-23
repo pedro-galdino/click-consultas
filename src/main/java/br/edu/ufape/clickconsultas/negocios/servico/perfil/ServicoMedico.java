@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -79,6 +80,7 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		if (medicoExistenteByCpf != null && medico.getId() != medicoExistenteByCpf.getId())
 			throw new ObjetoEmUsoException("o", "CPF");
 
+		medico.setCarteira(new Carteira());
 		return colecaoMedico.save(medico);
 	}
 
@@ -161,6 +163,17 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		especialidades.remove(e);
 		m.setEspecialidades(especialidades);
 		salvar(m);
+	}
+	
+	public Carteira buscarCarteiraPorId(long medicoId) throws ObjetoNaoEncontradoException{
+		return buscarPorId(medicoId).getCarteira();
+		
+	}
+	
+	public Carteira salvarCarteira(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException {
+		Medico medico = buscarPorId(medicoId);
+		medico.setCarteira(carteira);
+		return colecaoMedico.save(medico).getCarteira();
 	}
 
 }
