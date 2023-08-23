@@ -107,6 +107,7 @@ class ServicoMedicoTest {
 		assertEquals(medico1, colecaoMedico.findByCrmUfAndCrmNumero(crm1.getUf(), crm1.getNumero()));
 	}
 
+	
 	@Test
 	@Transactional
 	void testarSalvarMedico() throws ObjetoEmUsoException {

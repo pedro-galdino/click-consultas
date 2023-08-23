@@ -13,4 +13,6 @@ public interface InterfaceColecaoSaque extends JpaRepository<Saque, Long> {
 	
 	public List<Saque> findByData(Date data);
 
+	public List<Saque> findByCarteiraId(Long carteiraId);
+	
 }

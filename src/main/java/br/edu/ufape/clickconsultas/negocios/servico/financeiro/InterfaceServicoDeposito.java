@@ -13,6 +13,8 @@ public interface InterfaceServicoDeposito {
 	List<Deposito> buscarPorData(Date data) throws ObjetoNaoEncontradoException;
 
 	Deposito buscarPorId(long id) throws ObjetoNaoEncontradoException;
+	
+	List<Deposito> buscarPorCarteiraId(long carteiraId) throws ObjetoNaoEncontradoException;
 
 	Deposito salvar(Deposito deposito);
 

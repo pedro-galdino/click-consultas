@@ -12,5 +12,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
 public interface InterfaceColecaoDeposito extends JpaRepository<Deposito, Long> {
 	
 	public List<Deposito> findByData(Date data);
+	
+	public List<Deposito> findByCarteiraId(Long carteiraId);
 
 }

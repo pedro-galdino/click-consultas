@@ -19,31 +19,35 @@ public class ServicoDeposito implements InterfaceServicoDeposito {
 		return colecaoDeposito.findAll();
 	}
 
-	public List<Deposito> buscarPorData(Date data) throws ObjetoNaoEncontradoException{
+	public List<Deposito> buscarPorData(Date data) throws ObjetoNaoEncontradoException {
 		List<Deposito> lista = colecaoDeposito.findByData(data);
-		if(lista.isEmpty())
+		if (lista.isEmpty())
 			throw new ObjetoNaoEncontradoException("o", "deposito");
-		
+
 		return lista;
 	}
 
 	public Deposito buscarPorId(long id) throws ObjetoNaoEncontradoException {
 		Deposito deposito = colecaoDeposito.findById(id).orElse(null);
-		
-		if(deposito == null)
+		if (deposito == null)
 			throw new ObjetoNaoEncontradoException("o", "deposito");
-		
 		return deposito;
 	}
 
-	public Deposito salvar(Deposito deposito){
-			return colecaoDeposito.save(deposito);
+	public List<Deposito> buscarPorCarteiraId(long carteiraId) throws ObjetoNaoEncontradoException {
+		List<Deposito> depositos = colecaoDeposito.findByCarteiraId(carteiraId);
+		if (depositos.isEmpty())
+			throw new ObjetoNaoEncontradoException("o", "deposito");
+		return depositos;
+	}
 
+	public Deposito salvar(Deposito deposito) {
+		return colecaoDeposito.save(deposito);
 	}
 
 	public void remover(long id) throws ObjetoNaoEncontradoException {
 		Deposito deposito = buscarPorId(id);
-		if(deposito != null)
+		if (deposito != null)
 			colecaoDeposito.deleteById(id);
 	}
 

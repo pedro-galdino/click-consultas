@@ -35,6 +35,13 @@ public class ServicoSaque implements InterfaceServicoSaque {
 		
 		return saque;
 	}
+	
+	public List<Saque> buscarPorCarteiraId(long carteiraId) throws ObjetoNaoEncontradoException {
+		List<Saque> saques = colecaoSaque.findByCarteiraId(carteiraId);
+		if(saques.isEmpty())
+			throw new ObjetoNaoEncontradoException("o", "saque");
+		return saques;
+	}
 
 	public Saque salvar(Saque saque) {
 		return colecaoSaque.save(saque);

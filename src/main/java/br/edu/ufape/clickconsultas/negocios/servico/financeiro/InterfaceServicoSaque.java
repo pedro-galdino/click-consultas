@@ -14,6 +14,8 @@ public interface InterfaceServicoSaque {
 
 	Saque buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
+	List<Saque> buscarPorCarteiraId(long carteiraId) throws ObjetoNaoEncontradoException;
+	
 	Saque salvar(Saque saque);
 
 	void remover(long id) throws ObjetoNaoEncontradoException;

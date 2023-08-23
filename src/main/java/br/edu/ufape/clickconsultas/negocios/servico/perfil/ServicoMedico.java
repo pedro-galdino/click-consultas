@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -20,10 +18,6 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	@Autowired
 	private InterfaceColecaoMedico colecaoMedico;
 
-	public List<Medico> buscarTodos() {
-		return colecaoMedico.findAll();
-	}
-
 	public Medico buscarPorId(long id) throws ObjetoNaoEncontradoException {
 		Medico m = colecaoMedico.findById(id).orElse(null);
 		if (m == null)
@@ -31,22 +25,8 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		return m;
 	}
 
-	public List<Medico> buscarPorNome(String nome) {
-		return colecaoMedico.findByNomeContainingIgnoreCase(nome.trim());
-	}
-
-	public Medico buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException {
-		Medico m = colecaoMedico.findByCpf(cpf);
-		if (m == null)
-			throw new ObjetoNaoEncontradoException("o", "medico");
-		return m;
-	}
-
-	public Medico buscarPorEmail(String email) throws ObjetoNaoEncontradoException {
-		Medico m = colecaoMedico.findByEmailContainingIgnoreCase(email.trim());
-		if (m == null)
-			throw new ObjetoNaoEncontradoException("o", "medico");
-		return m;
+	public Medico salvar(Medico medico) {
+		return colecaoMedico.save(medico);
 	}
 
 	public Medico buscarPorCrm(String uf, int numero) throws ObjetoNaoEncontradoException {
@@ -70,30 +50,14 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		return m;
 	}
 
-	public Medico salvar(Medico medico) throws ObjetoEmUsoException {
-		// Verifica se o email já está em uso
-		Medico medicoExistenteByEmail = colecaoMedico.findByEmailContainingIgnoreCase(medico.getEmail());
-		if (medicoExistenteByEmail != null && medico.getId() != medicoExistenteByEmail.getId())
-			throw new ObjetoEmUsoException("o", "e-mail");
-
-		// Verifica se o cpf já está em uso
-		Medico medicoExistenteByCpf = colecaoMedico.findByCpf(medico.getCpf());
-		if (medicoExistenteByCpf != null && medico.getId() != medicoExistenteByCpf.getId())
-			throw new ObjetoEmUsoException("o", "CPF");
-
-		return colecaoMedico.save(medico);
-	}
-
-	public void remover(long id) throws ObjetoNaoEncontradoException {
-		Medico m = buscarPorId(id);
-		colecaoMedico.deleteById(m.getId());
-	}
-
 	// --- CRM ---
 
 	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException {
 		Medico m = buscarPorId(medicoId);
-		return m.getCrm();
+		List<CRM> crms = m.getCrm();
+		if (crms.isEmpty())
+			throw new ObjetoNaoEncontradoException("o", "CRM");
+		return crms;
 	}
 
 	public CRM buscarCrmPorId(long medicoId, long crmId) throws ObjetoNaoEncontradoException {
@@ -129,7 +93,10 @@ public class ServicoMedico implements InterfaceServicoMedico {
 
 	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException {
 		Medico m = buscarPorId(medicoId);
-		return m.getEspecialidades();
+		List<Especialidade> especialidades = m.getEspecialidades();
+		if (especialidades.isEmpty())
+			throw new ObjetoNaoEncontradoException("a", "especialidade");
+		return especialidades;
 	}
 
 	public Especialidade buscarEspecialidadePorId(long medicoId, long especialidadeId)
@@ -164,41 +131,6 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		especialidades.remove(e);
 		m.setEspecialidades(especialidades);
 		salvar(m);
-	}
-
-	public Carteira buscarCarteiraPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException {
-		return buscarPorId(medicoId).getCarteira();
-	}
-
-	public Carteira salvarCarteira(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException {
-		Medico m = buscarPorId(medicoId);
-		m.setCarteira(carteira);
-		return colecaoMedico.save(m).getCarteira();
-	}
-	
-	public Pix buscarPixPorId(long medicoId, long pixId) throws ObjetoNaoEncontradoException {
-		Carteira c = buscarPorId(medicoId).getCarteira();
-		for (Pix p : c.getChavesPix())
-			if (p.getId() == pixId)
-				return p;
-		throw new ObjetoNaoEncontradoException("o", "pix");
-	}
-	
-	public List<Pix> salvarPixCarteira(long medicoId, Pix pix) throws ObjetoNaoEncontradoException {
-		Carteira c = buscarPorId(medicoId).getCarteira();
-		List<Pix> lp = c.getChavesPix();
-		lp.add(pix);
-		c.setChavesPix(lp);
-		return salvarCarteira(medicoId, c).getChavesPix();
-	}
-	
-	public void removerPixCarteira(long medicoId, long pixId) throws ObjetoNaoEncontradoException {
-		Carteira c = buscarPorId(medicoId).getCarteira();
-		List<Pix> lp = c.getChavesPix();
-		Pix pix = buscarPixPorId(medicoId, pixId);
-		lp.remove(pix);
-		c.setChavesPix(lp);
-		salvarCarteira(medicoId, c);
 	}
 
 }
