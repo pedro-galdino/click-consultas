@@ -16,15 +16,15 @@ public interface InterfaceServicoUsuario {
 
 	List<Usuario> buscarPorNome(String nome);
 
-	Usuario buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException;
+	Usuario buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException; 
 
 	Usuario buscarPorEmail(String email) throws ObjetoNaoEncontradoException;
 
 	Usuario salvar(Usuario usuario) throws ObjetoEmUsoException;
 
-	void remover(long id) throws ObjetoNaoEncontradoException;
+	void remover(long id) throws ObjetoNaoEncontradoException; 
 
-	Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException;
+	Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException; 
 
 	Carteira salvarCarteira(long usuarioId, Carteira carteira) throws ObjetoNaoEncontradoException;
 

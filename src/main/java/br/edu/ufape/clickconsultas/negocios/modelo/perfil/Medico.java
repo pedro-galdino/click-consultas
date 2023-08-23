@@ -29,7 +29,7 @@ public class Medico extends Usuario {
 		this.foto = foto;
 		this.crm = crm;
 		this.especialidades = especialidades;
-		this.registroAvaliacao = registroAvaliacao;
+		this.registroAvaliacao = new RegistroAvaliacao();
 	}
 
 	public String getFoto() {

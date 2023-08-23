@@ -86,16 +86,21 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
 		List<Pix> lp = c.getChavesPix();
-		lp.add(pix);
+		if(lp == null) {
+			lp = List.of(pix);
+		}
+		else {
+			lp.add(pix);
+		}
 		c.setChavesPix(lp);
-		return salvarCarteira(usuarioId, c).getChavesPix();
+		return salvarCarteira(usuarioId, c).getChavesPix(); //Esse retorno da erro: UnsupportedOperationException
 	}
 
 	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
 		List<Pix> lp = c.getChavesPix();
 		Pix pix = buscarPixPorId(usuarioId, pixId);
-		lp.remove(pix);
+		lp.remove(pix); //Aparentemente, quebra aqui: UnsupportedOperationException
 		c.setChavesPix(lp);
 		salvarCarteira(usuarioId, c);
 	}
