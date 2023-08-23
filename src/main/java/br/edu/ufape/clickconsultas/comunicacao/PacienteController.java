@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
@@ -43,7 +44,7 @@ public class PacienteController {
 	@PostMapping()
 	public ResponseEntity<?> cadastrarPaciente(@RequestBody Paciente paciente) {
 		try {
-			return new ResponseEntity<Paciente>(fachada.salvarPaciente(paciente), HttpStatus.CREATED);
+			return new ResponseEntity<Paciente>(fachada.cadastrarPaciente(paciente), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -65,7 +66,7 @@ public class PacienteController {
 		}
 	}
 
-	@PatchMapping("/senha/{pacienteId}")
+	@PatchMapping("/{pacienteId}/senha")
 	public ResponseEntity<?> atualizarSenhaPaciente(@RequestBody String senha, @PathVariable Long pacienteId) {
 		try {
 			Paciente pacienteAtualizado = fachada.buscarPacientePorId(pacienteId);
@@ -86,7 +87,7 @@ public class PacienteController {
 		}
 	}
 
-	@GetMapping("/plano/{pacienteId}")
+	@GetMapping("/{pacienteId}/plano")
 	public ResponseEntity<?> buscarPlanoDeSaude(@PathVariable Long pacienteId) {
 		try {
 			return new ResponseEntity<PlanoDeSaude>(fachada.buscarPlanoDeSaude(pacienteId), HttpStatus.OK);
@@ -95,7 +96,7 @@ public class PacienteController {
 		}
 	}
 
-	@PostMapping("/plano/{pacienteId}")
+	@PostMapping("/{pacienteId}/plano")
 	public ResponseEntity<?> cadastrarPlanoDeSaude(@PathVariable Long pacienteId, @RequestBody PlanoDeSaude plano) {
 		try {
 			return new ResponseEntity<PlanoDeSaude>(fachada.salvarPlanoDeSaude(pacienteId, plano), HttpStatus.OK);
@@ -104,7 +105,7 @@ public class PacienteController {
 		}
 	}
 
-	@DeleteMapping("/plano/{pacienteId}")
+	@DeleteMapping("/{pacienteId}/plano")
 	public ResponseEntity<?> removerPlanoDeSaude(@PathVariable Long pacienteId) {
 		try {
 			fachada.removerPlanoDeSaude(pacienteId);
@@ -114,7 +115,7 @@ public class PacienteController {
 		}
 	}
 	
-	@GetMapping("/carteira/{pacienteId}")
+	@GetMapping("/{pacienteId}/carteira")
 	public ResponseEntity<?> buscarCarteiraPorId(@PathVariable Long pacienteId) {
 		try {
 			return new ResponseEntity<Carteira>(fachada.buscarCarteiraPacientePorId(pacienteId), HttpStatus.OK);
@@ -123,16 +124,42 @@ public class PacienteController {
 		}
 	}
 	
-	@PatchMapping("/carteira/{pacienteId}")
-	public ResponseEntity<?> atualizarCarteira(@PathVariable Long pacienteId, @RequestBody Carteira carteira) {
+	@PatchMapping("/{pacienteId}/carteira")
+	public ResponseEntity<?> atualizarCarteira(@PathVariable Long pacienteId, @RequestBody double saldo) {
 		try {
 			Carteira carteiraAtualizada = fachada.buscarCarteiraPacientePorId(pacienteId);
-			carteiraAtualizada.setSaldo(carteira.getSaldo());
-			carteiraAtualizada.setChavesPix(carteira.getChavesPix());
+			carteiraAtualizada.setSaldo(saldo);
 			return new ResponseEntity<Carteira>(fachada.salvarCarteiraPaciente(pacienteId, carteiraAtualizada), HttpStatus.OK);
 		} catch (ObjetoNaoEncontradoException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
+	@GetMapping("/{pacienteId}/pix/{pixId}")
+	public ResponseEntity<?> buscarPixCarteiraPacientePorId(@PathVariable Long pacienteId, @PathVariable Long pixId) {
+		try {
+			return new ResponseEntity<Pix>(fachada.buscarPixCarteiraPacientePorId(pacienteId, pixId), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/{pacienteId}/pix")
+	public ResponseEntity<?> cadastrarPixCarteiraPaciente(@PathVariable Long pacienteId, @RequestBody Pix pix) {
+		try {
+			return new ResponseEntity<List<Pix>>(fachada.salvarPixCarteiraPaciente(pacienteId, pix), HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@DeleteMapping("/{pacienteId}/pix/{pixId}")
+	public ResponseEntity<?> removerPixCarteiraPaciente(@PathVariable Long pacienteId, @PathVariable Long pixId) {
+		try {
+			fachada.removerPixCarteiraPaciente(pacienteId, pixId);
+			return new ResponseEntity<String>("Removido com sucesso.", HttpStatus.OK);
+		} catch (ObjetoNaoEncontradoException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

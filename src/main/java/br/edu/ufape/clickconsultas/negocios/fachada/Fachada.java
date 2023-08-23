@@ -22,8 +22,6 @@ public class Fachada {
 	@Autowired
 	private InterfaceServicoMedico servicoMedico;
 	@Autowired
-	private InterfaceServicoPix servicoPix;
-	@Autowired
 	private InterfaceServicoDeposito servicoDeposito;
 	@Autowired
 	private InterfaceServicoSaque servicoSaque;
@@ -44,8 +42,6 @@ public class Fachada {
 	@Autowired
 	private InterfaceServicoRegistroAvaliacao servicoRegistroAvaliacao;
 
-	
-	
 	// --- Paciente ---
 
 	public List<Paciente> buscarPacientes() {
@@ -62,6 +58,11 @@ public class Fachada {
 
 	public Paciente buscarPacientePorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPorId(id);
+	}
+
+	public Paciente cadastrarPaciente(Paciente paciente) throws ObjetoEmUsoException {
+		paciente.setCarteira(new Carteira());
+		return servicoPaciente.salvar(paciente);
 	}
 
 	public Paciente salvarPaciente(Paciente paciente) throws ObjetoEmUsoException {
@@ -83,13 +84,25 @@ public class Fachada {
 	public void removerPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
 		servicoPaciente.removerPlanoDeSaude(pacienteId);
 	}
-	
+
 	public Carteira salvarCarteiraPaciente(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.salvarCarteira(pacienteId, carteira);
 	}
-	
+
 	public Carteira buscarCarteiraPacientePorId(long pacienteId) throws ObjetoNaoEncontradoException {
-		return servicoPaciente.buscarCarteiraPorId(pacienteId);
+		return servicoPaciente.buscarCarteiraPorPacienteId(pacienteId);
+	}
+
+	public Pix buscarPixCarteiraPacientePorId(long pacienteId, long pixId) throws ObjetoNaoEncontradoException {
+		return servicoPaciente.buscarPixPorId(pacienteId, pixId);
+	}
+
+	public List<Pix> salvarPixCarteiraPaciente(long pacienteId, Pix pix) throws ObjetoNaoEncontradoException {
+		return servicoPaciente.salvarPixCarteira(pacienteId, pix);
+	}
+
+	public void removerPixCarteiraPaciente(long pacienteId, long pixId) throws ObjetoNaoEncontradoException {
+		servicoPaciente.removerPixCarteira(pacienteId, pixId);
 	}
 
 	// --- Medico ---
@@ -125,6 +138,11 @@ public class Fachada {
 
 	public Medico buscarMedicoPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorEspecialidade(nome, numeroRQE);
+	}
+
+	public Medico cadastrarMedico(Medico medico) throws ObjetoEmUsoException {
+		medico.setCarteira(new Carteira());
+		return servicoMedico.salvar(medico);
 	}
 
 	public Medico salvarMedico(Medico medico) throws ObjetoEmUsoException {
@@ -173,27 +191,21 @@ public class Fachada {
 	public Carteira salvarCarteiraMedico(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException {
 		return servicoMedico.salvarCarteira(medicoId, carteira);
 	}
-	
+
 	public Carteira buscarCarteiraMedicoPorId(long medicoId) throws ObjetoNaoEncontradoException {
-		return servicoMedico.buscarCarteiraPorId(medicoId);
-	}
-	
-	// --- Pix ---
-
-	public List<Pix> buscarPixs() {
-		return servicoPix.buscarTodos();
+		return servicoMedico.buscarCarteiraPorMedicoId(medicoId);
 	}
 
-	public Pix buscarPixPorId(long id) throws ObjetoNaoEncontradoException {
-		return servicoPix.buscarPorId(id);
+	public Pix buscarPixCarteiraMedicoPorId(long pacienteId, long pixId) throws ObjetoNaoEncontradoException {
+		return servicoMedico.buscarPixPorId(pacienteId, pixId);
 	}
 
-	public Pix salvarPix(Pix pix) {
-		return servicoPix.salvar(pix);
+	public List<Pix> salvarPixCarteiraMedico(long medicoId, Pix pix) throws ObjetoNaoEncontradoException {
+		return servicoMedico.salvarPixCarteira(medicoId, pix);
 	}
 
-	public void removerPix(long id) throws ObjetoNaoEncontradoException {
-		servicoPix.remover(id);
+	public void removerPixCarteiraMedico(long medicoId, long pixId) throws ObjetoNaoEncontradoException {
+		servicoMedico.removerPixCarteira(medicoId, pixId);
 	}
 
 	// --- Deposito ---

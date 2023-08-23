@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
@@ -80,7 +81,6 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		if (medicoExistenteByCpf != null && medico.getId() != medicoExistenteByCpf.getId())
 			throw new ObjetoEmUsoException("o", "CPF");
 
-		medico.setCarteira(new Carteira());
 		return colecaoMedico.save(medico);
 	}
 
@@ -88,7 +88,7 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		Medico m = buscarPorId(id);
 		colecaoMedico.deleteById(m.getId());
 	}
-	
+
 	// --- CRM ---
 
 	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException {
@@ -126,7 +126,7 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	// --- Especialidade ---
-	
+
 	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException {
 		Medico m = buscarPorId(medicoId);
 		return m.getEspecialidades();
@@ -156,7 +156,8 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		return salvar(m).getEspecialidades();
 	}
 
-	public void removerEspecialidade(long medicoId, Long especialidadeId) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+	public void removerEspecialidade(long medicoId, Long especialidadeId)
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
 		Medico m = buscarPorId(medicoId);
 		List<Especialidade> especialidades = m.getEspecialidades();
 		Especialidade e = buscarEspecialidadePorId(medicoId, especialidadeId);
@@ -164,16 +165,40 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		m.setEspecialidades(especialidades);
 		salvar(m);
 	}
-	
-	public Carteira buscarCarteiraPorId(long medicoId) throws ObjetoNaoEncontradoException{
+
+	public Carteira buscarCarteiraPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException {
 		return buscarPorId(medicoId).getCarteira();
-		
+	}
+
+	public Carteira salvarCarteira(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException {
+		Medico m = buscarPorId(medicoId);
+		m.setCarteira(carteira);
+		return colecaoMedico.save(m).getCarteira();
 	}
 	
-	public Carteira salvarCarteira(long medicoId, Carteira carteira) throws ObjetoNaoEncontradoException {
-		Medico medico = buscarPorId(medicoId);
-		medico.setCarteira(carteira);
-		return colecaoMedico.save(medico).getCarteira();
+	public Pix buscarPixPorId(long medicoId, long pixId) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(medicoId).getCarteira();
+		for (Pix p : c.getChavesPix())
+			if (p.getId() == pixId)
+				return p;
+		throw new ObjetoNaoEncontradoException("o", "pix");
+	}
+	
+	public List<Pix> salvarPixCarteira(long medicoId, Pix pix) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(medicoId).getCarteira();
+		List<Pix> lp = c.getChavesPix();
+		lp.add(pix);
+		c.setChavesPix(lp);
+		return salvarCarteira(medicoId, c).getChavesPix();
+	}
+	
+	public void removerPixCarteira(long medicoId, long pixId) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(medicoId).getCarteira();
+		List<Pix> lp = c.getChavesPix();
+		Pix pix = buscarPixPorId(medicoId, pixId);
+		lp.remove(pix);
+		c.setChavesPix(lp);
+		salvarCarteira(medicoId, c);
 	}
 
 }

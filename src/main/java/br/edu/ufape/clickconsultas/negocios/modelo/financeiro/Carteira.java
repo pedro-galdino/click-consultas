@@ -46,9 +46,5 @@ public class Carteira {
 	public void setChavesPix(List<Pix> chavesPix) {
 		this.chavesPix = chavesPix;
 	}
-	
-	public void removerPix(Pix pix) {
-        chavesPix.remove(pix);
-    }
 		
 }

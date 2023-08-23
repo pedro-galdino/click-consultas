@@ -3,6 +3,7 @@ package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
@@ -30,8 +31,14 @@ public interface InterfaceServicoPaciente {
 	
 	public void removerPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException;
 	
-	public Carteira buscarCarteiraPorId(long pacienteId) throws ObjetoNaoEncontradoException;
+	public Carteira buscarCarteiraPorPacienteId(long pacienteId) throws ObjetoNaoEncontradoException;
 	
-	public Carteira salvarCarteira(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException ;
+	public Carteira salvarCarteira(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException;
+	
+	public Pix buscarPixPorId(long pacienteId, long pixId) throws ObjetoNaoEncontradoException;
+
+	public List<Pix> salvarPixCarteira(long pacienteId, Pix pix) throws ObjetoNaoEncontradoException;
+
+	public void removerPixCarteira(long pacienteId, long pixId) throws ObjetoNaoEncontradoException;
 
 }

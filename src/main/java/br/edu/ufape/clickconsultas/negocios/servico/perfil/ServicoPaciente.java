@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
@@ -48,13 +49,13 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 
 	public Paciente salvar(Paciente paciente) throws ObjetoEmUsoException {
 		Paciente pacienteExistenteByEmail = colecaoPaciente.findByEmailContainingIgnoreCase(paciente.getEmail());
-		if (pacienteExistenteByEmail != null)
+		if (pacienteExistenteByEmail != null && paciente.getId() != pacienteExistenteByEmail.getId())
 			throw new ObjetoEmUsoException("o", "e-mail");
 
 		Paciente pacienteExistenteByCpf = colecaoPaciente.findByCpf(paciente.getCpf());
-		if (pacienteExistenteByCpf != null)
+		if (pacienteExistenteByCpf != null && paciente.getId() != pacienteExistenteByCpf.getId())
 			throw new ObjetoEmUsoException("o", "CPF");
-		paciente.setCarteira(new Carteira());
+
 		return colecaoPaciente.save(paciente);
 	}
 
@@ -64,7 +65,7 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 			throw new ObjetoNaoEncontradoException("o", "paciente");
 		colecaoPaciente.deleteById(p.getId());
 	}
-	
+
 	// --- Plano de Saúde ---
 
 	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
@@ -87,17 +88,40 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 		p.setPlano(null);
 		colecaoPaciente.save(p);
 	}
-	
-	public Carteira buscarCarteiraPorId(long pacienteId) throws ObjetoNaoEncontradoException{
+
+	public Carteira buscarCarteiraPorPacienteId(long pacienteId) throws ObjetoNaoEncontradoException {
 		return buscarPorId(pacienteId).getCarteira();
-		
-	}
-	
-	public Carteira salvarCarteira(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException {
-		Paciente paciente = buscarPorId(pacienteId);
-		paciente.setCarteira(carteira);
-		return colecaoPaciente.save(paciente).getCarteira();
 	}
 
+	public Carteira salvarCarteira(long pacienteId, Carteira carteira) throws ObjetoNaoEncontradoException {
+		Paciente p = buscarPorId(pacienteId);
+		p.setCarteira(carteira);
+		return colecaoPaciente.save(p).getCarteira();
+	}
+
+	public Pix buscarPixPorId(long pacienteId, long pixId) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(pacienteId).getCarteira();
+		for (Pix pix : c.getChavesPix())
+			if (pix.getId() == pixId)
+				return pix;
+		throw new ObjetoNaoEncontradoException("o", "pix");
+	}
+
+	public List<Pix> salvarPixCarteira(long pacienteId, Pix pix) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(pacienteId).getCarteira();
+		List<Pix> lp = c.getChavesPix();
+		lp.add(pix);
+		c.setChavesPix(lp);
+		return salvarCarteira(pacienteId, c).getChavesPix();
+	}
+
+	public void removerPixCarteira(long pacienteId, long pixId) throws ObjetoNaoEncontradoException {
+		Carteira c = buscarPorId(pacienteId).getCarteira();
+		List<Pix> lp = c.getChavesPix();
+		Pix pix = buscarPixPorId(pacienteId, pixId);
+		lp.remove(pix);
+		c.setChavesPix(lp);
+		salvarCarteira(pacienteId, c);
+	}
 
 }
