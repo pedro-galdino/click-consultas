@@ -3,15 +3,16 @@ package br.edu.ufape.clickconsultas.negocios.servico;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 public interface InterfaceServicoAvaliacao {
 
 	List<Avaliacao> buscarTodos();
 
-	Avaliacao buscarPorId(long id);
+	Avaliacao buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
 	Avaliacao salvar(Avaliacao avaliacao);
 
-	void remover(long id);
+	void remover(long id) throws ObjetoNaoEncontradoException;
 
 }

@@ -294,7 +294,7 @@ public class Fachada {
 		return servicoAvaliacao.buscarTodos();
 	}
 
-	public Avaliacao buscarAvaliacaoPorId(long id) {
+	public Avaliacao buscarAvaliacaoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoAvaliacao.buscarPorId(id);
 	}
 
@@ -302,7 +302,7 @@ public class Fachada {
 		return servicoAvaliacao.salvar(avaliacao);
 	}
 
-	public void removerAvaliacao(long id) {
+	public void removerAvaliacao(long id) throws ObjetoNaoEncontradoException {
 		servicoAvaliacao.remover(id);
 	}
 
@@ -312,7 +312,7 @@ public class Fachada {
 		return servicoConsulta.buscarTodos();
 	}
 
-	public Consulta buscarConsultaPorId(long id) {
+	public Consulta buscarConsultaPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoConsulta.buscarPorId(id);
 	}
 
@@ -320,7 +320,7 @@ public class Fachada {
 		return servicoConsulta.salvar(consulta);
 	}
 
-	public void removerConsulta(long id) {
+	public void removerConsulta(long id) throws ObjetoNaoEncontradoException {
 		servicoConsulta.remover(id);
 	}
 
@@ -330,7 +330,7 @@ public class Fachada {
 		return servicoEnderecoMedico.buscarTodos();
 	}
 
-	public EnderecoMedico buscarEnderecoMedicoPorId(long id) {
+	public EnderecoMedico buscarEnderecoMedicoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoEnderecoMedico.buscarPorId(id);
 	}
 
@@ -338,7 +338,7 @@ public class Fachada {
 		return servicoEnderecoMedico.salvar(enderecoMedico);
 	}
 
-	public void removerEnderecoMedico(long id) {
+	public void removerEnderecoMedico(long id) throws ObjetoNaoEncontradoException {
 		servicoEnderecoMedico.remover(id);
 	}
 
@@ -348,11 +348,11 @@ public class Fachada {
 		return servicoHorarioAgendado.buscarTodos();
 	}
 
-	public List<HorarioAgendado> BuscarHorarioAgendadoPorData(LocalDate data) {
+	public List<HorarioAgendado> BuscarHorarioAgendadoPorData(LocalDate data) throws ObjetoNaoEncontradoException {
 		return servicoHorarioAgendado.BuscarPorData(data);
 	}
 
-	public HorarioAgendado buscarHorarioAgendadoPorId(long id) {
+	public HorarioAgendado buscarHorarioAgendadoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoHorarioAgendado.buscarPorId(id);
 	}
 
@@ -360,7 +360,7 @@ public class Fachada {
 		return servicoHorarioAgendado.salvar(horarioAgendado);
 	}
 
-	public void removerHorarioAgendado(long id) {
+	public void removerHorarioAgendado(long id) throws ObjetoNaoEncontradoException {
 		servicoHorarioAgendado.remover(id);
 	}
 
@@ -392,7 +392,7 @@ public class Fachada {
 		return servicoRegistroAvaliacao.buscarTodos();
 	}
 
-	public RegistroAvaliacao buscarRegistroAvaliacaoPorId(long id) {
+	public RegistroAvaliacao buscarRegistroAvaliacaoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoRegistroAvaliacao.buscarPorId(id);
 	}
 
@@ -400,7 +400,7 @@ public class Fachada {
 		return servicoRegistroAvaliacao.salvar(registroAvaliacao);
 	}
 
-	public void removerRegistroAvaliacao(long id) {
+	public void removerRegistroAvaliacao(long id) throws ObjetoNaoEncontradoException {
 		servicoRegistroAvaliacao.remover(id);
 	}
 

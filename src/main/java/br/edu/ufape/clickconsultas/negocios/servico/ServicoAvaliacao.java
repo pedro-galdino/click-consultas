@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 
 
@@ -17,17 +18,27 @@ public class ServicoAvaliacao implements InterfaceServicoAvaliacao {
 	
 	public List<Avaliacao> buscarTodos() {
 		return colecaoAvaliacao.findAll();
+		
 	}
 
-	public Avaliacao buscarPorId(long id) {
-		return colecaoAvaliacao.findById(id).orElse(null);
+	public Avaliacao buscarPorId(long id) throws ObjetoNaoEncontradoException {
+		Avaliacao avaliacao = colecaoAvaliacao.findById(id).orElse(null);
+		if(avaliacao == null) 
+			throw new ObjetoNaoEncontradoException("a", "avaliacao");
+		
+		return avaliacao;
+			
 	}
 
 	public Avaliacao salvar(Avaliacao avaliacao) {
-		return colecaoAvaliacao.save(avaliacao);		
+		return colecaoAvaliacao.save(avaliacao);	
+		
 	}
 
-	public void remover(long id) {
-		colecaoAvaliacao.deleteById(id);
+	public void remover(long id) throws ObjetoNaoEncontradoException {
+		Avaliacao avaliacao = buscarPorId(id);
+		if(avaliacao != null)
+			colecaoAvaliacao.deleteById(id);
+		
 	}
 }

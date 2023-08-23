@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoConsulta;
 import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @Service
 public class ServicoConsulta implements InterfaceServicoConsulta {
@@ -15,17 +16,27 @@ public class ServicoConsulta implements InterfaceServicoConsulta {
 	
 	public List<Consulta> buscarTodos() {
 		return colecaoConsulta.findAll();
+		
 	}
 	
-	public Consulta buscarPorId(long id) {
-		return colecaoConsulta.findById(id).orElse(null);
+	public Consulta buscarPorId(long id) throws ObjetoNaoEncontradoException {
+		Consulta consulta =  colecaoConsulta.findById(id).orElse(null);
+		if(consulta == null) 
+			throw new ObjetoNaoEncontradoException("a", "consulta");
+		
+		return consulta;
+		
 	}
 
 	public Consulta salvar(Consulta consulta) {
-		return colecaoConsulta.save(consulta);		
+		return colecaoConsulta.save(consulta);
+		
 	}
 
-	public void remover(long id) {
-		colecaoConsulta.deleteById(id);
+	public void remover(long id) throws ObjetoNaoEncontradoException {
+		Consulta consulta = buscarPorId(id);
+		if(consulta != null)
+			colecaoConsulta.deleteById(id);
+		
 	}
 }
