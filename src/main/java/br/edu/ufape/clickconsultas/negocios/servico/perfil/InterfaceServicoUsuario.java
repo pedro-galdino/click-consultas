@@ -24,6 +24,7 @@ public interface InterfaceServicoUsuario {
 
 	void remover(long id) throws ObjetoNaoEncontradoException; 
 
+
 	Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException; 
 
 	Carteira salvarCarteira(long usuarioId, Carteira carteira) throws ObjetoNaoEncontradoException;

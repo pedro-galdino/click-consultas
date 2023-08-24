@@ -332,20 +332,20 @@ class ServicoUsuarioTest {
 		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPixPorId(paciente.getId(), id));
 	}
 		
-	
 	@Test
 	@Transactional
 	void testarSalvarPixCarteira() {
-		Pix pix = new Pix("698562695", "celular");
-		Paciente paciente = new Paciente();
-		Carteira carteira = new Carteira();
-		paciente.setCarteira(carteira);
-		colecaoUsuario.save(paciente);
-		
-		try {
-			servicoUsuario.salvarPixCarteira(paciente.getId(), pix);
+	    Pix pix = new Pix("698562695", "celular");
+	    Paciente paciente = new Paciente();
+	    Carteira carteira = new Carteira();
+	    paciente.setCarteira(carteira);
+	    colecaoUsuario.save(paciente);
+
+	    try {
+	    	servicoUsuario.salvarPixCarteira(paciente.getId(), pix);
 			return;
 		}catch (Exception e) {
+			System.out.println(e);
 			fail();
 		}
 	}
@@ -359,9 +359,7 @@ class ServicoUsuarioTest {
 		List<Pix> pixs = List.of(pix);
 		carteira.setChavesPix(pixs);
 		paciente.setCarteira(carteira);
-	
 		colecaoUsuario.save(paciente);
-		
 		try {
 			servicoUsuario.removerPixCarteira(paciente.getId(), pix.getId());
 			return;

@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,23 +85,23 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException {
-		Carteira c = buscarPorId(usuarioId).getCarteira();
-		List<Pix> lp = c.getChavesPix();
-		if(lp == null) {
-			lp = List.of(pix);
-		}
-		else {
-			lp.add(pix);
-		}
-		c.setChavesPix(lp);
-		return salvarCarteira(usuarioId, c).getChavesPix(); //Esse retorno da erro: UnsupportedOperationException
+	    Carteira c = buscarPorId(usuarioId).getCarteira();
+	    List<Pix> lp = c.getChavesPix();
+	    if (lp == null) {
+	        lp = new ArrayList<>(List.of(pix));
+	    } else {
+	        lp = new ArrayList<>(lp);
+	        lp.add(pix);
+	    }
+	    c.setChavesPix(lp);
+	    return salvarCarteira(usuarioId, c).getChavesPix();
 	}
 
 	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
-		List<Pix> lp = c.getChavesPix();
+		List<Pix> lp = new ArrayList<>(c.getChavesPix());
 		Pix pix = buscarPixPorId(usuarioId, pixId);
-		lp.remove(pix); //Aparentemente, quebra aqui: UnsupportedOperationException
+		lp.remove(pix);
 		c.setChavesPix(lp);
 		salvarCarteira(usuarioId, c);
 	}

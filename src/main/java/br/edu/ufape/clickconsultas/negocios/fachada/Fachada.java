@@ -69,6 +69,7 @@ public class Fachada {
 	public void removerUsuario(long id) throws ObjetoNaoEncontradoException {
 		servicoUsuario.remover(id);
 	}
+	
 
 	// --- Paciente ---
 
@@ -84,7 +85,8 @@ public class Fachada {
 	public Paciente salvarPaciente(Paciente paciente) {
 		return servicoPaciente.salvar(paciente);
 	}
-
+	
+	
 	// --- Plano de Saúde ---
 	
 	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
@@ -99,6 +101,7 @@ public class Fachada {
 		servicoPaciente.removerPlanoDeSaude(pacienteId);
 	}
 
+	
 	// --- Medico ---
 
 	public Medico buscarMedicoPorId(long medicoId) throws ObjetoNaoEncontradoException {
