@@ -19,8 +19,6 @@ public class EnderecoMedico {
 	private String logradouro;
 	private int numero;
 	private String detalhamento;
-	@ManyToOne
-	private Medico medico;
 
 	public EnderecoMedico() {
 	}
@@ -35,7 +33,6 @@ public class EnderecoMedico {
 		this.logradouro = logradouro;
 		this.numero = numero;
 		this.detalhamento = detalhamento;
-		this.medico = medico;
 	}
 
 	public long getId() {
@@ -96,14 +93,6 @@ public class EnderecoMedico {
 
 	public void setDetalhamento(String detalhamento) {
 		this.detalhamento = detalhamento;
-	}
-
-	public Medico getMedico() {
-		return medico;
-	}
-
-	public void setMedico(Medico medico) {
-		this.medico = medico;
 	}
 
 }

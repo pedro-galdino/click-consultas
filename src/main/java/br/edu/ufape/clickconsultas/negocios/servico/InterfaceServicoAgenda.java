@@ -13,6 +13,8 @@ public interface InterfaceServicoAgenda {
 	Agenda buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
 	Agenda salvar(Agenda agenda) throws DadosInsuficientesException;
+	
+	List<Agenda> buscarPorIdMedico(long medicoId);
 
 	void remover(long id) throws ObjetoNaoEncontradoException;
 

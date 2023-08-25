@@ -3,6 +3,7 @@ package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 import java.time.LocalDate;
 import java.util.List;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -18,18 +19,21 @@ public class Medico extends Usuario {
 	private List<Especialidade> especialidades;
 	@OneToOne(cascade = CascadeType.ALL)
 	private RegistroAvaliacao registroAvaliacao;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<EnderecoMedico> enderecoMedico;
 
 	public Medico() {
 	}
 
 	public Medico(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email,
 			String senha, String foto, List<CRM> crm, List<Especialidade> especialidades,
-			RegistroAvaliacao registroAvaliacao) {
+			RegistroAvaliacao registroAvaliacao, List<EnderecoMedico> enderecoMedico) {
 		super(nome, cpf, dataNascimento, sexo, telefone, email, senha);
 		this.foto = foto;
 		this.crm = crm;
 		this.especialidades = especialidades;
 		this.registroAvaliacao = new RegistroAvaliacao();
+		this.enderecoMedico = enderecoMedico;
 	}
 
 	public String getFoto() {
@@ -62,6 +66,14 @@ public class Medico extends Usuario {
 
 	public void setRegistroAvaliacao(RegistroAvaliacao registroAvaliacao) {
 		this.registroAvaliacao = registroAvaliacao;
+	}
+	
+	public List<EnderecoMedico> getEnderecosMedico() {
+		return enderecoMedico;
+	}
+
+	public void setEnderecosMedico(List<EnderecoMedico> enderecoMedico) {
+		this.enderecoMedico = enderecoMedico;
 	}
 
 	public void removerCrm(CRM crm) {

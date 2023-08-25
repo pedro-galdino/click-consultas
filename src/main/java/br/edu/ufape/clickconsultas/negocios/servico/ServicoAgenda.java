@@ -26,9 +26,7 @@ public class ServicoAgenda implements InterfaceServicoAgenda {
 		return agenda;
 	}
 
-	public Agenda salvar(Agenda agenda) throws DadosInsuficientesException {
-		if (agenda.verificarAtributos() == true)
-			throw new DadosInsuficientesException();
+	public Agenda salvar(Agenda agenda) {
 		return colecaoAgenda.save(agenda);
 	}
 
@@ -38,5 +36,10 @@ public class ServicoAgenda implements InterfaceServicoAgenda {
 			throw new ObjetoNaoEncontradoException("a", "agenda");
 		colecaoAgenda.deleteById(id);
 	}
+	
+	public List<Agenda> buscarPorIdMedico(long medicoId) {
+        List<Agenda> agendas = colecaoAgenda.findAllByMedicoId(medicoId);
+        return agendas;
+    }
 
 }

@@ -36,8 +36,6 @@ public class Fachada {
 	@Autowired
 	private InterfaceServicoConsulta servicoConsulta;
 	@Autowired
-	private InterfaceServicoEnderecoMedico servicoEnderecoMedico;
-	@Autowired
 	private InterfaceServicoHorarioAgendado servicoHorarioAgendado;
 	@Autowired
 	private InterfaceServicoHorarios servicoHorarios;
@@ -252,13 +250,31 @@ public class Fachada {
 	public Agenda buscarAgendaPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoAgenda.buscarPorId(id);
 	}
+	
+	public List<Agenda> buscarAgendasPorMedicoId(long medicoId) {
+		return servicoAgenda.buscarPorIdMedico(medicoId);
+	}
 
-	public Agenda salvarAgenda(Agenda agenda) throws DadosInsuficientesException {
+	public Agenda salvarAgenda(Agenda agenda, long medicoId) throws DadosInsuficientesException, ObjetoNaoEncontradoException {
+		Medico medico = servicoMedico.buscarPorId(medicoId);
+		agenda.setMedico(medico);
+		if(agenda.getMedico().getId() == medicoId) {
+			return servicoAgenda.salvar(agenda);
+		}
+		throw new ObjetoNaoEncontradoException("O", "medico");
+	}
+	
+	public Agenda atualizarAgenda(Agenda agenda, long agendaId) throws DadosInsuficientesException, ObjetoNaoEncontradoException {
 		return servicoAgenda.salvar(agenda);
 	}
 
-	public void removerAgenda(long id) throws ObjetoNaoEncontradoException {
-		servicoAgenda.remover(id);
+	public void removerAgenda(long medicoId, long id) throws ObjetoNaoEncontradoException {
+		Agenda agenda = servicoAgenda.buscarPorId(id);
+		Medico medico = servicoMedico.buscarPorId(medicoId);
+		if(agenda.getMedico().equals(medico))
+			servicoAgenda.remover(id);
+		else
+			throw new ObjetoNaoEncontradoException("o", "medico");
 	}
 
 	// --- Agendamento ---
@@ -313,24 +329,6 @@ public class Fachada {
 
 	public void removerConsulta(long id) throws ObjetoNaoEncontradoException {
 		servicoConsulta.remover(id);
-	}
-
-	// --- EnderecoMedico ---
-
-	public List<EnderecoMedico> buscarEnderecosMedicos() {
-		return servicoEnderecoMedico.buscarTodos();
-	}
-
-	public EnderecoMedico buscarEnderecoMedicoPorId(long id) throws ObjetoNaoEncontradoException {
-		return servicoEnderecoMedico.buscarPorId(id);
-	}
-
-	public EnderecoMedico salvarEnderecoMedico(EnderecoMedico enderecoMedico) {
-		return servicoEnderecoMedico.salvar(enderecoMedico);
-	}
-
-	public void removerEnderecoMedico(long id) throws ObjetoNaoEncontradoException {
-		servicoEnderecoMedico.remover(id);
 	}
 
 	// --- HorarioAgendado ---

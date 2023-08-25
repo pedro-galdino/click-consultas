@@ -44,7 +44,6 @@ class ServicoAgendaTest {
 				List.of("Plano A", "Plano B"), // planosAtendidos
 				150.0, // valorConsulta
 				"contato@medico.com", // contato
-				List.of(localConsulta), // locaisConsulta
 				List.of(horariosDisponiveis), // horariosDisponiveis
 				List.of(horariosAgendados), // horariosAgendados
 				medico // medico

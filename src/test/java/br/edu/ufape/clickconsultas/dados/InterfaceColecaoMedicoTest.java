@@ -20,7 +20,7 @@ class InterfaceColecaoMedicoTest {
 	void cadastrarMedicoTest() {
 		long qtdMedico = colecaoMedico.count();
 		LocalDate dataNasc = LocalDate.of(1990, 12, 30);
-		Medico m = new Medico("João", "999.999.999-91", dataNasc, "Homem", "99999-9991", "email@email.com", "1234", null, null, null, null);
+		Medico m = new Medico("João", "999.999.999-91", dataNasc, "Homem", "99999-9991", "email@email.com", "1234", null, null, null, null, null);
 		
 		colecaoMedico.save(m);
 		long novaQtdMedico = colecaoMedico.count();
