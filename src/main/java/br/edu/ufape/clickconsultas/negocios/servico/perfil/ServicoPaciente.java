@@ -23,7 +23,7 @@ public class ServicoPaciente implements InterfaceServicoPaciente {
 	public Paciente salvar(Paciente paciente) {
 		return colecaoPaciente.save(paciente);
 	}
-	
+
 	// --- Plano de Saúde ---
 
 	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {

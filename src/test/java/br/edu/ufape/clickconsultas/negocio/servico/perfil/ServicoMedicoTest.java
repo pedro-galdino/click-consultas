@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadesExcedidasException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoMedico;
@@ -41,10 +45,9 @@ class ServicoMedicoTest {
 		assertEquals(medico1, colecaoMedico.findByCrmUfAndCrmNumero(crm1.getUf(), crm1.getNumero()));
 	}
 
-	
 	@Test
 	@Transactional
-	void testarSalvarMedico(){
+	void testarSalvarMedico() {
 		Medico medico = new Medico();
 		try {
 			servicoMedico.salvar(medico);
@@ -72,8 +75,9 @@ class ServicoMedicoTest {
 	@Test
 	@Transactional
 	void testarBuscarPorCrmInexistente() {
-		CRM crm = new CRM ("RN", 1234);
-		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorCrm(crm.getUf(), crm.getNumero()));
+		CRM crm = new CRM("RN", 1234);
+		assertThrows(ObjetoNaoEncontradoException.class,
+				() -> servicoMedico.buscarPorCrm(crm.getUf(), crm.getNumero()));
 	}
 
 	@Test
@@ -118,6 +122,31 @@ class ServicoMedicoTest {
 		colecaoMedico.save(medico2);
 
 		assertEquals(medico2, servicoMedico.buscarPorCrm(crm4.getUf(), crm4.getNumero()));
+	}
+
+	@Test
+	@Transactional
+	void buscarCrmEmListaVaziaTest() {
+		Medico m = new Medico();
+		colecaoMedico.save(m);
+		CRM crmNaoSalvo = new CRM();
+
+		assertThrows(ListaVaziaException.class, () -> servicoMedico.buscarCrmPorId(m.getId(), crmNaoSalvo.getId()));
+	}
+
+	@Test
+	@Transactional
+	void testarSalvarCrm() throws ObjetoNaoEncontradoException {
+		CRM crm = new CRM("PE", 1560);
+		Medico m = new Medico();
+		servicoMedico.salvar(m);
+
+		try {
+			servicoMedico.salvarCrm(m.getId(), crm);
+			return;
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -183,6 +212,109 @@ class ServicoMedicoTest {
 		List<Medico> lista = servicoMedico.buscarPorNomeEspecialidade(especialidadeNome);
 
 		assertTrue(lista.contains(medico));
+	}
+
+	@Test
+	@Transactional
+	void buscarEspecialidadeEmListaVaziaTest() {
+		Medico m = new Medico();
+		colecaoMedico.save(m);
+		Especialidade especialidadeNaoSalva = new Especialidade();
+
+		assertThrows(ListaVaziaException.class,
+				() -> servicoMedico.buscarEspecialidadePorId(m.getId(), especialidadeNaoSalva.getId()));
+	}
+
+	@Test
+	@Transactional
+	void testarSalvarEspecialidade()
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, EspecialidadesExcedidasException {
+		Especialidade especialidade = new Especialidade("cardiologia", 2060);
+		Medico m = new Medico();
+		servicoMedico.salvar(m);
+
+		try {
+			servicoMedico.salvarEspecialidade(m.getId(), especialidade);
+			return;
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	@Test
+	@Transactional
+	void testarBuscarEnderecoMedicoPorId() throws ObjetoNaoEncontradoException, ListaVaziaException {
+		EnderecoMedico endereco = new EnderecoMedico();
+		Medico m = new Medico();
+		m.setEnderecos(List.of(endereco));
+		colecaoMedico.save(m);
+
+		assertEquals(endereco, servicoMedico.buscarEnderecoPorId(m.getId(), endereco.getId()));
+	}
+
+	@Test
+	@Transactional
+	void testarBuscarEnderecoMedicoPorIdInexistente() {
+		EnderecoMedico endereco = new EnderecoMedico();
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoMedico.buscarPorId(endereco.getId()));
+	}
+
+	@Test
+	@Transactional
+	void testarSalvarEnderecoMedico() {
+		Medico m = new Medico();
+		colecaoMedico.save(m);
+		EnderecoMedico endereco = new EnderecoMedico();
+
+		try {
+			servicoMedico.salvarEndereco(m.getId(), endereco);
+			return;
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	@Test
+	@Transactional
+	void testarRemoverEnderecoMedicoPorId() throws ObjetoNaoEncontradoException {
+		Medico m = new Medico();
+		EnderecoMedico endereco = new EnderecoMedico();
+		List<EnderecoMedico> enderecos = new ArrayList<EnderecoMedico>();
+		enderecos.add(endereco);
+		m.setEnderecos(enderecos);
+		colecaoMedico.save(m);
+
+		try {
+			servicoMedico.removerEndereco(m.getId(), endereco.getId());
+			return;
+		} catch (Exception e) {
+			System.out.println(e);
+			fail();
+		}
+	}
+
+	@Test
+	@Transactional
+	void buscarEnderecoMedicoEmListaVaziaTest() {
+		Medico m = new Medico();
+		colecaoMedico.save(m);
+		EnderecoMedico enderecoNaoSalvo = new EnderecoMedico();
+
+		assertThrows(ListaVaziaException.class,
+				() -> servicoMedico.buscarEnderecoPorId(m.getId(), enderecoNaoSalvo.getId()));
+	}
+
+	@Test
+	@Transactional
+	void testarEnderecoMedicoPorIdInexistente() {
+		Medico m = new Medico();
+		EnderecoMedico enderecoSalvo = new EnderecoMedico();
+		m.setEnderecos(List.of(enderecoSalvo));
+		colecaoMedico.save(m);
+		EnderecoMedico enderecoNaoSalvo = new EnderecoMedico();
+
+		assertThrows(ObjetoNaoEncontradoException.class,
+				() -> servicoMedico.removerEndereco(m.getId(), enderecoNaoSalvo.getId()));
 	}
 
 }

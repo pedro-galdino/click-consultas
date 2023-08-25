@@ -3,7 +3,6 @@ package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,6 +16,8 @@ public class Medico extends Usuario {
 	private List<CRM> crm;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Especialidade> especialidades;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<EnderecoMedico> enderecos;
 	@OneToOne(cascade = CascadeType.ALL)
 	private RegistroAvaliacao registroAvaliacao;
 	@OneToMany(cascade = CascadeType.ALL)
@@ -26,14 +27,13 @@ public class Medico extends Usuario {
 	}
 
 	public Medico(String nome, String cpf, LocalDate dataNascimento, String sexo, String telefone, String email,
-			String senha, String foto, List<CRM> crm, List<Especialidade> especialidades,
-			RegistroAvaliacao registroAvaliacao, List<EnderecoMedico> enderecoMedico) {
+			String senha, String foto, List<CRM> crm, List<Especialidade> especialidades, List<EnderecoMedico> enderecos) {
 		super(nome, cpf, dataNascimento, sexo, telefone, email, senha);
 		this.foto = foto;
 		this.crm = crm;
 		this.especialidades = especialidades;
+		this.enderecos = enderecos;
 		this.registroAvaliacao = new RegistroAvaliacao();
-		this.enderecoMedico = enderecoMedico;
 	}
 
 	public String getFoto() {
@@ -67,7 +67,7 @@ public class Medico extends Usuario {
 	public void setRegistroAvaliacao(RegistroAvaliacao registroAvaliacao) {
 		this.registroAvaliacao = registroAvaliacao;
 	}
-	
+
 	public List<EnderecoMedico> getEnderecosMedico() {
 		return enderecoMedico;
 	}
@@ -82,6 +82,14 @@ public class Medico extends Usuario {
 
 	public void removerEspecialidade(Especialidade especialidade) {
 		especialidades.remove(especialidade);
+	}
+
+	public List<EnderecoMedico> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<EnderecoMedico> enderecos) {
+		this.enderecos = enderecos;
 	}
 
 }

@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadesExcedidasException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
@@ -52,19 +55,23 @@ public class ServicoMedico implements InterfaceServicoMedico {
 
 	// --- CRM ---
 
-	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException {
+	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
-		List<CRM> crms = m.getCrm();
-		if (crms.isEmpty())
-			throw new ObjetoNaoEncontradoException("o", "CRM");
-		return crms;
+		if (m.getCrm() == null || m.getCrm().isEmpty())
+			throw new ListaVaziaException("CRM");
+
+		return m.getCrm();
 	}
 
-	public CRM buscarCrmPorId(long medicoId, long crmId) throws ObjetoNaoEncontradoException {
+	public CRM buscarCrmPorId(long medicoId, long crmId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
+		if (m.getCrm() == null || m.getCrm().isEmpty())
+			throw new ListaVaziaException("CRM");
+
 		for (CRM crm : m.getCrm())
 			if (crm.getId() == crmId)
 				return crm;
+
 		throw new ObjetoNaoEncontradoException("o", "CRM");
 	}
 
@@ -74,13 +81,18 @@ public class ServicoMedico implements InterfaceServicoMedico {
 			throw new ObjetoEmUsoException("o", "CRM");
 
 		Medico m = buscarPorId(medicoId);
-		List<CRM> crms = m.getCrm();
+		List<CRM> crms = new ArrayList<CRM>();
+
+		if (m.getCrm() != null)
+			crms.addAll(m.getCrm());
+
 		crms.add(crm);
 		m.setCrm(crms);
 		return salvar(m).getCrm();
 	}
 
-	public void removerCrm(long medicoId, long crmId) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+	public void removerCrm(long medicoId, long crmId)
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
 		List<CRM> crms = m.getCrm();
 		CRM crm = buscarCrmPorId(medicoId, crmId);
@@ -91,29 +103,38 @@ public class ServicoMedico implements InterfaceServicoMedico {
 
 	// --- Especialidade ---
 
-	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException {
+	public List<Especialidade> buscarEspecialidades(long medicoId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
-		List<Especialidade> especialidades = m.getEspecialidades();
-		if (especialidades.isEmpty())
-			throw new ObjetoNaoEncontradoException("a", "especialidade");
-		return especialidades;
+		if (m.getEspecialidades() == null || m.getEspecialidades().isEmpty())
+			throw new ListaVaziaException("especialidade");
+
+		return m.getEspecialidades();
 	}
 
 	public Especialidade buscarEspecialidadePorId(long medicoId, long especialidadeId)
-			throws ObjetoNaoEncontradoException {
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
+		if (m.getEspecialidades() == null || m.getEspecialidades().isEmpty())
+			throw new ListaVaziaException("especialidade");
+
 		for (Especialidade e : m.getEspecialidades())
 			if (e.getId() == especialidadeId)
 				return e;
+
 		throw new ObjetoNaoEncontradoException("a", "especialidade");
 	}
 
 	public List<Especialidade> salvarEspecialidade(long medicoId, Especialidade e)
 			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, EspecialidadesExcedidasException {
 		Medico m = buscarPorId(medicoId);
-		List<Especialidade> especialidades = m.getEspecialidades();
-		if (m.getEspecialidades().size() == 2)
-			throw new EspecialidadesExcedidasException();
+		List<Especialidade> especialidades = new ArrayList<Especialidade>();
+
+		if (m.getEspecialidades() != null) {
+			if (m.getEspecialidades().size() == 2)
+				throw new EspecialidadesExcedidasException();
+			especialidades.addAll(m.getEspecialidades());
+		}
 
 		if (colecaoMedico.findByEspecialidadesNomeAndEspecialidadesNumeroRQE(e.getNome(), e.getNumeroRQE()) != null)
 			throw new ObjetoEmUsoException("a", "especialidade");
@@ -124,12 +145,59 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public void removerEspecialidade(long medicoId, Long especialidadeId)
-			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, ListaVaziaException {
 		Medico m = buscarPorId(medicoId);
 		List<Especialidade> especialidades = m.getEspecialidades();
 		Especialidade e = buscarEspecialidadePorId(medicoId, especialidadeId);
 		especialidades.remove(e);
 		m.setEspecialidades(especialidades);
+		salvar(m);
+	}
+
+	// --- Endereço Médico ---
+
+	public List<EnderecoMedico> buscarEnderecos(long medicoId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
+		Medico m = buscarPorId(medicoId);
+		if (m.getEnderecos() == null || m.getEnderecos().isEmpty())
+			throw new ListaVaziaException("endereço médico");
+
+		return m.getEnderecos();
+	}
+
+	public EnderecoMedico buscarEnderecoPorId(long medicoId, long enderecoId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
+		Medico m = buscarPorId(medicoId);
+		if (m.getEnderecos() == null || m.getEnderecos().isEmpty())
+			throw new ListaVaziaException("endereço médico");
+
+		for (EnderecoMedico endereco : m.getEnderecos())
+			if (endereco.getId() == enderecoId)
+				return endereco;
+
+		throw new ObjetoNaoEncontradoException("o", "endereço médico");
+	}
+
+	public List<EnderecoMedico> salvarEndereco(long medicoId, EnderecoMedico endereco)
+			throws ObjetoNaoEncontradoException {
+		Medico m = buscarPorId(medicoId);
+		List<EnderecoMedico> enderecos = new ArrayList<EnderecoMedico>();
+
+		if (m.getEnderecos() != null)
+			enderecos.addAll(m.getEnderecos());
+
+		enderecos.add(endereco);
+		m.setEnderecos(enderecos);
+		return salvar(m).getEnderecos();
+	}
+
+	public void removerEndereco(long medicoId, Long enderecoId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
+		Medico m = buscarPorId(medicoId);
+		List<EnderecoMedico> enderecos = m.getEnderecos();
+		EnderecoMedico endereco = buscarEnderecoPorId(medicoId, enderecoId);
+		enderecos.remove(endereco);
+		m.setEnderecos(enderecos);
 		salvar(m);
 	}
 

@@ -2,6 +2,7 @@ package br.edu.ufape.clickconsultas.negocios.modelo;
 
 import java.lang.reflect.Field;
 
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

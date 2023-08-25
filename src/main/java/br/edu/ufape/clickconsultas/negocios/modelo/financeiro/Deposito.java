@@ -67,11 +67,10 @@ public class Deposito implements Transacao {
 
 	@Override
 	public void processarTransacao() throws Exception {
-		if (valor > 0) {
+		if (valor > 0)
 			carteira.setSaldo(carteira.getSaldo() + valor);
-		} else {
+		else
 			throw new Exception("Valor para depósito inválido.");
-		}
 	}
 
 	public void gerarPixCopiaECola() {

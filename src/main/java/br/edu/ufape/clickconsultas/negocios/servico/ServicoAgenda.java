@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.InterfaceColecaoAgenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.DadosInsuficientesException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @Service
@@ -18,6 +17,11 @@ public class ServicoAgenda implements InterfaceServicoAgenda {
 	public List<Agenda> buscarTodos() {
 		return colecaoAgenda.findAll();
 	}
+	
+	public List<Agenda> buscarPorIdMedico(long medicoId) throws ObjetoNaoEncontradoException {
+        List<Agenda> agendas = colecaoAgenda.findAllByMedicoId(medicoId);
+        return agendas;
+    }
 
 	public Agenda buscarPorId(long id) throws ObjetoNaoEncontradoException {
 		Agenda agenda = colecaoAgenda.findById(id).orElse(null);
@@ -31,15 +35,8 @@ public class ServicoAgenda implements InterfaceServicoAgenda {
 	}
 
 	public void remover(long id) throws ObjetoNaoEncontradoException {
-		Agenda agenda = colecaoAgenda.findById(id).orElse(null);
-		if (agenda == null)
-			throw new ObjetoNaoEncontradoException("a", "agenda");
-		colecaoAgenda.deleteById(id);
+		Agenda agenda = buscarPorId(id);
+		colecaoAgenda.deleteById(agenda.getId());
 	}
 	
-	public List<Agenda> buscarPorIdMedico(long medicoId) {
-        List<Agenda> agendas = colecaoAgenda.findAllByMedicoId(medicoId);
-        return agendas;
-    }
-
 }

@@ -18,21 +18,20 @@ import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoUsuario;
 
-
 @SpringBootTest
 class ServicoUsuarioTest {
-	
+
 	@Autowired
 	private InterfaceColecaoUsuario colecaoUsuario;
-	
-	@Autowired 
+
+	@Autowired
 	private InterfaceServicoUsuario servicoUsuario;
 
-	
 	@Test
 	@Transactional
 	void testarBuscarPorIdExistente() throws ObjetoNaoEncontradoException {
@@ -40,18 +39,18 @@ class ServicoUsuarioTest {
 		Medico medico = new Medico();
 		colecaoUsuario.save(medico);
 		colecaoUsuario.save(paciente);
-		
+
 		assertEquals(medico, servicoUsuario.buscarPorId(medico.getId()));
 		assertEquals(paciente, servicoUsuario.buscarPorId(paciente.getId()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorIdInexistente() {
 		long id = 234L;
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPorId(id));
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarPorId(id));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorNomeExistente() {
@@ -61,17 +60,17 @@ class ServicoUsuarioTest {
 		colecaoUsuario.save(paciente);
 		List<Usuario> lista1 = servicoUsuario.buscarPorNome(nome);
 		List<Usuario> lista2 = servicoUsuario.buscarPorNome("Carlos eduardo");
-		
+
 		assertTrue(lista1.contains(paciente));
 		assertTrue(lista2.contains(paciente));
-		
+
 		String nome2 = " Carlos Eduardo ";
 		Medico medico = new Medico();
 		medico.setNome(nome2);
 		colecaoUsuario.save(medico);
 		List<Usuario> lista3 = servicoUsuario.buscarPorNome(nome);
 		List<Usuario> lista4 = servicoUsuario.buscarPorNome("Carlos eduardo");
-		
+
 		assertTrue(lista3.contains(paciente));
 		assertTrue(lista4.contains(paciente));
 	}
@@ -96,7 +95,6 @@ class ServicoUsuarioTest {
 		assertEquals(lista.size(), 2);
 	}
 
-
 	@Test
 	@Transactional
 	void testarBuscarPorNomeInexistente() {
@@ -107,15 +105,15 @@ class ServicoUsuarioTest {
 		List<Usuario> lista1 = servicoUsuario.buscarPorNome("Roberto César");
 		List<Usuario> lista2 = servicoUsuario.buscarPorNome("Julio Roberio");
 		try {
-			if(!lista1.contains(paciente))
-				if(!lista2.contains(paciente))
+			if (!lista1.contains(paciente))
+				if (!lista2.contains(paciente))
 					return;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			fail();
 		}
-		
-		}
-	
+
+	}
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmail() throws ObjetoNaoEncontradoException {
@@ -123,10 +121,10 @@ class ServicoUsuarioTest {
 		String email = "exemplo@exemplo.com";
 		medico.setEmail(email);
 		colecaoUsuario.save(medico);
-		
+
 		assertEquals(medico, servicoUsuario.buscarPorEmail(email));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorEmailInexistente() {
@@ -134,10 +132,10 @@ class ServicoUsuarioTest {
 		String email = "teste@teste.com";
 		paciente.setEmail(email);
 		colecaoUsuario.save(paciente);
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPorEmail("exemplo@exemplo.com"));
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarPorEmail("exemplo@exemplo.com"));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCpf() throws ObjetoNaoEncontradoException {
@@ -145,11 +143,11 @@ class ServicoUsuarioTest {
 		String cpf = "111222333-45";
 		paciente.setCpf(cpf);
 		colecaoUsuario.save(paciente);
-		
+
 		assertEquals(paciente, servicoUsuario.buscarPorCpf(cpf));
-		
+
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorCpfInexistente() {
@@ -157,49 +155,48 @@ class ServicoUsuarioTest {
 		String cpf = "999888777-65";
 		medico.setCpf(cpf);
 		colecaoUsuario.save(medico);
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPorCpf("111222333-45"));
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarPorCpf("111222333-45"));
 	}
-	
-	
+
 	@Test
 	@Transactional
 	void testarRemovePacienterPorId() throws ObjetoNaoEncontradoException {
 		Paciente p = new Paciente();
 		colecaoUsuario.save(p);
-		
+
 		int tamanhoInicial = colecaoUsuario.findAll().size();
-		
+
 		servicoUsuario.remover(p.getId());
-		
+
 		int tamanhoFinal = colecaoUsuario.findAll().size();
-		
-		assertEquals(tamanhoInicial-1, tamanhoFinal);
+
+		assertEquals(tamanhoInicial - 1, tamanhoFinal);
 	}
-	
+
 	@Test
 	@Transactional
 	void testarRemoverMedicoPorId() throws ObjetoNaoEncontradoException {
 		Medico medico = new Medico();
 		colecaoUsuario.save(medico);
-		
+
 		int tamanhoInicial = colecaoUsuario.findAll().size();
-		
+
 		servicoUsuario.remover(medico.getId());
-		
+
 		int tamanhoFinal = colecaoUsuario.findAll().size();
-		
-		assertEquals(tamanhoFinal, tamanhoInicial-1);
-		
+
+		assertEquals(tamanhoFinal, tamanhoInicial - 1);
+
 	}
-	
+
 	@Test
 	@Transactional
 	void testarRemoverPorIdInexistente() {
 		long id = 32423L;
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.remover(id));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarEmailExistente() {
@@ -228,9 +225,7 @@ class ServicoUsuarioTest {
 			servicoUsuario.salvar(medico1);
 			servicoUsuario.salvar(medico2);
 		});
-	
 	}
-	
 
 	@Test
 	@Transactional
@@ -243,7 +238,7 @@ class ServicoUsuarioTest {
 			fail();
 		}
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarCarteiraPorUsuarioId() throws ObjetoNaoEncontradoException {
@@ -251,16 +246,16 @@ class ServicoUsuarioTest {
 		Carteira carteira = new Carteira(0, null);
 		medico.setCarteira(carteira);
 		colecaoUsuario.save(medico);
-		
+
 		assertEquals(carteira, servicoUsuario.buscarCarteiraPorUsuarioId(medico.getId()));
-	
+
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarCarteiraPorUsuarioIs() {
 		long id = 2342L;
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarCarteiraPorUsuarioId(id));
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarCarteiraPorUsuarioId(id));
 	}
 
 	@Test
@@ -270,40 +265,35 @@ class ServicoUsuarioTest {
 		Carteira carteira = new Carteira(123.4, null);
 		colecaoUsuario.save(paciente);
 		servicoUsuario.salvarCarteira(paciente.getId(), carteira);
-		
+
 		assertEquals(carteira.getSaldo(), paciente.getCarteira().getSaldo());
 		assertEquals(carteira.getChavesPix(), paciente.getCarteira().getChavesPix());
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarCarteiraPorUsuarioInexistente() {
 		Carteira carteira = new Carteira(123.4, null);
 		long id = 1235L;
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.salvarCarteira(id, carteira) );
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.salvarCarteira(id, carteira));
 	}
-	
+
 	@Test
 	@Transactional
-	void testarBuscarPixPorIds() throws ObjetoNaoEncontradoException {
+	void testarBuscarPixPorIds() throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Paciente paciente = new Paciente();
 		Carteira carteira = new Carteira();
 		Pix pix = new Pix();
 		List<Pix> pixs = List.of(pix);
 		carteira.setChavesPix(pixs);
 		paciente.setCarteira(carteira);
-	
+
 		colecaoUsuario.save(paciente);
-		
-		if(paciente.getId() != 0 && pix.getId() != 0) {
-			assertEquals(pix, servicoUsuario.buscarPixPorId(paciente.getId(), pix.getId()));
-			return;
-		}else {
-			fail();
-		}
+
+		assertEquals(pix, servicoUsuario.buscarPixPorId(paciente.getId(), pix.getId()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPixPorIdsUsuarioInexistente() {
@@ -314,10 +304,10 @@ class ServicoUsuarioTest {
 		List<Pix> pixs = List.of(pix);
 		carteira.setChavesPix(pixs);
 		paciente.setCarteira(carteira);
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPixPorId(id, pix.getId()));
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarPixPorId(id, pix.getId()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPixPorIdsPixInexistente() {
@@ -328,24 +318,23 @@ class ServicoUsuarioTest {
 		List<Pix> pixs = List.of(pix);
 		carteira.setChavesPix(pixs);
 		paciente.setCarteira(carteira);
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoUsuario.buscarPixPorId(paciente.getId(), id));
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoUsuario.buscarPixPorId(paciente.getId(), id));
 	}
-		
+
 	@Test
 	@Transactional
 	void testarSalvarPixCarteira() {
-	    Pix pix = new Pix("698562695", "celular");
-	    Paciente paciente = new Paciente();
-	    Carteira carteira = new Carteira();
-	    paciente.setCarteira(carteira);
-	    colecaoUsuario.save(paciente);
+		Pix pix = new Pix("698562695", "celular");
+		Paciente paciente = new Paciente();
+		Carteira carteira = new Carteira();
+		paciente.setCarteira(carteira);
+		colecaoUsuario.save(paciente);
 
-	    try {
-	    	servicoUsuario.salvarPixCarteira(paciente.getId(), pix);
+		try {
+			servicoUsuario.salvarPixCarteira(paciente.getId(), pix);
 			return;
-		}catch (Exception e) {
-			System.out.println(e);
+		} catch (Exception e) {
 			fail();
 		}
 	}
@@ -360,14 +349,14 @@ class ServicoUsuarioTest {
 		carteira.setChavesPix(pixs);
 		paciente.setCarteira(carteira);
 		colecaoUsuario.save(paciente);
+
 		try {
 			servicoUsuario.removerPixCarteira(paciente.getId(), pix.getId());
 			return;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 			fail();
 		}
-		
 	}
-	
+
 }

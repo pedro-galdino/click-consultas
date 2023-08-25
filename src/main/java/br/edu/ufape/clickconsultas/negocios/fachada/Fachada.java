@@ -67,7 +67,6 @@ public class Fachada {
 	public void removerUsuario(long id) throws ObjetoNaoEncontradoException {
 		servicoUsuario.remover(id);
 	}
-	
 
 	// --- Paciente ---
 
@@ -83,10 +82,9 @@ public class Fachada {
 	public Paciente salvarPaciente(Paciente paciente) {
 		return servicoPaciente.salvar(paciente);
 	}
-	
-	
+
 	// --- Plano de Saúde ---
-	
+
 	public PlanoDeSaude buscarPlanoDeSaude(long pacienteId) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPlanoDeSaude(pacienteId);
 	}
@@ -99,7 +97,6 @@ public class Fachada {
 		servicoPaciente.removerPlanoDeSaude(pacienteId);
 	}
 
-	
 	// --- Medico ---
 
 	public Medico buscarMedicoPorId(long medicoId) throws ObjetoNaoEncontradoException {
@@ -123,14 +120,14 @@ public class Fachada {
 	public Medico buscarMedicoPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorEspecialidade(nome, numeroRQE);
 	}
-	
+
 	// --- CRM ---
 
-	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException {
+	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoMedico.buscarCrms(medicoId);
 	}
 
-	public CRM buscarCrmPorId(long medicoId, Long crmId) throws ObjetoNaoEncontradoException {
+	public CRM buscarCrmPorId(long medicoId, Long crmId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoMedico.buscarCrmPorId(medicoId, crmId);
 	}
 
@@ -138,44 +135,66 @@ public class Fachada {
 		return servicoMedico.salvarCrm(medicoId, crm);
 	}
 
-	public void removerCrm(long medicoId, long crmId) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+	public void removerCrm(long medicoId, long crmId) throws ObjetoNaoEncontradoException, ObjetoEmUsoException, ListaVaziaException {
 		servicoMedico.removerCrm(medicoId, crmId);
 	}
-	
+
 	// --- Especialidade ---
 
-	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException {
+	public List<Especialidade> buscarEspecialidades(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoMedico.buscarEspecialidades(medicoId);
 	}
 
 	public Especialidade buscarEspecialidadePorId(long medicoId, Long especialidadeId)
-			throws ObjetoNaoEncontradoException {
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoMedico.buscarEspecialidadePorId(medicoId, especialidadeId);
 	}
 
 	public List<Especialidade> salvarEspecialidade(long medicoId, Especialidade especialidade)
-			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, EspecialidadesExcedidasException {
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, EspecialidadesExcedidasException, ListaVaziaException {
 		return servicoMedico.salvarEspecialidade(medicoId, especialidade);
 	}
 
 	public void removerEspecialidade(long medicoId, Long especialidadeId)
-			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException, ListaVaziaException {
 		servicoMedico.removerEspecialidade(medicoId, especialidadeId);
 	}
 
+	// --- EnderecoMedico ---
+
+	public List<EnderecoMedico> buscarEnderecosMedicos(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+		return servicoMedico.buscarEnderecos(medicoId);
+	}
+
+	public EnderecoMedico buscarEnderecoMedicoPorId(long medicoId, long enderecoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+		return servicoMedico.buscarEnderecoPorId(medicoId, enderecoId);
+	}
+
+	public List<EnderecoMedico> salvarEnderecoMedico(long medicoId, EnderecoMedico enderecoMedico) throws ObjetoNaoEncontradoException {
+		return servicoMedico.salvarEndereco(medicoId, enderecoMedico);
+	}
+
+	public void removerEnderecoMedico(long medicoId, long enderecoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+		servicoMedico.removerEndereco(medicoId, enderecoId);
+	}
+
 	// --- Carteira ---
-	
+
 	public Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException {
 		return servicoUsuario.buscarCarteiraPorUsuarioId(usuarioId);
 	}
-	
+
 	public Carteira salvarCarteira(long usuarioId, Carteira carteira) throws ObjetoNaoEncontradoException {
 		return servicoUsuario.salvarCarteira(usuarioId, carteira);
 	}
-	
+
 	// --- Pix ---
 
-	public Pix buscarPixCarteiraPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
+	public List<Pix> buscarPixsCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+		return servicoUsuario.buscarPixsPorUsuarioId(usuarioId);
+	}
+	
+	public Pix buscarPixCarteiraPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoUsuario.buscarPixPorId(usuarioId, pixId);
 	}
 
@@ -183,7 +202,7 @@ public class Fachada {
 		return servicoUsuario.salvarPixCarteira(usuarioId, pix);
 	}
 
-	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
+	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		servicoUsuario.removerPixCarteira(usuarioId, pixId);
 	}
 
@@ -205,9 +224,13 @@ public class Fachada {
 		return servicoDeposito.buscarPorCarteiraId(carteiraId);
 	}
 
-	public Deposito salvarDeposito(long usuarioId, Deposito deposito) throws ObjetoNaoEncontradoException {
+	public Deposito salvarDeposito(long usuarioId, Deposito deposito) throws Exception {
 		Carteira c = buscarCarteiraPorUsuarioId(usuarioId);
 		deposito.setCarteira(c);
+
+		deposito.processarTransacao();
+		servicoUsuario.salvarCarteira(usuarioId, c);
+
 		return servicoDeposito.salvar(deposito);
 	}
 
@@ -233,7 +256,15 @@ public class Fachada {
 		return servicoSaque.buscarPorCarteiraId(carteiraId);
 	}
 
-	public Saque salvarSaque(Saque saque) {
+	public Saque salvarSaque(long usuarioId, long pixId, Saque saque) throws Exception {
+		Carteira c = buscarCarteiraPorUsuarioId(usuarioId);
+		saque.setCarteira(c);
+		Pix p = buscarPixCarteiraPorId(usuarioId, pixId);
+		saque.setChavePix(p);
+
+		saque.processarTransacao();
+		servicoUsuario.salvarCarteira(usuarioId, c);
+
 		return servicoSaque.salvar(saque);
 	}
 
@@ -251,30 +282,21 @@ public class Fachada {
 		return servicoAgenda.buscarPorId(id);
 	}
 	
-	public List<Agenda> buscarAgendasPorMedicoId(long medicoId) {
+	public List<Agenda> buscarAgendasPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException {
 		return servicoAgenda.buscarPorIdMedico(medicoId);
 	}
 
-	public Agenda salvarAgenda(Agenda agenda, long medicoId) throws DadosInsuficientesException, ObjetoNaoEncontradoException {
+	public Agenda salvarAgenda(Agenda agenda, long medicoId) throws ObjetoNaoEncontradoException {
 		Medico medico = servicoMedico.buscarPorId(medicoId);
 		agenda.setMedico(medico);
 		if(agenda.getMedico().getId() == medicoId) {
 			return servicoAgenda.salvar(agenda);
 		}
-		throw new ObjetoNaoEncontradoException("O", "medico");
-	}
-	
-	public Agenda atualizarAgenda(Agenda agenda, long agendaId) throws DadosInsuficientesException, ObjetoNaoEncontradoException {
-		return servicoAgenda.salvar(agenda);
+		throw new ObjetoNaoEncontradoException("o", "medico");
 	}
 
-	public void removerAgenda(long medicoId, long id) throws ObjetoNaoEncontradoException {
-		Agenda agenda = servicoAgenda.buscarPorId(id);
-		Medico medico = servicoMedico.buscarPorId(medicoId);
-		if(agenda.getMedico().equals(medico))
-			servicoAgenda.remover(id);
-		else
-			throw new ObjetoNaoEncontradoException("o", "medico");
+	public void removerAgenda(long id) throws ObjetoNaoEncontradoException {
+		servicoAgenda.remover(id);
 	}
 
 	// --- Agendamento ---

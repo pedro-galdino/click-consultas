@@ -18,7 +18,6 @@ import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -27,15 +26,15 @@ public class UsuarioController {
 	private Fachada fachada;
 
 	@GetMapping()
-	public ResponseEntity<List<Usuario>> buscarPacientes() {
+	public ResponseEntity<List<Usuario>> buscarUsuarios() {
 		return new ResponseEntity<List<Usuario>>(fachada.buscarUsuarios(), HttpStatus.OK);
 	}
 
-	@GetMapping("/{pacienteId}")
-	public ResponseEntity<?> buscarPacientePorId(@PathVariable Long usuarioId) {
+	@GetMapping("/{usuarioId}")
+	public ResponseEntity<?> buscarUsuarioPorId(@PathVariable Long usuarioId) {
 		try {
 			return new ResponseEntity<Usuario>(fachada.buscarUsuarioPorId(usuarioId), HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -55,56 +54,65 @@ public class UsuarioController {
 	public ResponseEntity<?> removerUsuario(@PathVariable Long usuarioId) {
 		try {
 			fachada.removerUsuario(usuarioId);
-			return new ResponseEntity<String>("Removido com sucesso.", HttpStatus.OK);
+			return new ResponseEntity<String>("Usuário removido com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/{usuarioId}/carteira")
 	public ResponseEntity<?> buscarCarteiraPorUsuarioId(@PathVariable Long usuarioId) {
 		try {
 			return new ResponseEntity<Carteira>(fachada.buscarCarteiraPorUsuarioId(usuarioId), HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PatchMapping("/{usuarioId}/carteira")
 	public ResponseEntity<?> atualizarSaldoCarteira(@PathVariable Long usuarioId, @RequestBody double saldo) {
 		try {
 			Carteira carteiraAtualizada = fachada.buscarCarteiraPorUsuarioId(usuarioId);
 			carteiraAtualizada.setSaldo(saldo);
 			return new ResponseEntity<Carteira>(fachada.salvarCarteira(usuarioId, carteiraAtualizada), HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
+	@GetMapping("/{usuarioId}/pix")
+	public ResponseEntity<?> buscarPixsCarteiraPorUsuarioId(@PathVariable Long usuarioId) {
+		try {
+			return new ResponseEntity<List<Pix>>(fachada.buscarPixsCarteiraPorUsuarioId(usuarioId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping("/{usuarioId}/pix/{pixId}")
 	public ResponseEntity<?> buscarPixCarteiraPorId(@PathVariable Long usuarioId, @PathVariable Long pixId) {
 		try {
 			return new ResponseEntity<Pix>(fachada.buscarPixCarteiraPorId(usuarioId, pixId), HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping("/{usuarioId}/pix")
 	public ResponseEntity<?> cadastrarPixCarteira(@PathVariable Long usuarioId, @RequestBody Pix pix) {
 		try {
 			return new ResponseEntity<List<Pix>>(fachada.salvarPixCarteira(usuarioId, pix), HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@DeleteMapping("/{usuarioId}/pix/{pixId}")
 	public ResponseEntity<?> removerPixCarteira(@PathVariable Long usuarioId, @PathVariable Long pixId) {
 		try {
 			fachada.removerPixCarteira(usuarioId, pixId);
 			return new ResponseEntity<String>("Pix removido com sucesso.", HttpStatus.OK);
-		} catch (ObjetoNaoEncontradoException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

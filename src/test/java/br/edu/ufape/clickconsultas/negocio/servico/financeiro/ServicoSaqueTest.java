@@ -19,34 +19,32 @@ import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoS
 @SpringBootTest
 class ServicoSaqueTest {
 
-
 	@Autowired
 	private InterfaceServicoSaque servicoSaque;
-	
+
 	@Autowired
 	private InterfaceColecaoSaque colecaoSaque;
-	
+
 	@MockBean
 	private Date data;
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorIdExistente() throws ObjetoNaoEncontradoException {
 		Saque saque = new Saque();
 		colecaoSaque.save(saque);
-		
+
 		assertEquals(saque, servicoSaque.buscarPorId(saque.getId()));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorIdInexistente() {
 		long inexistente = 2342L;
-		
+
 		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoSaque.buscarPorId(inexistente));
-		
 	}
-	
+
 	@Test
 	@Transactional
 	void testarSalvarSaque() {
@@ -64,38 +62,39 @@ class ServicoSaqueTest {
 	void testarRemoverPorId() throws ObjetoNaoEncontradoException {
 		Saque saque = new Saque();
 		colecaoSaque.save(saque);
-		
+
 		List<Saque> lista = colecaoSaque.findAll();
 		int tamanhoInicial = lista.size();
-		
+
 		servicoSaque.remover(saque.getId());
 		lista = colecaoSaque.findAll();
 		int tamanhoFinal = lista.size();
-		
-		assertEquals(tamanhoInicial-1, tamanhoFinal);
+
+		assertEquals(tamanhoInicial - 1, tamanhoFinal);
 	}
-	
+
 	@Test
 	@Transactional
 	void testarRemoverPorIdInexistente() throws ObjetoNaoEncontradoException {
 		long inexistente = 23234L;
-		
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoSaque.remover(inexistente));
+
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoSaque.remover(inexistente));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorDataInexistente() {
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoSaque.buscarPorData(data));
+		assertThrows(ObjetoNaoEncontradoException.class, () -> servicoSaque.buscarPorData(data));
 	}
-	
+
 	@Test
 	@Transactional
 	void testarBuscarPorDataExistente() throws ObjetoNaoEncontradoException {
 		Saque saque = new Saque();
 		saque.setData(data);
 		colecaoSaque.save(saque);
-		
+
 		assertTrue(servicoSaque.buscarPorData(data).contains(saque));
 	}
+	
 }

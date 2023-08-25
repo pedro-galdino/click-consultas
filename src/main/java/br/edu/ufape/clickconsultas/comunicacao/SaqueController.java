@@ -14,45 +14,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
 
 @RestController
-@RequestMapping("/api/deposito")
-public class DepositoController {
+@RequestMapping("/api/saque")
+public class SaqueController {
 	@Autowired
 	private Fachada fachada;
 
 	@GetMapping()
-	public ResponseEntity<List<Deposito>> buscarDepositos() {
-		return new ResponseEntity<List<Deposito>>(fachada.buscarDepositos(), HttpStatus.OK);
+	public ResponseEntity<List<Saque>> buscarSaques() {
+		return new ResponseEntity<List<Saque>>(fachada.buscarSaques(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{carteiraId}")
-	public ResponseEntity<?> buscarDepositosPorCarteiraId(@PathVariable Long carteiraId) {
+	public ResponseEntity<?> buscarSaquesPorCarteiraId(@PathVariable Long carteiraId) {
 		try {
-			return new ResponseEntity<List<Deposito>>(fachada.buscarDepositosPorCarteiraId(carteiraId), HttpStatus.OK);
+			return new ResponseEntity<List<Saque>>(fachada.buscarSaquesPorCarteiraId(carteiraId), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping("/{usuarioId}/usuario")
-	public ResponseEntity<?> cadastrarDeposito(@PathVariable Long usuarioId, @RequestBody Deposito deposito) {
+	public ResponseEntity<?> cadastrarSaque(@PathVariable Long usuarioId, @RequestBody Saque saque) {
 		try {
-			return new ResponseEntity<Deposito>(fachada.salvarDeposito(usuarioId, deposito), HttpStatus.OK);
+			long pixId = saque.getChavePix().getId();
+			return new ResponseEntity<Saque>(fachada.salvarSaque(usuarioId, pixId, saque), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@DeleteMapping("/{depositoId}")
-	public ResponseEntity<?> removerDeposito(@PathVariable Long depositoId) {
+
+	@DeleteMapping("/{saqueId}")
+	public ResponseEntity<?> removerSaque(@PathVariable Long saqueId) {
 		try {
-			fachada.removerDeposito(depositoId);
-			return new ResponseEntity<String>("Depósito removido com sucesso.", HttpStatus.OK);
+			fachada.removerSaque(saqueId);
+			return new ResponseEntity<String>("Saque removido com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 }

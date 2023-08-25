@@ -1,11 +1,9 @@
-package br.edu.ufape.clickconsultas.negocios.modelo;
+package br.edu.ufape.clickconsultas.negocios.modelo.perfil;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class EnderecoMedico {
@@ -23,8 +21,7 @@ public class EnderecoMedico {
 	public EnderecoMedico() {
 	}
 
-	public EnderecoMedico(String cidade, String estado, String cep, String bairro, String logradouro, int numero,
-			String detalhamento, Medico medico) {
+	public EnderecoMedico(String cidade, String estado, String cep, String bairro, String logradouro, int numero, String detalhamento) {
 		super();
 		this.cidade = cidade;
 		this.estado = estado;

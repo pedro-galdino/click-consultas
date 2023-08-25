@@ -2,16 +2,11 @@ package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.Date;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Saque implements Transacao {
@@ -23,8 +18,7 @@ public class Saque implements Transacao {
 	private String banco;
 	@ManyToOne
 	private Carteira carteira;
-	@OneToOne(cascade = CascadeType.ALL)
-	@OnDelete(action = OnDeleteAction.SET_NULL)
+	@ManyToOne
 	private Pix chavePix;
 
 	public Saque() {
@@ -89,14 +83,12 @@ public class Saque implements Transacao {
 	@Override
 	public void processarTransacao() throws Exception {
 		if (valor > 0) {
-			if (valor <= carteira.getSaldo()) {
+			if (valor <= carteira.getSaldo())
 				carteira.setSaldo(carteira.getSaldo() - valor);
-			} else {
+			else
 				throw new Exception("Saldo insuficiente para realizar o saque.");
-			}
-		} else {
+		} else
 			throw new Exception("Valor para saque inválido.");
-		}
 	}
 
 }

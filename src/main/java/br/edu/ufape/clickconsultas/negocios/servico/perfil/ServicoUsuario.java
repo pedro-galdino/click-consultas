@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoUsuario;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
 import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 @Service
+@Component
 public class ServicoUsuario implements InterfaceServicoUsuario {
 	@Autowired
 	private InterfaceColecaoUsuario colecaoUsuario;
@@ -73,31 +76,44 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	public Carteira salvarCarteira(long usuarioId, Carteira carteira) throws ObjetoNaoEncontradoException {
 		Usuario u = buscarPorId(usuarioId);
 		u.setCarteira(carteira);
-		return colecaoUsuario.save(u).getCarteira();
+		colecaoUsuario.save(u);
+		return u.getCarteira();
 	}
 
-	public Pix buscarPixPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
+	public List<Pix> buscarPixsPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
+		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
+			throw new ListaVaziaException("pix");
+		
+		return c.getChavesPix();
+	}
+	
+	public Pix buscarPixPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+		Carteira c = buscarPorId(usuarioId).getCarteira();
+		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
+			throw new ListaVaziaException("pix");
+		
 		for (Pix pix : c.getChavesPix())
 			if (pix.getId() == pixId)
 				return pix;
+		
 		throw new ObjetoNaoEncontradoException("o", "pix");
 	}
-
+	
 	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException {
 	    Carteira c = buscarPorId(usuarioId).getCarteira();
-	    List<Pix> lp = c.getChavesPix();
-	    if (lp == null) {
-	        lp = new ArrayList<>(List.of(pix));
-	    } else {
-	        lp = new ArrayList<>(lp);
-	        lp.add(pix);
-	    }
+	    List<Pix> lp = new ArrayList<Pix>();
+	    
+	    if(c.getChavesPix() != null)
+	    	lp.addAll(c.getChavesPix());
+	    
+		lp.add(pix);
 	    c.setChavesPix(lp);
-	    return salvarCarteira(usuarioId, c).getChavesPix();
+	    salvarCarteira(usuarioId, c);
+	    return c.getChavesPix();
 	}
 
-	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException {
+	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
 		List<Pix> lp = new ArrayList<>(c.getChavesPix());
 		Pix pix = buscarPixPorId(usuarioId, pixId);
