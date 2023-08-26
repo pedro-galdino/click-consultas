@@ -18,10 +18,8 @@ public class Medico extends Usuario {
 	private List<Especialidade> especialidades;
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<EnderecoMedico> enderecos;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private RegistroAvaliacao registroAvaliacao;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<EnderecoMedico> enderecoMedico;
 
 	public Medico() {
 	}
@@ -33,7 +31,6 @@ public class Medico extends Usuario {
 		this.crm = crm;
 		this.especialidades = especialidades;
 		this.enderecos = enderecos;
-		this.registroAvaliacao = new RegistroAvaliacao();
 	}
 
 	public String getFoto() {
@@ -66,14 +63,6 @@ public class Medico extends Usuario {
 
 	public void setRegistroAvaliacao(RegistroAvaliacao registroAvaliacao) {
 		this.registroAvaliacao = registroAvaliacao;
-	}
-
-	public List<EnderecoMedico> getEnderecosMedico() {
-		return enderecoMedico;
-	}
-
-	public void setEnderecosMedico(List<EnderecoMedico> enderecoMedico) {
-		this.enderecoMedico = enderecoMedico;
 	}
 
 	public void removerCrm(CRM crm) {

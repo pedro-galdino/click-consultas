@@ -3,6 +3,7 @@ package br.edu.ufape.clickconsultas.negocios.servico;
 import java.util.List;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.NotaDeAvaliacaoInvalidaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
 
 public interface InterfaceServicoAvaliacao {
@@ -11,8 +12,10 @@ public interface InterfaceServicoAvaliacao {
 
 	Avaliacao buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
-	Avaliacao salvar(Avaliacao avaliacao);
+	Avaliacao salvar(Avaliacao avaliacao) throws NotaDeAvaliacaoInvalidaException;
 
 	void remover(long id) throws ObjetoNaoEncontradoException;
+
+	List<Avaliacao> buscarPorPacienteId(long pacienteId);
 
 }

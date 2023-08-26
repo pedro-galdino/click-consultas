@@ -39,8 +39,7 @@ public class SaqueController {
 	@PostMapping("/{usuarioId}/usuario")
 	public ResponseEntity<?> cadastrarSaque(@PathVariable Long usuarioId, @RequestBody Saque saque) {
 		try {
-			long pixId = saque.getChavePix().getId();
-			return new ResponseEntity<Saque>(fachada.salvarSaque(usuarioId, pixId, saque), HttpStatus.OK);
+			return new ResponseEntity<Saque>(fachada.salvarSaque(usuarioId, saque), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

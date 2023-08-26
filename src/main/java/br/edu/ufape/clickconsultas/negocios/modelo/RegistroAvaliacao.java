@@ -12,10 +12,10 @@ public class RegistroAvaliacao {
 	private long id;
 	private int numeroAvaliacoes;
 	private double totalAvaliacoes;
-	
+
 	public RegistroAvaliacao() {
 	}
-	
+
 	public RegistroAvaliacao(int numeroAvaliacoes, double totalAvaliacoes) {
 		this.numeroAvaliacoes = numeroAvaliacoes;
 		this.totalAvaliacoes = totalAvaliacoes;
@@ -40,9 +40,19 @@ public class RegistroAvaliacao {
 	public void setTotalAvaliacoes(double totalAvaliacoes) {
 		this.totalAvaliacoes = totalAvaliacoes;
 	}
-	
+
+	public void adicionarNota(double nota) {
+		numeroAvaliacoes++;
+		totalAvaliacoes += nota;
+	}
+
+	public void removerNota(double nota) {
+		numeroAvaliacoes--;
+		totalAvaliacoes -= nota;
+	}
+
 	public double calcularMediaAvaliacoes() {
-		return totalAvaliacoes/numeroAvaliacoes;
+		return totalAvaliacoes / numeroAvaliacoes;
 	}
 
 }

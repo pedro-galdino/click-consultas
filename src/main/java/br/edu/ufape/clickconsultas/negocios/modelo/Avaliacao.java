@@ -28,8 +28,6 @@ public class Avaliacao {
 		this.comentario = comentario;
 		this.paciente = paciente;
 		this.registro = registro;
-		registro.setNumeroAvaliacoes(registro.getNumeroAvaliacoes() + 1);
-		registro.setTotalAvaliacoes(registro.getTotalAvaliacoes() + nota);
 	}
 
 	public long getId() {
@@ -66,11 +64,6 @@ public class Avaliacao {
 
 	public void setRegistro(RegistroAvaliacao registro) {
 		this.registro = registro;
-	}
-
-	public void removerAvaliacao() {
-		registro.setNumeroAvaliacoes(registro.getNumeroAvaliacoes() - 1);
-		registro.setTotalAvaliacoes(registro.getTotalAvaliacoes() - nota);
 	}
 
 }
