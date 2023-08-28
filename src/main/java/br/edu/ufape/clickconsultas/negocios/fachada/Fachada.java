@@ -339,6 +339,11 @@ public class Fachada {
 		servicoAgenda.remover(id);
 	}
 	
+	public List<Horarios> buscarHorariosPorAgendaId(long id) throws ObjetoNaoEncontradoException {
+		Agenda agenda = servicoAgenda.buscarPorId(id);
+		return agenda.getHorariosDisponiveis();
+	}
+	
 	public Agenda salvarHorarios(long agendaId, Horarios horario) throws ObjetoNaoEncontradoException {
 		Agenda agenda = servicoAgenda.buscarPorId(agendaId);
 		List<Horarios> listaAgenda = agenda.getHorariosDisponiveis();

@@ -88,6 +88,15 @@ public class AgendaController {
 		}
 	}
 	
+	@GetMapping("/horarios/{agendaId}")
+	public ResponseEntity<?> listarHorariosPorAgendaId(@PathVariable long agendaId) {
+		try {
+			return new ResponseEntity<List<Horarios>>(fachada.buscarHorariosPorAgendaId(agendaId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PostMapping("/horarios/{agendaId}")
 	public ResponseEntity<?> salvarHorarios(@RequestBody Horarios horario, @PathVariable long agendaId) {
 		try {
