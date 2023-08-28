@@ -1,19 +1,48 @@
 package br.edu.ufape.clickconsultas.negocios.fachada;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.*;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.*;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.*;
-import br.edu.ufape.clickconsultas.negocios.servico.*;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.*;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.*;
-import br.edu.ufape.clickconsultas.negocios.servico.perfil.*;
+import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
+import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
+import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
+import br.edu.ufape.clickconsultas.negocios.modelo.HorarioAgendado;
+import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
+import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgenda;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgendamento;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoConsulta;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.DadosInsuficientesException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadesExcedidasException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.NotaDeAvaliacaoInvalidaException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
+import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoSaque;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoMedico;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoPaciente;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoUsuario;
 
 @Service
 public class Fachada {
@@ -37,8 +66,6 @@ public class Fachada {
 	private InterfaceServicoConsulta servicoConsulta;
 	@Autowired
 	private InterfaceServicoHorarioAgendado servicoHorarioAgendado;
-	@Autowired
-	private InterfaceServicoHorarios servicoHorarios;
 	@Autowired
 	private InterfaceServicoRegistroAvaliacao servicoRegistroAvaliacao;
 
@@ -311,7 +338,39 @@ public class Fachada {
 	public void removerAgenda(long id) throws ObjetoNaoEncontradoException {
 		servicoAgenda.remover(id);
 	}
+	
+	public Agenda salvarHorarios(long agendaId, Horarios horario) throws ObjetoNaoEncontradoException {
+		Agenda agenda = servicoAgenda.buscarPorId(agendaId);
+		List<Horarios> listaAgenda = agenda.getHorariosDisponiveis();
+		listaAgenda.add(horario);
+		return servicoAgenda.salvar(agenda);
+	}
+	
+	public void removerHorarios(long agendaId, Horarios horario) throws ObjetoNaoEncontradoException {
+		Agenda agenda = servicoAgenda.buscarPorId(agendaId);
+		List<Horarios> listaAgenda = agenda.getHorariosDisponiveis();
+		int indexHorarioRemovido = agenda.getHorariosDisponiveis().indexOf(horario);
+		listaAgenda.remove(indexHorarioRemovido);
+		agenda.setHorariosDisponiveis(listaAgenda);
+		servicoAgenda.salvar(agenda);
+	}
+	
+	public Agenda editarHorarios(long agendaId, long horarioId, Horarios novoHorario) throws ObjetoNaoEncontradoException {
+	    Agenda agenda = servicoAgenda.buscarPorId(agendaId);
+	    List<Horarios> horarios = agenda.getHorariosDisponiveis();
+	    for (int i = 0; i < horarios.size(); i++) {
+	        if (horarios.get(i).getId() == horarioId) {
+	            Horarios horarioExistente = horarios.get(i);
+	            novoHorario.setId(horarioExistente.getId());
+	            horarios.set(i, novoHorario);
+	        }
+	    }
+	    agenda.setHorariosDisponiveis(horarios);
+	    return servicoAgenda.salvar(agenda);
+	}
 
+	
+	
 	// --- Agendamento ---
 
 	public List<Agendamento> buscarAgendamentos() {
@@ -404,28 +463,6 @@ public class Fachada {
 
 	public void removerHorarioAgendado(long id) throws ObjetoNaoEncontradoException {
 		servicoHorarioAgendado.remover(id);
-	}
-
-	// --- Horario ---
-
-	public List<Horarios> buscarHorarios() {
-		return servicoHorarios.buscarTodos();
-	}
-
-	public List<Horarios> buscarHorariosPorData(LocalDate data) throws ObjetoNaoEncontradoException {
-		return servicoHorarios.buscarPorData(data);
-	}
-
-	public Horarios buscarHorarioPorId(long id) throws ObjetoNaoEncontradoException {
-		return servicoHorarios.buscarPorId(id);
-	}
-
-	public Horarios salvarHorario(Horarios horario) {
-		return servicoHorarios.salvar(horario);
-	}
-
-	public void removerHorario(long id) throws ObjetoNaoEncontradoException {
-		servicoHorarios.remover(id);
 	}
 
 	// --- RegistroAvaliacao ---
