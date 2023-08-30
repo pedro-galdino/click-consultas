@@ -20,7 +20,7 @@ public class ServicoHorarioAgendado implements InterfaceServicoHorarioAgendado {
 		
 	}
 	
-	public List<HorarioAgendado> BuscarPorData(LocalDate data) throws ObjetoNaoEncontradoException {
+	public List<HorarioAgendado> buscarPorData(LocalDate data) throws ObjetoNaoEncontradoException {
 		List<HorarioAgendado> lista = colecaoHorarioAgendado.findByData(data);
 		
 		if(lista.isEmpty())
@@ -51,4 +51,5 @@ public class ServicoHorarioAgendado implements InterfaceServicoHorarioAgendado {
 			colecaoHorarioAgendado.deleteById(id);
 		
 	}
+
 }

@@ -16,10 +16,8 @@ public class Agendamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@ManyToOne
-	private EnderecoMedico localConsulta;
 	private String tipoConsulta;
-	private String planoAtendido;
+	private String planoDeSaude;
 	private double valorFinalConsulta;
 	private String detalhamento;
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -28,15 +26,17 @@ public class Agendamento {
 	private Paciente paciente;
 	@ManyToOne
 	private Agenda agenda;
+	@ManyToOne
+	private EnderecoMedico localConsulta;
 	
 	public Agendamento() {
 	}
 
-	public Agendamento(EnderecoMedico localConsulta, String tipoConsulta, String planoAtendido, double valorFinalConsulta, 
+	public Agendamento(EnderecoMedico localConsulta, String tipoConsulta, String planoDeSaude, double valorFinalConsulta, 
 			String detalhamento, HorarioAgendado horarioAgendado, Paciente paciente, Agenda agenda) {
 		this.localConsulta = localConsulta;
 		this.tipoConsulta = tipoConsulta;
-		this.planoAtendido = planoAtendido;
+		this.planoDeSaude = planoDeSaude;
 		this.valorFinalConsulta = valorFinalConsulta;
 		this.detalhamento = detalhamento;
 		this.horarioAgendado = horarioAgendado;
@@ -64,12 +64,12 @@ public class Agendamento {
 		this.tipoConsulta = tipoConsulta;
 	}
 
-	public String getPlanoAtendido() {
-		return planoAtendido;
+	public String getPlanoDeSaude() {
+		return planoDeSaude;
 	}
 
-	public void setPlanoAtendido(String planoAtendido) {
-		this.planoAtendido = planoAtendido;
+	public void setPlanoDeSaude(String planoDeSaude) {
+		this.planoDeSaude = planoDeSaude;
 	}
 
 	public double getValorFinalConsulta() {

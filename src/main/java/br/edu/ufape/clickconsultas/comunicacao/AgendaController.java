@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
 import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
-import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
 
 @RestController
 @RequestMapping("/api/agenda")
@@ -88,7 +87,7 @@ public class AgendaController {
 		}
 	}
 	
-	@GetMapping("/horarios/{agendaId}")
+	@GetMapping("/{agendaId}/horarios")
 	public ResponseEntity<?> listarHorariosPorAgendaId(@PathVariable long agendaId) {
 		try {
 			return new ResponseEntity<List<Horarios>>(fachada.buscarHorariosPorAgendaId(agendaId), HttpStatus.OK);
@@ -97,7 +96,7 @@ public class AgendaController {
 		}
 	}
 	
-	@PostMapping("/horarios/{agendaId}")
+	@PostMapping("/{agendaId}/horarios")
 	public ResponseEntity<?> salvarHorarios(@RequestBody Horarios horario, @PathVariable long agendaId) {
 		try {
 			return new ResponseEntity<Agenda>(fachada.salvarHorarios(agendaId, horario), HttpStatus.CREATED);
@@ -106,8 +105,8 @@ public class AgendaController {
 		}
 	}
 	
-	@DeleteMapping("/horarios/{agendaId}")
-	public ResponseEntity<?> excluirHorarios(@PathVariable long agendaId, @RequestBody Horarios horario) {
+	@DeleteMapping("/{agendaId}/horarios")
+	public ResponseEntity<?> removerHorarios(@PathVariable long agendaId, @RequestBody Horarios horario) {
 		try {
 			fachada.removerHorarios(agendaId, horario);
 			return new ResponseEntity<String>("Horário removido com sucesso.", HttpStatus.OK);
@@ -116,7 +115,7 @@ public class AgendaController {
 		}
 	}
 	
-	@PatchMapping("/horarios/{agendaId}/{horarioId}")
+	@PatchMapping("/{agendaId}/horarios/{horarioId}")
 	public ResponseEntity<?> editarHorario(@PathVariable long agendaId, @PathVariable long horarioId, @RequestBody Horarios novoHorario) {
 		try {
 			return new ResponseEntity<Agenda>(fachada.editarHorarios(agendaId, horarioId, novoHorario), HttpStatus.OK);

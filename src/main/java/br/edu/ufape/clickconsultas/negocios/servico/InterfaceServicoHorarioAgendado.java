@@ -10,7 +10,7 @@ public interface InterfaceServicoHorarioAgendado {
 
 	List<HorarioAgendado> buscarTodos();
 
-	List<HorarioAgendado> BuscarPorData(LocalDate data) throws ObjetoNaoEncontradoException;
+	List<HorarioAgendado> buscarPorData(LocalDate data) throws ObjetoNaoEncontradoException;
 
 	HorarioAgendado buscarPorId(long id) throws ObjetoNaoEncontradoException;
 

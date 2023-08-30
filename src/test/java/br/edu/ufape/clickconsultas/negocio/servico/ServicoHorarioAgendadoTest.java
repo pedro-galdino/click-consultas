@@ -35,13 +35,13 @@ class ServicoHorarioAgendadoTest {
 		horario.setData(data);
 		colecaoHorarioAgendado.save(horario);
 		
-		assertTrue(servicoHorarioAgendado.BuscarPorData(data).contains(horario));
+		assertTrue(servicoHorarioAgendado.buscarPorData(data).contains(horario));
 	}
 	
 	@Test
 	@Transactional
 	void testarBuscarPorDataInexistente() {
-		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoHorarioAgendado.BuscarPorData(data));
+		assertThrows(ObjetoNaoEncontradoException.class, ()-> servicoHorarioAgendado.buscarPorData(data));
 	}
 	
 	@Test
