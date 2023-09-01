@@ -66,7 +66,17 @@ public class Fachada {
 		servicoUsuario.remover(id);
 	}
 
+	public Usuario logar(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException {
+		Usuario usuario = servicoUsuario.logar(email, senha);
+		return usuario;
+	}
+
 	// --- Paciente ---
+	
+	public Paciente logarPaciente(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException  {
+		Usuario usuario = logar(email, senha);
+		return buscarPacientePorId(usuario.getId());
+	}
 
 	public Paciente buscarPacientePorId(long pacienteId) throws ObjetoNaoEncontradoException {
 		return servicoPaciente.buscarPorId(pacienteId);
@@ -80,6 +90,7 @@ public class Fachada {
 	public Paciente salvarPaciente(Paciente paciente) {
 		return servicoPaciente.salvar(paciente);
 	}
+	
 
 	// --- Plano de Saúde ---
 
@@ -97,6 +108,11 @@ public class Fachada {
 
 	// --- Medico ---
 
+	public Medico logarMedico(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException {
+		Usuario usuario = logar(email, senha);
+		return buscarMedicoPorId(usuario.getId());
+	}
+	
 	public Medico buscarMedicoPorId(long medicoId) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorId(medicoId);
 	}
@@ -384,12 +400,14 @@ public class Fachada {
 	public Consulta buscarConsultaPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoConsulta.buscarPorId(id);
 	}
-	
-	public List<Consulta> buscarConsultaPorPacienteId(long pacienteId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+
+	public List<Consulta> buscarConsultaPorPacienteId(long pacienteId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoConsulta.buscarPorPacienteId(pacienteId);
 	}
-	
-	public List<Consulta> buscarConsultaPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
+
+	public List<Consulta> buscarConsultaPorMedicoId(long medicoId)
+			throws ObjetoNaoEncontradoException, ListaVaziaException {
 		return servicoConsulta.buscarPorMedicoId(medicoId);
 	}
 

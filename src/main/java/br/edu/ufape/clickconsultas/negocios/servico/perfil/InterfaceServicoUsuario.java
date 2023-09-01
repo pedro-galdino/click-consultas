@@ -8,6 +8,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.SenhaIncorretaException;
 
 public interface InterfaceServicoUsuario {
 
@@ -24,6 +25,8 @@ public interface InterfaceServicoUsuario {
 	Usuario salvar(Usuario usuario) throws ObjetoEmUsoException;
 
 	void remover(long id) throws ObjetoNaoEncontradoException;
+	
+	public Usuario logar(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException;
 
 	Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException;
 

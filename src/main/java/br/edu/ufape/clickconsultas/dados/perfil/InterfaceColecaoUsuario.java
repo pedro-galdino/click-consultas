@@ -10,9 +10,9 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 @Repository
 public interface InterfaceColecaoUsuario extends JpaRepository<Usuario, Long> {
 
-	public List<Usuario> findByNomeContainingIgnoreCase(String nome);
+	public List<Usuario> findByNomeIgnoreCase(String nome);
 	
-	public Usuario findByEmailContainingIgnoreCase(String email);
+	public Usuario findByEmailIgnoreCase(String email);
 
 	public Usuario findByCpf(String cpf);
 	

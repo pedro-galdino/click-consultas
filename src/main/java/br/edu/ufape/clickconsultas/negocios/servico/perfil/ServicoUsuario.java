@@ -14,6 +14,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.SenhaIncorretaException;
 
 @Service
 @Component
@@ -33,7 +34,7 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public List<Usuario> buscarPorNome(String nome) {
-		return colecaoUsuario.findByNomeContainingIgnoreCase(nome.trim());
+		return colecaoUsuario.findByNomeIgnoreCase(nome.trim());
 	}
 
 	public Usuario buscarPorCpf(String cpf) throws ObjetoNaoEncontradoException {
@@ -44,15 +45,15 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public Usuario buscarPorEmail(String email) throws ObjetoNaoEncontradoException {
-		Usuario u = colecaoUsuario.findByEmailContainingIgnoreCase(email.trim());
+		Usuario u = colecaoUsuario.findByEmailIgnoreCase(email.trim());
 		if (u == null)
-			throw new ObjetoNaoEncontradoException("o", "usuario");
+			throw new ObjetoNaoEncontradoException("o", "email");
 		return u;
 	}
 
 	public Usuario salvar(Usuario usuario) throws ObjetoEmUsoException {
 		// Verifica se o email já está em uso
-		Usuario usuarioExistenteByEmail = colecaoUsuario.findByEmailContainingIgnoreCase(usuario.getEmail());
+		Usuario usuarioExistenteByEmail = colecaoUsuario.findByEmailIgnoreCase(usuario.getEmail());
 		if (usuarioExistenteByEmail != null && usuario.getId() != usuarioExistenteByEmail.getId())
 			throw new ObjetoEmUsoException("o", "e-mail");
 
@@ -67,6 +68,14 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	public void remover(long id) throws ObjetoNaoEncontradoException {
 		Usuario u = buscarPorId(id);
 		colecaoUsuario.deleteById(u.getId());
+	}
+	
+	public Usuario logar(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException {
+		Usuario u = buscarPorEmail(email);
+		String senhaUsuario = u.getSenha();
+        if(!senhaUsuario.equals(senha))
+            throw new SenhaIncorretaException();
+		return u;
 	}
 	
 	public Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException {

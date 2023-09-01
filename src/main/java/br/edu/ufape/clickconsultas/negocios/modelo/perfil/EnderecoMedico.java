@@ -16,12 +16,14 @@ public class EnderecoMedico {
 	private String bairro;
 	private String logradouro;
 	private int numero;
-	private String detalhamento;
+	private String complemento;
+	private String apelido;
 
 	public EnderecoMedico() {
 	}
 
-	public EnderecoMedico(String cidade, String estado, String cep, String bairro, String logradouro, int numero, String detalhamento) {
+	public EnderecoMedico(String cidade, String estado, String cep, String bairro, String logradouro, int numero,
+			String complemento, String apelido) {
 		super();
 		this.cidade = cidade;
 		this.estado = estado;
@@ -29,7 +31,8 @@ public class EnderecoMedico {
 		this.bairro = bairro;
 		this.logradouro = logradouro;
 		this.numero = numero;
-		this.detalhamento = detalhamento;
+		this.complemento = complemento;
+		this.apelido = apelido;
 	}
 
 	public long getId() {
@@ -84,12 +87,20 @@ public class EnderecoMedico {
 		this.numero = numero;
 	}
 
-	public String getDetalhamento() {
-		return detalhamento;
+	public String getComplemento() {
+		return complemento;
 	}
 
-	public void setDetalhamento(String detalhamento) {
-		this.detalhamento = detalhamento;
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getApelido() {
+		return apelido;
+	}
+
+	public void setApelido(String apelido) {
+		this.apelido = apelido;
 	}
 
 }

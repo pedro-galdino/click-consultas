@@ -1,6 +1,7 @@
 package br.edu.ufape.clickconsultas.comunicacao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,15 @@ public class MedicoController {
 	@Autowired
 	private Fachada fachada;
 
+	@PostMapping("/login")
+	public ResponseEntity<?> logarMedico(@RequestBody Map<String, String> dadosLogin) {
+		try {
+			return new ResponseEntity<Medico>(fachada.logarMedico(dadosLogin.get("email"), dadosLogin.get("senha")), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@GetMapping("/{medicoId}")
 	public ResponseEntity<?> buscarMedicoPorId(@PathVariable Long medicoId) {
 		try {
@@ -175,7 +185,8 @@ public class MedicoController {
 			enderecoAtualizado.setBairro(endereco.getBairro());
 			enderecoAtualizado.setLogradouro(endereco.getLogradouro());
 			enderecoAtualizado.setNumero(endereco.getNumero());
-			enderecoAtualizado.setDetalhamento(endereco.getDetalhamento());
+			enderecoAtualizado.setComplemento(endereco.getComplemento());
+			enderecoAtualizado.setApelido(endereco.getApelido());
 			return new ResponseEntity<List<EnderecoMedico>>(fachada.salvarMedico(medico).getEnderecos(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
