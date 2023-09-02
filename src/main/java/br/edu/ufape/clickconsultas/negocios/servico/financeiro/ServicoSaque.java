@@ -44,6 +44,7 @@ public class ServicoSaque implements InterfaceServicoSaque {
 	}
 
 	public Saque salvar(Saque saque) {
+		saque.setData(new Date());
 		return colecaoSaque.save(saque);
 	}
 

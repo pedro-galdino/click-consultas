@@ -36,7 +36,7 @@ public class DepositoController {
 		}
 	}
 	
-	@PostMapping("/{usuarioId}/usuario")
+	@PostMapping("/{usuarioId}")
 	public ResponseEntity<?> cadastrarDeposito(@PathVariable Long usuarioId, @RequestBody Deposito deposito) {
 		try {
 			return new ResponseEntity<Deposito>(fachada.salvarDeposito(usuarioId, deposito), HttpStatus.OK);

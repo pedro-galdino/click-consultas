@@ -36,7 +36,7 @@ public interface InterfaceServicoUsuario {
 	
 	Pix buscarPixPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException;
 
-	List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException;
+	List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException, ObjetoEmUsoException;
 
 	void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException;
 

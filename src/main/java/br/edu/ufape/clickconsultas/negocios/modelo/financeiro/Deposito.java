@@ -1,6 +1,7 @@
 package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
 import java.util.Date;
+import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -73,8 +74,9 @@ public class Deposito implements Transacao {
 			throw new Exception("Valor para depósito inválido.");
 	}
 
-	public void gerarPixCopiaECola() {
-
+	public String gerarPixCopiaECola() {
+		UUID uuid = UUID.randomUUID();
+		return uuid.toString();
 	}
 
 }

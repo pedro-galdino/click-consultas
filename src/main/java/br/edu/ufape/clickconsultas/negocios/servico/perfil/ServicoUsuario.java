@@ -69,15 +69,15 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 		Usuario u = buscarPorId(id);
 		colecaoUsuario.deleteById(u.getId());
 	}
-	
+
 	public Usuario logar(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException {
 		Usuario u = buscarPorEmail(email);
 		String senhaUsuario = u.getSenha();
-        if(!senhaUsuario.equals(senha))
-            throw new SenhaIncorretaException();
+		if (!senhaUsuario.equals(senha))
+			throw new SenhaIncorretaException();
 		return u;
 	}
-	
+
 	public Carteira buscarCarteiraPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException {
 		return buscarPorId(usuarioId).getCarteira();
 	}
@@ -93,33 +93,38 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
 		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
 			throw new ListaVaziaException("pix");
-		
+
 		return c.getChavesPix();
 	}
-	
+
 	public Pix buscarPixPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
 		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
 			throw new ListaVaziaException("pix");
-		
+
 		for (Pix pix : c.getChavesPix())
 			if (pix.getId() == pixId)
 				return pix;
-		
+
 		throw new ObjetoNaoEncontradoException("o", "pix");
 	}
-	
-	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException {
-	    Carteira c = buscarPorId(usuarioId).getCarteira();
-	    List<Pix> lp = new ArrayList<Pix>();
-	    
-	    if(c.getChavesPix() != null)
-	    	lp.addAll(c.getChavesPix());
-	    
+
+	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+		Carteira c = buscarPorId(usuarioId).getCarteira();
+		List<Pix> lp = new ArrayList<Pix>();
+
+		if (c.getChavesPix() != null) {
+			for (Pix p : c.getChavesPix())
+				if (p.getChave().equals(pix.getChave()))
+					throw new ObjetoEmUsoException("o", "pix");
+
+			lp.addAll(c.getChavesPix());
+		}
+
 		lp.add(pix);
-	    c.setChavesPix(lp);
-	    salvarCarteira(usuarioId, c);
-	    return c.getChavesPix();
+		c.setChavesPix(lp);
+		salvarCarteira(usuarioId, c);
+		return c.getChavesPix();
 	}
 
 	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {

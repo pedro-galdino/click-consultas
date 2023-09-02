@@ -42,6 +42,8 @@ public class ServicoDeposito implements InterfaceServicoDeposito {
 	}
 
 	public Deposito salvar(Deposito deposito) {
+		deposito.setChavePix(deposito.gerarPixCopiaECola());
+		deposito.setData(new Date());
 		return colecaoDeposito.save(deposito);
 	}
 

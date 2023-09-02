@@ -226,7 +226,7 @@ public class Fachada {
 		return servicoUsuario.buscarPixPorId(usuarioId, pixId);
 	}
 
-	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException {
+	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
 		return servicoUsuario.salvarPixCarteira(usuarioId, pix);
 	}
 

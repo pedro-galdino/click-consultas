@@ -36,7 +36,7 @@ public class SaqueController {
 		}
 	}
 
-	@PostMapping("/{usuarioId}/usuario")
+	@PostMapping("/{usuarioId}")
 	public ResponseEntity<?> cadastrarSaque(@PathVariable Long usuarioId, @RequestBody Saque saque) {
 		try {
 			return new ResponseEntity<Saque>(fachada.salvarSaque(usuarioId, saque), HttpStatus.OK);
