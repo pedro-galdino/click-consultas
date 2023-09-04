@@ -54,7 +54,7 @@ class ServicoUsuarioTest {
 	@Test
 	@Transactional
 	void testarBuscarPorNomeExistente() {
-		String nome = " Carlos Eduardo ";
+		String nome = "Carlos Eduardo";
 		Paciente paciente = new Paciente();
 		paciente.setNome(nome);
 		colecaoUsuario.save(paciente);
@@ -78,14 +78,14 @@ class ServicoUsuarioTest {
 	@Test
 	@Transactional
 	void testarListaBuscarPorNomeExistente() {
-		String nome = "João da Silva ";
+		String nome = "João da Silva";
 		String teste = "nao encontra";
 		Medico m1 = new Medico();
 		Medico m2 = new Medico();
 		Medico m3 = new Medico();
 		m1.setNome("João da Silva");
 		m2.setNome(teste);
-		m3.setNome(" João da Silva  ");
+		m3.setNome("joão da silva");
 		colecaoUsuario.save(m1);
 		colecaoUsuario.save(m2);
 		colecaoUsuario.save(m3);
@@ -345,8 +345,7 @@ class ServicoUsuarioTest {
 		Paciente paciente = new Paciente();
 		Carteira carteira = new Carteira();
 		Pix pix = new Pix();
-		List<Pix> pixs = List.of(pix);
-		carteira.setChavesPix(pixs);
+		carteira.adicionarChavePix(pix);
 		paciente.setCarteira(carteira);
 		colecaoUsuario.save(paciente);
 

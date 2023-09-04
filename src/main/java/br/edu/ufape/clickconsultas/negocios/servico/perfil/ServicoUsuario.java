@@ -1,6 +1,5 @@
 package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +89,7 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public List<Pix> buscarPixsPorUsuarioId(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException {
-		Carteira c = buscarPorId(usuarioId).getCarteira();
+		Carteira c = buscarCarteiraPorUsuarioId(usuarioId);
 		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
 			throw new ListaVaziaException("pix");
 
@@ -98,7 +97,7 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public Pix buscarPixPorId(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
-		Carteira c = buscarPorId(usuarioId).getCarteira();
+		Carteira c = buscarCarteiraPorUsuarioId(usuarioId);
 		if (c.getChavesPix() == null || c.getChavesPix().isEmpty())
 			throw new ListaVaziaException("pix");
 
@@ -110,29 +109,20 @@ public class ServicoUsuario implements InterfaceServicoUsuario {
 	}
 
 	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
-		Carteira c = buscarPorId(usuarioId).getCarteira();
-		List<Pix> lp = new ArrayList<Pix>();
+		Carteira c = buscarCarteiraPorUsuarioId(usuarioId);
+		for (Pix p : c.getChavesPix())
+			if (p.getChave().equals(pix.getChave()))
+				throw new ObjetoEmUsoException("o", "pix");
 
-		if (c.getChavesPix() != null) {
-			for (Pix p : c.getChavesPix())
-				if (p.getChave().equals(pix.getChave()))
-					throw new ObjetoEmUsoException("o", "pix");
-
-			lp.addAll(c.getChavesPix());
-		}
-
-		lp.add(pix);
-		c.setChavesPix(lp);
+		c.adicionarChavePix(pix);
 		salvarCarteira(usuarioId, c);
 		return c.getChavesPix();
 	}
 
 	public void removerPixCarteira(long usuarioId, long pixId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Carteira c = buscarPorId(usuarioId).getCarteira();
-		List<Pix> lp = new ArrayList<>(c.getChavesPix());
 		Pix pix = buscarPixPorId(usuarioId, pixId);
-		lp.remove(pix);
-		c.setChavesPix(lp);
+		c.removerChavePix(pix);
 		salvarCarteira(usuarioId, c);
 	}
 

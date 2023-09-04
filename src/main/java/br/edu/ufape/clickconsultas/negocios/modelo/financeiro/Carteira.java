@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.negocios.modelo.financeiro;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -15,8 +16,8 @@ public class Carteira {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private double saldo;
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Pix> chavesPix;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Pix> chavesPix = new ArrayList<Pix>();
 	
 	public Carteira() {
 	}
@@ -42,9 +43,17 @@ public class Carteira {
 	public List<Pix> getChavesPix() {
 		return chavesPix;
 	}
-
+	
 	public void setChavesPix(List<Pix> chavesPix) {
 		this.chavesPix = chavesPix;
+	}
+
+	public void adicionarChavePix(Pix chavePix) {
+		this.chavesPix.add(chavePix);
+	}
+	
+	public void removerChavePix(Pix chavePix) {
+		this.chavesPix.remove(chavePix);
 	}
 		
 }

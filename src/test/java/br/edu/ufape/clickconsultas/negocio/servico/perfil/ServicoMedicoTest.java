@@ -237,6 +237,7 @@ class ServicoMedicoTest {
 			servicoMedico.salvarEspecialidade(m.getId(), especialidade);
 			return;
 		} catch (Exception e) {
+			System.out.println(e);
 			fail();
 		}
 	}
