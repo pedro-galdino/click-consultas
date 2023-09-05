@@ -204,7 +204,7 @@ public class MedicoController {
 	}
 	
 	//Lembrar que na requisição não manda json e sim uma string. Ex.: cardiologista, sem aspas
-	@GetMapping("/buscarMedicos")
+	@PostMapping("/buscarMedicos")
 	public ResponseEntity<?> buscarMedicosPorEspecialidade(@RequestBody String especialidade){
 		try {
 			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade), HttpStatus.OK);

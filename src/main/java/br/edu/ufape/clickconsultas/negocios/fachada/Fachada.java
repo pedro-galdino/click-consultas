@@ -133,6 +133,7 @@ public class Fachada {
 
 	public List<Medico> buscarMedicosPorNomeDaEspecialidade(String nomeEspecialidade)
 			throws ObjetoNaoEncontradoException {
+		nomeEspecialidade = nomeEspecialidade.replace("\"", "");
 		return servicoMedico.buscarPorNomeEspecialidade(nomeEspecialidade);
 	}
 
