@@ -39,10 +39,14 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public List<Medico> buscarPorNomeEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
-		List<Medico> m = colecaoMedico.findByEspecialidadesNomeContainingIgnoreCase(nomeEspecialidade.trim());
-		if (m.isEmpty())
-			throw new ObjetoNaoEncontradoException("a", "especialidade");
-		return m;
+	    if (nomeEspecialidade != null) {
+	        nomeEspecialidade = nomeEspecialidade.trim();
+	    }
+	    List<Medico> m = colecaoMedico.findByEspecialidadesNomeContainingIgnoreCase(nomeEspecialidade);
+	    if (m.isEmpty()) {
+	        throw new ObjetoNaoEncontradoException("a", "especialidade");
+	    }
+	    return m;
 	}
 
 	public Medico buscarPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {

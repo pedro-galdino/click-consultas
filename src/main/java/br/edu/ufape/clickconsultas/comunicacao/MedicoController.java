@@ -202,5 +202,15 @@ public class MedicoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	//Lembrar que na requisição não manda json e sim uma string. Ex.: cardiologista, sem aspas
+	@GetMapping("/buscarMedicos")
+	public ResponseEntity<?> buscarMedicosPorEspecialidade(@RequestBody String especialidade){
+		try {
+			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 }

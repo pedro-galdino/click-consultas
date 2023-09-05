@@ -140,6 +140,7 @@ public class Fachada {
 		return servicoMedico.buscarPorEspecialidade(nome, numeroRQE);
 	}
 
+
 	// --- CRM ---
 
 	public List<CRM> buscarCrms(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
