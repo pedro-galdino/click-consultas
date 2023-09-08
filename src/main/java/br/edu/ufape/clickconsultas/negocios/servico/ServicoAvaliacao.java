@@ -42,5 +42,10 @@ public class ServicoAvaliacao implements InterfaceServicoAvaliacao {
 		Avaliacao avaliacao = buscarPorId(id);
 		colecaoAvaliacao.deleteById(avaliacao.getId());
 	}
+	
+	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long id) throws ObjetoNaoEncontradoException {
+		List<Avaliacao> avaliacoes = colecaoAvaliacao.findByRegistroId(id);
+		return avaliacoes;
+	}
 
 }

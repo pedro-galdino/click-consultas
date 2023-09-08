@@ -491,6 +491,12 @@ public class Fachada {
 
 		servicoAvaliacao.remover(id);
 	}
+	
+	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long id) throws ObjetoNaoEncontradoException {
+		RegistroAvaliacao registro = servicoRegistroAvaliacao.buscarPorId(id);
+		List<Avaliacao> avaliacoes = servicoAvaliacao.buscarAvaliacoesPorRegistroId(id);
+		return avaliacoes;
+	}
 
 	// --- RegistroAvaliacao ---
 

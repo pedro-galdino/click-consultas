@@ -38,6 +38,5 @@ public class ServicoRegistroAvaliacao implements InterfaceServicoRegistroAvaliac
 		RegistroAvaliacao registro = buscarPorId(id);
 		if(registro != null)
 			colecaoRegistroAvaliacao.deleteById(id);
-		
 	}
 }

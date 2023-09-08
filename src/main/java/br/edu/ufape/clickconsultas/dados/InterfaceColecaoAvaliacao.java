@@ -11,5 +11,7 @@ import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
 public interface InterfaceColecaoAvaliacao extends JpaRepository<Avaliacao, Long> {
 
 	public List<Avaliacao> findByPacienteId(long pacienteId);
+	
+	public List<Avaliacao> findByRegistroId(long registroId);
 
 }

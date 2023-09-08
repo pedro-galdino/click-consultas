@@ -17,5 +17,7 @@ public interface InterfaceServicoAvaliacao {
 	void remover(long id) throws ObjetoNaoEncontradoException;
 
 	List<Avaliacao> buscarPorPacienteId(long pacienteId);
+	
+	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long id) throws ObjetoNaoEncontradoException;
 
 }

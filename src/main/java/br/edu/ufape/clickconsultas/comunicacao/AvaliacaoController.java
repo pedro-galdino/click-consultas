@@ -48,6 +48,15 @@ public class AvaliacaoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("/registro/{registroId}")
+	public ResponseEntity<?> listarAvaliacaoPorRegistroId(@PathVariable long registroId) {
+		try {
+			return new ResponseEntity<List<Avaliacao>>(fachada.buscarAvaliacoesPorRegistroId(registroId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@PostMapping()
 	public ResponseEntity<?> cadastrarAvaliacao(@RequestBody Avaliacao avaliacao) {
