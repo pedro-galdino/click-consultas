@@ -317,10 +317,12 @@ public class Fachada {
 		return servicoAgenda.buscarPorIdMedico(medicoId);
 	}
 
-	public Agenda salvarAgenda(Agenda agenda, long medicoId) throws ObjetoNaoEncontradoException {
+	public Agenda salvarAgenda(Agenda agenda, long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Medico medico = servicoMedico.buscarPorId(medicoId);
 		agenda.setMedico(medico);
-
+		EnderecoMedico endereco = servicoMedico.buscarEnderecoPorId(medicoId, agenda.getEnderecoMedico().getId());
+		agenda.setEnderecoMedico(endereco);
+		
 		return servicoAgenda.salvar(agenda);
 	}
 
@@ -492,9 +494,8 @@ public class Fachada {
 		servicoAvaliacao.remover(id);
 	}
 	
-	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long id) throws ObjetoNaoEncontradoException {
-		RegistroAvaliacao registro = servicoRegistroAvaliacao.buscarPorId(id);
-		List<Avaliacao> avaliacoes = servicoAvaliacao.buscarAvaliacoesPorRegistroId(id);
+	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long registroId) throws ObjetoNaoEncontradoException {
+		List<Avaliacao> avaliacoes = servicoAvaliacao.buscarAvaliacoesPorRegistroId(registroId);
 		return avaliacoes;
 	}
 

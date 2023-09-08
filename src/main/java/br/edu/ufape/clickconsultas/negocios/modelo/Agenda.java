@@ -24,8 +24,8 @@ public class Agenda {
 	private List<String> planosAtendidos;
 	private double valorConsulta;
 	private String contato;
-	@OneToMany
-	private List<EnderecoMedico> locaisConsulta;
+	@ManyToOne
+	private EnderecoMedico enderecoMedico;
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Horarios> horariosDisponiveis;
 	@OneToMany
@@ -37,14 +37,14 @@ public class Agenda {
 	}
 
 	public Agenda(String especialidadeMedica, List<String> tiposConsulta, List<String> planosAtendidos,
-			double valorConsulta, String contato, List<EnderecoMedico> locaisConsulta,
+			double valorConsulta, String contato, EnderecoMedico enderecoMedico,
 			List<Horarios> horariosDisponiveis, List<HorarioAgendado> horariosAgendados, Medico medico) {
 		this.especialidadeMedica = especialidadeMedica;
 		this.tiposConsulta = tiposConsulta;
 		this.planosAtendidos = planosAtendidos;
 		this.valorConsulta = valorConsulta;
 		this.contato = contato;
-		this.locaisConsulta = locaisConsulta;
+		this.enderecoMedico = enderecoMedico;
 		this.horariosDisponiveis = horariosDisponiveis;
 		this.horariosAgendados = horariosAgendados;
 		this.medico = medico;
@@ -94,12 +94,12 @@ public class Agenda {
 		this.contato = contato;
 	}
 
-	public List<EnderecoMedico> getLocaisConsulta() {
-		return locaisConsulta;
+	public EnderecoMedico getEnderecoMedico() {
+		return enderecoMedico;
 	}
 
-	public void setLocaisConsulta(List<EnderecoMedico> locaisConsulta) {
-		this.locaisConsulta = locaisConsulta;
+	public void setEnderecoMedico(EnderecoMedico enderecoMedico) {
+		this.enderecoMedico = enderecoMedico;
 	}
 
 	public List<Horarios> getHorariosDisponiveis() {
