@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
@@ -30,12 +33,13 @@ public class MedicoController {
 	@PostMapping("/login")
 	public ResponseEntity<?> logarMedico(@RequestBody Map<String, String> dadosLogin) {
 		try {
-			return new ResponseEntity<Medico>(fachada.logarMedico(dadosLogin.get("email"), dadosLogin.get("senha")), HttpStatus.OK);
+			return new ResponseEntity<Medico>(fachada.logarMedico(dadosLogin.get("email"), dadosLogin.get("senha")),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/{medicoId}")
 	public ResponseEntity<?> buscarMedicoPorId(@PathVariable Long medicoId) {
 		try {
@@ -49,6 +53,24 @@ public class MedicoController {
 	public ResponseEntity<?> cadastrarMedico(@RequestBody Medico medico) {
 		try {
 			return new ResponseEntity<Medico>(fachada.cadastrarMedico(medico), HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping(value = "/{medicoId}/foto", produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<?> buscarFotoPorMedicoId(@PathVariable Long medicoId) {
+		try {
+			return new ResponseEntity<byte[]>(fachada.buscarFotoPorMedicoId(medicoId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/{medicoId}/foto")
+	public ResponseEntity<?> salvarFotoDoMedico(@PathVariable Long medicoId, @RequestParam MultipartFile foto) {
+		try {
+			return new ResponseEntity<Medico>(fachada.salvarFotoDoMedico(medicoId, foto), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -202,12 +224,14 @@ public class MedicoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	//Lembrar que na requisição não manda json e sim uma string. Ex.: cardiologista, sem aspas
+
+	// Lembrar que na requisição não manda json e sim uma string. Ex.:
+	// cardiologista, sem aspas
 	@PostMapping("/buscarMedicos")
-	public ResponseEntity<?> buscarMedicosPorEspecialidade(@RequestBody String especialidade){
+	public ResponseEntity<?> buscarMedicosPorEspecialidade(@RequestBody String especialidade) {
 		try {
-			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade), HttpStatus.OK);
+			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade),
+					HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

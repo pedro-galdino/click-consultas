@@ -1,9 +1,16 @@
 package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
@@ -31,6 +38,35 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		return colecaoMedico.save(medico);
 	}
 
+	public Medico salvarFoto(long medicoId, MultipartFile foto) throws ObjetoNaoEncontradoException, IOException {
+		Medico m = buscarPorId(medicoId);
+		try {
+			if (!foto.isEmpty()) {
+				String diretorio = System.getProperty("user.dir") + "/imagens/";
+				File directory = new File(diretorio);
+
+				if (!directory.exists())
+					directory.mkdir();
+
+				if (m.getFoto() != null) {
+					Path fotoAnterior = Paths.get(diretorio + m.getFoto());
+					Files.deleteIfExists(fotoAnterior);
+				}
+
+				String extensaoImagem = foto.getContentType().substring(foto.getContentType().lastIndexOf("/") + 1);
+				String nomeFoto = UUID.randomUUID().toString().concat(".").concat(extensaoImagem);
+				Path caminho = Paths.get(diretorio + nomeFoto);
+
+				Files.write(caminho, foto.getBytes());
+				m.setFoto(nomeFoto);
+			}
+		} catch (IOException e) {
+			throw new IOException("Erro ao salvar a foto.");
+		}
+
+		return salvar(m);
+	}
+
 	public Medico buscarPorCrm(String uf, int numero) throws ObjetoNaoEncontradoException {
 		Medico m = colecaoMedico.findByCrmUfAndCrmNumero(uf, numero);
 		if (m == null)
@@ -39,14 +75,14 @@ public class ServicoMedico implements InterfaceServicoMedico {
 	}
 
 	public List<Medico> buscarPorNomeEspecialidade(String nomeEspecialidade) throws ObjetoNaoEncontradoException {
-	    if (nomeEspecialidade != null) {
-	        nomeEspecialidade = nomeEspecialidade.trim();
-	    }
-	    List<Medico> m = colecaoMedico.findByEspecialidadesNomeContainingIgnoreCase(nomeEspecialidade);
-	    if (m.isEmpty()) {
-	        throw new ObjetoNaoEncontradoException("a", "especialidade");
-	    }
-	    return m;
+		if (nomeEspecialidade != null) {
+			nomeEspecialidade = nomeEspecialidade.trim();
+		}
+		List<Medico> m = colecaoMedico.findByEspecialidadesNomeContainingIgnoreCase(nomeEspecialidade);
+		if (m.isEmpty()) {
+			throw new ObjetoNaoEncontradoException("a", "especialidade");
+		}
+		return m;
 	}
 
 	public Medico buscarPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {
@@ -127,7 +163,8 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		if (m.getEspecialidades().size() == 2)
 			throw new EspecialidadesExcedidasException();
 
-		if (colecaoMedico.findByEspecialidadesNomeAndEspecialidadesNumeroRQE(especialidade.getNome(), especialidade.getNumeroRQE()) != null)
+		if (colecaoMedico.findByEspecialidadesNomeAndEspecialidadesNumeroRQE(especialidade.getNome(),
+				especialidade.getNumeroRQE()) != null)
 			throw new ObjetoEmUsoException("a", "especialidade");
 
 		m.adicionarEspecialidade(especialidade);
@@ -166,7 +203,8 @@ public class ServicoMedico implements InterfaceServicoMedico {
 		throw new ObjetoNaoEncontradoException("o", "endereço médico");
 	}
 
-	public List<EnderecoMedico> salvarEndereco(long medicoId, EnderecoMedico endereco) throws ObjetoNaoEncontradoException {
+	public List<EnderecoMedico> salvarEndereco(long medicoId, EnderecoMedico endereco)
+			throws ObjetoNaoEncontradoException {
 		Medico m = buscarPorId(medicoId);
 		m.adicionarEndereco(endereco);
 		return salvar(m).getEnderecos();

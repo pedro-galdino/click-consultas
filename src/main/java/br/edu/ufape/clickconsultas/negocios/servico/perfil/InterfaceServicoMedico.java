@@ -1,6 +1,9 @@
 package br.edu.ufape.clickconsultas.negocios.servico.perfil;
 
+import java.io.IOException;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
@@ -16,6 +19,8 @@ public interface InterfaceServicoMedico {
 	Medico buscarPorId(long id) throws ObjetoNaoEncontradoException;
 
 	Medico salvar(Medico medico);
+	
+	Medico salvarFoto(long medicoId, MultipartFile foto) throws ObjetoNaoEncontradoException, IOException;
 
 	Medico buscarPorCrm(String uf, int numero) throws ObjetoNaoEncontradoException;
 

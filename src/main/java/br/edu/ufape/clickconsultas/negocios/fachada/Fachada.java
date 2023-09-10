@@ -1,19 +1,53 @@
 package br.edu.ufape.clickconsultas.negocios.fachada;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import br.edu.ufape.clickconsultas.negocios.modelo.*;
-import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.*;
-import br.edu.ufape.clickconsultas.negocios.modelo.perfil.*;
-import br.edu.ufape.clickconsultas.negocios.servico.*;
-import br.edu.ufape.clickconsultas.negocios.servico.exception.*;
-import br.edu.ufape.clickconsultas.negocios.servico.financeiro.*;
-import br.edu.ufape.clickconsultas.negocios.servico.perfil.*;
+import br.edu.ufape.clickconsultas.negocios.modelo.Agenda;
+import br.edu.ufape.clickconsultas.negocios.modelo.Agendamento;
+import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
+import br.edu.ufape.clickconsultas.negocios.modelo.HorarioAgendado;
+import br.edu.ufape.clickconsultas.negocios.modelo.Horarios;
+import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Carteira;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Deposito;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Pix;
+import br.edu.ufape.clickconsultas.negocios.modelo.financeiro.Saque;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Medico;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
+import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Usuario;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgenda;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAgendamento;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoConsulta;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
+import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadesExcedidasException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.NotaDeAvaliacaoInvalidaException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.SenhaIncorretaException;
+import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
+import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoSaque;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoMedico;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoPaciente;
+import br.edu.ufape.clickconsultas.negocios.servico.perfil.InterfaceServicoUsuario;
 
 @Service
 public class Fachada {
@@ -72,8 +106,9 @@ public class Fachada {
 	}
 
 	// --- Paciente ---
-	
-	public Paciente logarPaciente(String email, String senha) throws ObjetoNaoEncontradoException, SenhaIncorretaException  {
+
+	public Paciente logarPaciente(String email, String senha)
+			throws ObjetoNaoEncontradoException, SenhaIncorretaException {
 		Usuario usuario = logar(email, senha);
 		return buscarPacientePorId(usuario.getId());
 	}
@@ -90,7 +125,6 @@ public class Fachada {
 	public Paciente salvarPaciente(Paciente paciente) {
 		return servicoPaciente.salvar(paciente);
 	}
-	
 
 	// --- Plano de Saúde ---
 
@@ -112,7 +146,7 @@ public class Fachada {
 		Usuario usuario = logar(email, senha);
 		return buscarMedicoPorId(usuario.getId());
 	}
-	
+
 	public Medico buscarMedicoPorId(long medicoId) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorId(medicoId);
 	}
@@ -130,6 +164,29 @@ public class Fachada {
 	public Medico salvarMedico(Medico medico) {
 		return servicoMedico.salvar(medico);
 	}
+		
+	public byte[] buscarFotoPorMedicoId(long medicoId) throws Exception {
+		Medico m = buscarMedicoPorId(medicoId);
+		byte[] foto = null;
+		
+		if (m.getFoto() != null) {
+			String diretorio = System.getProperty("user.dir") + "/imagens/";
+			Path fotoDiretorio = Paths.get(diretorio + m.getFoto());
+
+			if (Files.exists(fotoDiretorio)) 
+				foto = Files.readAllBytes(fotoDiretorio);
+			else
+				throw new Exception("Foto não encontrada no sistema.");
+			
+		} else 
+			throw new Exception("Médico não possui foto");
+		
+		return foto;
+	}
+	
+	public Medico salvarFotoDoMedico(long medicoId, MultipartFile foto) throws ObjetoNaoEncontradoException, IOException {
+		return servicoMedico.salvarFoto(medicoId, foto);
+	}
 
 	public List<Medico> buscarMedicosPorNomeDaEspecialidade(String nomeEspecialidade)
 			throws ObjetoNaoEncontradoException {
@@ -140,7 +197,6 @@ public class Fachada {
 	public Medico buscarMedicoPorEspecialidade(String nome, int numeroRQE) throws ObjetoNaoEncontradoException {
 		return servicoMedico.buscarPorEspecialidade(nome, numeroRQE);
 	}
-
 
 	// --- CRM ---
 
@@ -228,7 +284,8 @@ public class Fachada {
 		return servicoUsuario.buscarPixPorId(usuarioId, pixId);
 	}
 
-	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix) throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
+	public List<Pix> salvarPixCarteira(long usuarioId, Pix pix)
+			throws ObjetoNaoEncontradoException, ObjetoEmUsoException {
 		return servicoUsuario.salvarPixCarteira(usuarioId, pix);
 	}
 
@@ -322,7 +379,7 @@ public class Fachada {
 		agenda.setMedico(medico);
 		EnderecoMedico endereco = servicoMedico.buscarEnderecoPorId(medicoId, agenda.getEnderecoMedico().getId());
 		agenda.setEnderecoMedico(endereco);
-		
+
 		return servicoAgenda.salvar(agenda);
 	}
 
@@ -380,17 +437,33 @@ public class Fachada {
 		return servicoAgendamento.buscarPorPacienteId(pacienteId);
 	}
 
-	public Agendamento salvarAgendamento(Agendamento agendamento)
-			throws ObjetoNaoEncontradoException, ListaVaziaException {
+	public Agendamento salvarAgendamento(Agendamento agendamento) throws ObjetoNaoEncontradoException, ListaVaziaException {
 		Paciente p = buscarPacientePorId(agendamento.getPaciente().getId());
 		agendamento.setPaciente(p);
 		Agenda a = buscarAgendaPorId(agendamento.getAgenda().getId());
 		agendamento.setAgenda(a);
 		EnderecoMedico end = buscarEnderecoMedicoPorId(a.getMedico().getId(), agendamento.getLocalConsulta().getId());
 		agendamento.setLocalConsulta(end);
+		
+		if (agendamento.getPlanoDeSaude() != null)
+			agendamento.setValorFinalConsulta(0);
+				
 		return servicoAgendamento.salvar(agendamento);
 	}
 
+	public List<String> buscarPlanosDeSaudeDisponiveisParaAgendamento(long pacienteId, long agendaId) throws ObjetoNaoEncontradoException {
+		Paciente paciente = buscarPacientePorId(pacienteId);
+		Agenda agenda = buscarAgendaPorId(agendaId);
+		List<String> planosDisponiveis = new ArrayList<String>();
+		
+		if (agenda.getPlanosAtendidos().size() > 0 && paciente.getPlano().getOperadora() != null) 
+			for (String plano : agenda.getPlanosAtendidos()) 
+				if (plano.equalsIgnoreCase(paciente.getPlano().getOperadora()))
+					planosDisponiveis.add(plano);
+		
+		return planosDisponiveis;
+	}
+	
 	public void removerAgendamento(long id) throws ObjetoNaoEncontradoException {
 		servicoAgendamento.remover(id);
 	}
@@ -493,7 +566,7 @@ public class Fachada {
 
 		servicoAvaliacao.remover(id);
 	}
-	
+
 	public List<Avaliacao> buscarAvaliacoesPorRegistroId(long registroId) throws ObjetoNaoEncontradoException {
 		List<Avaliacao> avaliacoes = servicoAvaliacao.buscarAvaliacoesPorRegistroId(registroId);
 		return avaliacoes;

@@ -69,6 +69,15 @@ public class AgendamentoController {
 		}
 	}
 	
+	@PostMapping("/planos/{pacienteId}/{agendaId}")
+	public ResponseEntity<?> buscarPlanosDeSaudeDisponiveisParaAgendamento(@PathVariable long pacienteId, @PathVariable long agendaId) {
+		try {
+			return new ResponseEntity<List<String>>(fachada.buscarPlanosDeSaudeDisponiveisParaAgendamento(pacienteId, agendaId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PatchMapping("/{agendamentoId}")
 	public ResponseEntity<?> atualizarAgendamento(@PathVariable long agendamentoId, @RequestBody Agendamento agendamento) {
 		try {
