@@ -423,6 +423,9 @@ public class Fachada {
 		consulta.setPaciente(p);
 		Agendamento a = buscarAgendamentoPorId(consulta.getAgendamento().getId());
 		consulta.setAgendamento(a);
+		if(consulta.getStatus() != "Nao Disponivel") {
+			consulta.setStatus("Disponivel");
+		}
 		return servicoConsulta.salvar(consulta);
 	}
 	
@@ -494,13 +497,16 @@ public class Fachada {
 		return servicoAvaliacao.buscarPorPacienteId(pacienteId);
 	}
 
-	public Avaliacao salvarAvaliacao(Avaliacao avaliacao)
+	public Avaliacao salvarAvaliacao(Avaliacao avaliacao, long idPaciente, long idMedico)
 			throws ObjetoNaoEncontradoException, NotaDeAvaliacaoInvalidaException {
-		Paciente paciente = buscarPacientePorId(avaliacao.getPaciente().getId());
-		RegistroAvaliacao registro = buscarRegistroAvaliacaoPorId(avaliacao.getRegistro().getId());
+		Paciente paciente = buscarPacientePorId(idPaciente);
+		RegistroAvaliacao registro = buscarRegistroAvaliacaoPorIdMedico(idMedico);
 		avaliacao.setPaciente(paciente);
 		avaliacao.setRegistro(registro);
-
+		Consulta consulta = buscarConsultaPorId(avaliacao.getIdConsulta());
+		consulta.setStatus("Nao Disponivel");
+		salvarConsulta(consulta);
+		
 		registro.adicionarNota(avaliacao.getNota());
 		servicoRegistroAvaliacao.salvar(registro);
 

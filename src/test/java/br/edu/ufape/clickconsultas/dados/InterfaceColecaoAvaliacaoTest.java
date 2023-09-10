@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import br.edu.ufape.clickconsultas.dados.perfil.InterfaceColecaoPaciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.Avaliacao;
+import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
 import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 
@@ -20,7 +22,7 @@ class InterfaceColecaoAvaliacaoTest {
 	private InterfaceColecaoAvaliacao colecaoAvaliacao;
 	@Autowired
 	private InterfaceColecaoRegistroAvaliacao colecaoRegistroAvaliacao;
-
+	
 	@Test
 	void cadastrarRegistroAvaliacaoTest() {
 		long qtdRegistroAvaliacao = colecaoRegistroAvaliacao.count();
@@ -38,7 +40,8 @@ class InterfaceColecaoAvaliacaoTest {
 		colecaoRegistroAvaliacao.save(r);
 		long qtdAvaliacao = colecaoAvaliacao.count();
 		Paciente p = new Paciente();
-		Avaliacao a = new Avaliacao(4.5, "Bom atendimento.", p, r);
+		long idConsulta = 1L;
+		Avaliacao a = new Avaliacao(4.5, "Bom atendimento.", p, r, idConsulta);
 		
 		colecaoPaciente.save(p);
 		colecaoAvaliacao.save(a);

@@ -58,10 +58,10 @@ public class AvaliacaoController {
 		}
 	}
 
-	@PostMapping()
-	public ResponseEntity<?> cadastrarAvaliacao(@RequestBody Avaliacao avaliacao) {
+	@PostMapping("/{idPaciente}/{idMedico}")
+	public ResponseEntity<?> cadastrarAvaliacao(@RequestBody Avaliacao avaliacao, @PathVariable  long idPaciente,  @PathVariable  long idMedico) {
 		try {
-			return new ResponseEntity<Avaliacao>(fachada.salvarAvaliacao(avaliacao), HttpStatus.CREATED);
+			return new ResponseEntity<Avaliacao>(fachada.salvarAvaliacao(avaliacao, idPaciente, idMedico), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
