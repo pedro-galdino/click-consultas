@@ -20,8 +20,10 @@ public class Consulta {
 	private Medico medico;
 	@OneToOne
 	private Agendamento agendamento;
+	private String status;
 	
 	public Consulta() {
+		this.status = "Disponivel";
 	}
 	
 	public Consulta(Paciente paciente, Medico medico, Agendamento agendamento) {
@@ -29,10 +31,15 @@ public class Consulta {
 		this.paciente = paciente;
 		this.medico = medico;
 		this.agendamento = agendamento;
+		this.status = "Disponivel";
 	}
 
 	public long getId() {
 		return id;
+	}
+	
+	public String getStatus() {
+		return status;
 	}
 	
 	public Paciente getPaciente() {
@@ -49,6 +56,10 @@ public class Consulta {
 	
 	public void setMedico(Medico medico) {
 		this.medico = medico;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	public Agendamento getAgendamento() {

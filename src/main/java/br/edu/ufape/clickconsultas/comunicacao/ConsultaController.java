@@ -34,7 +34,7 @@ public class ConsultaController {
 	@GetMapping("/{consultaId}")
 	public ResponseEntity<?> listarConsultaPorId(@PathVariable long consultaId) {
 		try {
-			return new ResponseEntity<List<Consulta>>(fachada.buscarConsultas(), HttpStatus.OK);
+			return new ResponseEntity<Consulta>(fachada.buscarConsultaPorId(consultaId), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -76,5 +76,6 @@ public class ConsultaController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
 
 }

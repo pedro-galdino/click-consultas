@@ -495,7 +495,32 @@ public class Fachada {
 		consulta.setPaciente(p);
 		Agendamento a = buscarAgendamentoPorId(consulta.getAgendamento().getId());
 		consulta.setAgendamento(a);
+		if(consulta.getStatus() != "Nao Disponivel") {
+			consulta.setStatus("Disponivel");
+		}
 		return servicoConsulta.salvar(consulta);
+	}
+	
+	public List<Consulta> buscarHistoricoConsultasPaciente(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException{
+		List<Consulta> consultas = buscarConsultaPorPacienteId(usuarioId);
+		List<Consulta> historico = new ArrayList<>();
+		for(Consulta consulta : consultas) {
+			if(consulta.getAgendamento().getHorarioAgendado().getData().isBefore(LocalDate.now())) {
+				historico.add(consulta);
+			}
+		}
+		return historico;
+	}
+	
+	public List<Consulta> buscarHistoricoConsultasMedico(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException{
+		List<Consulta> consultas = buscarConsultaPorMedicoId(usuarioId);
+		List<Consulta> historico = new ArrayList<>();;
+		for(Consulta consulta : consultas) {
+			if(consulta.getAgendamento().getHorarioAgendado().getData().isBefore(LocalDate.now())) {
+				historico.add(consulta);
+			}
+		}
+		return historico;
 	}
 
 	public void removerConsulta(long id) throws ObjetoNaoEncontradoException {
@@ -544,13 +569,16 @@ public class Fachada {
 		return servicoAvaliacao.buscarPorPacienteId(pacienteId);
 	}
 
-	public Avaliacao salvarAvaliacao(Avaliacao avaliacao)
+	public Avaliacao salvarAvaliacao(Avaliacao avaliacao, long idPaciente, long idMedico)
 			throws ObjetoNaoEncontradoException, NotaDeAvaliacaoInvalidaException {
-		Paciente paciente = buscarPacientePorId(avaliacao.getPaciente().getId());
-		RegistroAvaliacao registro = buscarRegistroAvaliacaoPorId(avaliacao.getRegistro().getId());
+		Paciente paciente = buscarPacientePorId(idPaciente);
+		RegistroAvaliacao registro = buscarRegistroAvaliacaoPorIdMedico(idMedico);
 		avaliacao.setPaciente(paciente);
 		avaliacao.setRegistro(registro);
-
+		Consulta consulta = buscarConsultaPorId(avaliacao.getIdConsulta());
+		consulta.setStatus("Nao Disponivel");
+		salvarConsulta(consulta);
+		
 		registro.adicionarNota(avaliacao.getNota());
 		servicoRegistroAvaliacao.salvar(registro);
 
@@ -588,6 +616,11 @@ public class Fachada {
 
 	public void removerRegistroAvaliacao(long id) throws ObjetoNaoEncontradoException {
 		servicoRegistroAvaliacao.remover(id);
+	}
+	
+	public RegistroAvaliacao buscarRegistroAvaliacaoPorIdMedico(long id) throws ObjetoNaoEncontradoException{
+		Medico m = buscarMedicoPorId(id);
+		return m.getRegistroAvaliacao();
 	}
 
 }

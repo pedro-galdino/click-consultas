@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Avaliacao {
@@ -14,20 +15,24 @@ public class Avaliacao {
 	private long id;
 	private double nota;
 	private String comentario;
+	private long idConsulta;
 	@ManyToOne
 	private Paciente paciente;
 	@ManyToOne
 	private RegistroAvaliacao registro;
 
+
 	public Avaliacao() {
 	}
 
-	public Avaliacao(double nota, String comentario, Paciente paciente, RegistroAvaliacao registro) {
+
+	public Avaliacao(double nota, String comentario, Paciente paciente, RegistroAvaliacao registro, long idConsulta) {
 		super();
 		this.nota = nota;
 		this.comentario = comentario;
 		this.paciente = paciente;
 		this.registro = registro;
+		this.idConsulta = idConsulta;
 	}
 
 	public long getId() {
@@ -64,6 +69,14 @@ public class Avaliacao {
 
 	public void setRegistro(RegistroAvaliacao registro) {
 		this.registro = registro;
+	}
+	
+	public long getIdConsulta() {
+		return idConsulta;
+	}
+
+	public void setIdConsulta(long idConsulta) {
+		this.idConsulta = idConsulta;
 	}
 
 }

@@ -1,5 +1,6 @@
 package br.edu.ufape.clickconsultas.comunicacao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Paciente;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.PlanoDeSaude;
 
@@ -91,6 +93,15 @@ public class PacienteController {
 			fachada.removerPlanoDeSaude(pacienteId);
 			return new ResponseEntity<String>("Plano removido com sucesso.", HttpStatus.OK);
 		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/historico/{pacienteId}")
+	public ResponseEntity<?> buscarHistoricoConsultas(@PathVariable long pacienteId){
+		try {
+			return new ResponseEntity<List<Consulta>>(fachada.buscarHistoricoConsultasPaciente(pacienteId), HttpStatus.OK);
+		}catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
