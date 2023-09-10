@@ -38,6 +38,17 @@ public class UsuarioController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@PatchMapping("/email/{usuarioEmail}/senha")
+	public ResponseEntity<?> atualizarSenhaUsuarioEmail(@RequestBody String senha, @PathVariable String usuarioEmail) {
+		try {
+			Usuario usuarioAtualizado = fachada.buscarUsuarioPorEmail(usuarioEmail);
+			usuarioAtualizado.setSenha(senha);
+			return new ResponseEntity<Usuario>(fachada.salvarUsuario(usuarioAtualizado), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@PatchMapping("/{usuarioId}/senha")
 	public ResponseEntity<?> atualizarSenhaUsuario(@RequestBody String senha, @PathVariable Long usuarioId) {
