@@ -37,11 +37,13 @@ import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoConsulta;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoHorarioAgendado;
 import br.edu.ufape.clickconsultas.negocios.servico.InterfaceServicoRegistroAvaliacao;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.DataInvalidaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.EspecialidadesExcedidasException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ListaVaziaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.NotaDeAvaliacaoInvalidaException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoEmUsoException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.ObjetoNaoEncontradoException;
+import br.edu.ufape.clickconsultas.negocios.servico.exception.SaldoInsuficienteException;
 import br.edu.ufape.clickconsultas.negocios.servico.exception.SenhaIncorretaException;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoDeposito;
 import br.edu.ufape.clickconsultas.negocios.servico.financeiro.InterfaceServicoSaque;
@@ -392,7 +394,10 @@ public class Fachada {
 		return agenda.getHorariosDisponiveis();
 	}
 
-	public Agenda salvarHorarios(long agendaId, Horarios horario) throws ObjetoNaoEncontradoException {
+	public Agenda salvarHorarios(long agendaId, Horarios horario) throws ObjetoNaoEncontradoException, DataInvalidaException {
+		if (!horario.getData().isAfter(LocalDate.now()))
+			throw new DataInvalidaException();
+		
 		Agenda agenda = servicoAgenda.buscarPorId(agendaId);
 		List<Horarios> listaAgenda = agenda.getHorariosDisponiveis();
 		listaAgenda.add(horario);
@@ -436,8 +441,16 @@ public class Fachada {
 	public List<Agendamento> buscarAgendamentoPorPacienteId(long pacienteId) throws ObjetoNaoEncontradoException {
 		return servicoAgendamento.buscarPorPacienteId(pacienteId);
 	}
+	
+	public List<Agendamento> buscarAgendamentoPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException {
+		return servicoAgendamento.buscarPorMedicoId(medicoId);
+	}
 
-	public Agendamento salvarAgendamento(Agendamento agendamento) throws ObjetoNaoEncontradoException, ListaVaziaException {
+	public Agendamento salvarAgendamento(Agendamento agendamento) 
+			throws ObjetoNaoEncontradoException, ListaVaziaException, SaldoInsuficienteException, DataInvalidaException {
+		if (!agendamento.getHorarioAgendado().getData().isAfter(LocalDate.now()))
+			throw new DataInvalidaException();
+		
 		Paciente p = buscarPacientePorId(agendamento.getPaciente().getId());
 		agendamento.setPaciente(p);
 		Agenda a = buscarAgendaPorId(agendamento.getAgenda().getId());
@@ -447,6 +460,11 @@ public class Fachada {
 		
 		if (agendamento.getPlanoDeSaude() != null)
 			agendamento.setValorFinalConsulta(0);
+		
+		if (p.getCarteira().getSaldo() < agendamento.getValorFinalConsulta()) 
+			throw new SaldoInsuficienteException();
+		
+		p.getCarteira().setSaldo(p.getCarteira().getSaldo() - agendamento.getValorFinalConsulta());
 				
 		return servicoAgendamento.salvar(agendamento);
 	}
@@ -465,6 +483,9 @@ public class Fachada {
 	}
 	
 	public void removerAgendamento(long id) throws ObjetoNaoEncontradoException {
+		Agendamento agendamento = buscarAgendamentoPorId(id);
+		Paciente p = buscarPacientePorId(agendamento.getPaciente().getId());
+		p.getCarteira().setSaldo(p.getCarteira().getSaldo() + agendamento.getValorFinalConsulta());
 		servicoAgendamento.remover(id);
 	}
 

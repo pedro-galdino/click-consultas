@@ -60,6 +60,15 @@ public class AgendamentoController {
 		}
 	}
 	
+	@GetMapping("/medico/{medicoId}")
+	public ResponseEntity<?> listarAgendamentoPorMedicoId(@PathVariable long medicoId) {
+		try {
+			return new ResponseEntity<List<Agendamento>>(fachada.buscarAgendamentoPorMedicoId(medicoId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PostMapping()
 	public ResponseEntity<?> cadastrarAgendamento(@RequestBody Agendamento agendamento) {
 		try {

@@ -30,6 +30,11 @@ public class ServicoAgendamento implements InterfaceServicoAgendamento {
 		return agendamentos;
 	}
 	
+	public List<Agendamento> buscarPorMedicoId(long medicoId) {
+		List<Agendamento> agendamentos = colecaoAgendamento.findAllByAgendaMedicoId(medicoId);
+		return agendamentos;
+	}
+	
 	public Agendamento salvar(Agendamento agendamento) {
 		return colecaoAgendamento.save(agendamento);
 	}

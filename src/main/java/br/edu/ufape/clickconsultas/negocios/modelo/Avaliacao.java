@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Avaliacao {
@@ -21,10 +20,8 @@ public class Avaliacao {
 	@ManyToOne
 	private RegistroAvaliacao registro;
 
-
 	public Avaliacao() {
 	}
-
 
 	public Avaliacao(double nota, String comentario, Paciente paciente, RegistroAvaliacao registro, long idConsulta) {
 		super();
@@ -70,7 +67,7 @@ public class Avaliacao {
 	public void setRegistro(RegistroAvaliacao registro) {
 		this.registro = registro;
 	}
-	
+
 	public long getIdConsulta() {
 		return idConsulta;
 	}

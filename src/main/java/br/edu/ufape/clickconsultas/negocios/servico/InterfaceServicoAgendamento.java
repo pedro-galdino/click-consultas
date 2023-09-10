@@ -17,4 +17,6 @@ public interface InterfaceServicoAgendamento {
 
 	List<Agendamento> buscarPorPacienteId(long pacienteId);
 
+	List<Agendamento> buscarPorMedicoId(long medicoId);
+
 }
