@@ -11,10 +11,12 @@ public interface InterfaceServicoConsulta {
 	List<Consulta> buscarTodos();
 
 	Consulta buscarPorId(long id) throws ObjetoNaoEncontradoException;
-	
+
 	public List<Consulta> buscarPorPacienteId(long pacienteId) throws ObjetoNaoEncontradoException, ListaVaziaException;
 
 	public List<Consulta> buscarPorMedicoId(long medicoId) throws ObjetoNaoEncontradoException, ListaVaziaException;
+
+	Consulta buscarPorAgendamentoId(long agendamentoId);
 
 	Consulta salvar(Consulta consulta);
 

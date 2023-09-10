@@ -42,6 +42,11 @@ public class ServicoConsulta implements InterfaceServicoConsulta {
 
 		return consultas;
 	}
+	
+	public Consulta buscarPorAgendamentoId(long agendamentoId) {
+		Consulta consulta = colecaoConsulta.findByAgendamentoId(agendamentoId);
+		return consulta;
+	}
 
 	public Consulta salvar(Consulta consulta) {
 		return colecaoConsulta.save(consulta);
