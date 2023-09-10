@@ -1,9 +1,9 @@
 package br.edu.ufape.clickconsultas.negocios.servico.exception;
 
-public class DataInvalidaException extends Exception {
+public class DataDeAgendamentoInvalidaException extends Exception {
 	private static final long serialVersionUID = 1L;
-	
-	public DataInvalidaException() {
+
+	public DataDeAgendamentoInvalidaException() {
 		super("A data deve ser posterior à atual.");
 	}
 

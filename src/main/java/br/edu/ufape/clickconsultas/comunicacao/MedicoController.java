@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
-import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
 import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
@@ -244,15 +243,6 @@ public class MedicoController {
 			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade),
 					HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/historico/{medicoId}")
-	public ResponseEntity<?> buscarHistoricoConsultas(@PathVariable long medicoId){
-		try {
-			return new ResponseEntity<List<Consulta>>(fachada.buscarHistoricoConsultasMedico(medicoId), HttpStatus.OK);
-		}catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

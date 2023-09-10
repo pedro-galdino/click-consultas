@@ -13,5 +13,7 @@ public interface InterfaceColecaoConsulta extends JpaRepository<Consulta, Long> 
 	List<Consulta> findAllByPacienteId(long pacienteId);
 	
 	List<Consulta> findAllByMedicoId(long medicoId);
+
+	Consulta findByAgendamentoId(long agendamentoId);
 	
 }

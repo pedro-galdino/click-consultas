@@ -52,18 +52,18 @@ public class AgendamentoController {
 	}
 	
 	@GetMapping("/paciente/{pacienteId}")
-	public ResponseEntity<?> listarAgendamentoPorPacienteId(@PathVariable long pacienteId) {
+	public ResponseEntity<?> listarAgendamentosPorPacienteId(@PathVariable long pacienteId) {
 		try {
-			return new ResponseEntity<List<Agendamento>>(fachada.buscarAgendamentoPorPacienteId(pacienteId), HttpStatus.OK);
+			return new ResponseEntity<List<Agendamento>>(fachada.buscarAgendamentosPorPacienteId(pacienteId), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	@GetMapping("/medico/{medicoId}")
-	public ResponseEntity<?> listarAgendamentoPorMedicoId(@PathVariable long medicoId) {
+	public ResponseEntity<?> listarAgendamentosPorMedicoId(@PathVariable long medicoId) {
 		try {
-			return new ResponseEntity<List<Agendamento>>(fachada.buscarAgendamentoPorMedicoId(medicoId), HttpStatus.OK);
+			return new ResponseEntity<List<Agendamento>>(fachada.buscarAgendamentosPorMedicoId(medicoId), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
