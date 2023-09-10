@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ufape.clickconsultas.negocios.fachada.Fachada;
+import br.edu.ufape.clickconsultas.negocios.modelo.Consulta;
+import br.edu.ufape.clickconsultas.negocios.modelo.RegistroAvaliacao;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.CRM;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.EnderecoMedico;
 import br.edu.ufape.clickconsultas.negocios.modelo.perfil.Especialidade;
@@ -40,6 +42,15 @@ public class MedicoController {
 	public ResponseEntity<?> buscarMedicoPorId(@PathVariable Long medicoId) {
 		try {
 			return new ResponseEntity<Medico>(fachada.buscarMedicoPorId(medicoId), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/registroavaliacao/{medicoId}")
+	public ResponseEntity<?> buscarRegistroPorMedicoId(@PathVariable long medicoId){
+		try {
+			return new ResponseEntity<RegistroAvaliacao>(fachada.buscarRegistroAvaliacaoPorIdMedico(medicoId), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -209,6 +220,15 @@ public class MedicoController {
 		try {
 			return new ResponseEntity<List<Medico>>(fachada.buscarMedicosPorNomeDaEspecialidade(especialidade), HttpStatus.OK);
 		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/historico/{medicoId}")
+	public ResponseEntity<?> buscarHistoricoConsultas(@PathVariable long medicoId){
+		try {
+			return new ResponseEntity<List<Consulta>>(fachada.buscarHistoricoConsultasMedico(medicoId), HttpStatus.OK);
+		}catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

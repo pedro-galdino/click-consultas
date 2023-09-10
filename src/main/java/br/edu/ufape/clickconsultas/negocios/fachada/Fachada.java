@@ -1,6 +1,7 @@
 package br.edu.ufape.clickconsultas.negocios.fachada;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -424,6 +425,28 @@ public class Fachada {
 		consulta.setAgendamento(a);
 		return servicoConsulta.salvar(consulta);
 	}
+	
+	public List<Consulta> buscarHistoricoConsultasPaciente(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException{
+		List<Consulta> consultas = buscarConsultaPorPacienteId(usuarioId);
+		List<Consulta> historico = new ArrayList<>();
+		for(Consulta consulta : consultas) {
+			if(consulta.getAgendamento().getHorarioAgendado().getData().isBefore(LocalDate.now())) {
+				historico.add(consulta);
+			}
+		}
+		return historico;
+	}
+	
+	public List<Consulta> buscarHistoricoConsultasMedico(long usuarioId) throws ObjetoNaoEncontradoException, ListaVaziaException{
+		List<Consulta> consultas = buscarConsultaPorMedicoId(usuarioId);
+		List<Consulta> historico = new ArrayList<>();;
+		for(Consulta consulta : consultas) {
+			if(consulta.getAgendamento().getHorarioAgendado().getData().isBefore(LocalDate.now())) {
+				historico.add(consulta);
+			}
+		}
+		return historico;
+	}
 
 	public void removerConsulta(long id) throws ObjetoNaoEncontradoException {
 		servicoConsulta.remover(id);
@@ -515,6 +538,11 @@ public class Fachada {
 
 	public void removerRegistroAvaliacao(long id) throws ObjetoNaoEncontradoException {
 		servicoRegistroAvaliacao.remover(id);
+	}
+	
+	public RegistroAvaliacao buscarRegistroAvaliacaoPorIdMedico(long id) throws ObjetoNaoEncontradoException{
+		Medico m = buscarMedicoPorId(id);
+		return m.getRegistroAvaliacao();
 	}
 
 }
