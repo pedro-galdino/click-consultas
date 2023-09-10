@@ -13,5 +13,7 @@ public interface InterfaceColecaoAvaliacao extends JpaRepository<Avaliacao, Long
 	public List<Avaliacao> findByPacienteId(long pacienteId);
 	
 	public List<Avaliacao> findByRegistroId(long registroId);
+	
+	public Avaliacao findByIdConsulta(long consultaId);
 
 }

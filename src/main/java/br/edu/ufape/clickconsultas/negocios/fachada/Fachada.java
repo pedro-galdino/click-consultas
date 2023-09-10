@@ -581,6 +581,10 @@ public class Fachada {
 	public List<Avaliacao> buscarAvaliacoes() {
 		return servicoAvaliacao.buscarTodos();
 	}
+	
+	public Avaliacao buscarAvaliacaoPorConsultaId(long id) throws ObjetoNaoEncontradoException {
+		return servicoAvaliacao.buscarPorConsultaId(id);
+	}
 
 	public Avaliacao buscarAvaliacaoPorId(long id) throws ObjetoNaoEncontradoException {
 		return servicoAvaliacao.buscarPorId(id);

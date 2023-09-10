@@ -26,6 +26,13 @@ public class ServicoAvaliacao implements InterfaceServicoAvaliacao {
 		return avaliacao;
 	}
 
+	public Avaliacao buscarPorConsultaId(long id) throws ObjetoNaoEncontradoException {
+		Avaliacao avaliacao = colecaoAvaliacao.findByIdConsulta(id);
+		if(avaliacao == null)
+			throw new ObjetoNaoEncontradoException("a", "avaliacao");
+		return avaliacao;
+	}
+	
 	public List<Avaliacao> buscarPorPacienteId(long pacienteId) {
 		List<Avaliacao> avaliacoes = colecaoAvaliacao.findByPacienteId(pacienteId);
 		return avaliacoes;
